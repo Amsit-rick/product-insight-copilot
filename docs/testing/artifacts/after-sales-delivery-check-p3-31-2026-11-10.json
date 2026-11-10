@@ -1,0 +1,124 @@
+{
+  "schema_version": "after-sales-delivery-check-v5",
+  "generated_at": "2026-11-10T13:26:57.546131+00:00",
+  "source_report_generated_at": "2026-11-10T13:26:47.136166+00:00",
+  "candidate_ready": false,
+  "local_demo_ready": true,
+  "production_ready": false,
+  "mock_mode": true,
+  "adapter_mode": "mock",
+  "local_production_shape_verified": true,
+  "cross_host_or_target_environment_verified": false,
+  "external_blocked_gates": [
+    "fact_platform_sandbox",
+    "metric_source",
+    "message_channel",
+    "production_infrastructure",
+    "real_model_holdout",
+    "usability_test"
+  ],
+  "candidate_blockers": [
+    "strict_preflight",
+    "version_traceability",
+    "target_environment",
+    "mock_fact_adapters",
+    "fact_platform_sandbox",
+    "metric_source",
+    "message_channel",
+    "production_infrastructure",
+    "real_model_holdout",
+    "usability_test",
+    "machine_gates",
+    "target_release_admission",
+    "release_approval"
+  ],
+  "release_decision_status": "missing",
+  "release_approver_role": null,
+  "machine_gates_ready": false,
+  "target_release_admission_verified": false,
+  "usability_status": "template_valid_unfilled",
+  "checks": [
+    {
+      "name": "报告可读取",
+      "status": "PASS",
+      "detail": "JSON 格式有效"
+    },
+    {
+      "name": "报告契约",
+      "status": "PASS",
+      "detail": "after-sales-release-readiness-v5"
+    },
+    {
+      "name": "报告新鲜度",
+      "status": "PASS",
+      "detail": "生成于 2026-11-10T13:26:47.136166+00:00，允许 24 小时"
+    },
+    {
+      "name": "常规 preflight",
+      "status": "PASS",
+      "detail": "FAIL=0"
+    },
+    {
+      "name": "事实计划",
+      "status": "PASS",
+      "detail": "计划结构完整"
+    },
+    {
+      "name": "演示工单",
+      "status": "PASS",
+      "detail": "关键工单齐全"
+    },
+    {
+      "name": "客服记录格式",
+      "status": "PASS",
+      "detail": "记录结构有效"
+    }
+  ],
+  "release_checks": [
+    {
+      "name": "严格 preflight",
+      "status": "FAIL",
+      "detail": "FAIL=11：Embedding、Reranker、事实适配器、指标事实源、外部告警、JWT 密钥、CORS、登录限流、演示数据播种、对象存储、任务执行"
+    },
+    {
+      "name": "版本可追溯",
+      "status": "FAIL",
+      "detail": "working_tree_dirty、upstream_not_synced"
+    },
+    {
+      "name": "本机生产形态",
+      "status": "PASS",
+      "detail": "PostgreSQL、Redis、pgvector、共享 checkpointer、双 Worker 与负载门槛已在单机 Docker 验证"
+    },
+    {
+      "name": "目标环境多节点",
+      "status": "FAIL",
+      "detail": "缺少或未通过目标生产环境跨主机实时证据"
+    },
+    {
+      "name": "真实事实适配器",
+      "status": "FAIL",
+      "detail": "当前仍为 mock 事实"
+    },
+    {
+      "name": "外部门禁",
+      "status": "FAIL",
+      "detail": "fact_platform_sandbox、metric_source、message_channel、production_infrastructure、real_model_holdout、usability_test"
+    },
+    {
+      "name": "机器发布门禁",
+      "status": "FAIL",
+      "detail": "机器门禁尚未全部通过"
+    },
+    {
+      "name": "统一候选准入",
+      "status": "FAIL",
+      "detail": "缺少或未通过统一候选版本准入证据"
+    },
+    {
+      "name": "人工发布批准",
+      "status": "FAIL",
+      "detail": "状态=missing"
+    }
+  ]
+}

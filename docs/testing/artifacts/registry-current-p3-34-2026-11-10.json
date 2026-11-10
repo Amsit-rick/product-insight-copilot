@@ -1,0 +1,22 @@
+{
+  "schema_version": "registry-artifact-verification-v1",
+  "generated_at": "2026-11-10T15:22:28.006751+00:00",
+  "executed": true,
+  "passed": true,
+  "registry_scope": "local_loopback",
+  "registry_endpoint_fingerprint": "6aa8281650d3713a",
+  "repository": "pic-api",
+  "tag": "current-80098eb4c948",
+  "digest": "sha256:dcdaf81d81ac3bb560a83cfa624c6360086b067ce36d2393d972a882d9d57929",
+  "digest_reference": "127.0.0.1:15022/pic-api@sha256:dcdaf81d81ac3bb560a83cfa624c6360086b067ce36d2393d972a882d9d57929",
+  "source_image": "pic-api:p3-34-base",
+  "source_git_sha": "80098eb4c948013a5c886f421f09130d6c51a48c",
+  "pulled_image_id": "sha256:dcdaf81d81ac3bb560a83cfa624c6360086b067ce36d2393d972a882d9d57929",
+  "pulled_revision": "80098eb4c948013a5c886f421f09130d6c51a48c",
+  "pulled_user": "appuser",
+  "registry_published": true,
+  "registry_pull_verified": true,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false
+}

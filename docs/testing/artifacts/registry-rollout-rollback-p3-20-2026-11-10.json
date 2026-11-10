@@ -1,0 +1,71 @@
+{
+  "schema_version": "registry-rollout-rollback-evidence-v1",
+  "generated_at": "2026-11-10T01:22:51.0100012+08:00",
+  "executed": true,
+  "passed": true,
+  "scope": "local_loopback_registry_single_docker_daemon",
+  "registry_endpoint_fingerprint": "0a47479bf99b1447",
+  "current": {
+    "source_git_sha": "f3a6586d64e5a4f90a418942259b1d1f8a228102",
+    "digest": "sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+    "registry_published": true,
+    "registry_pull_verified": true,
+    "deployment_verified": true,
+    "queue_verified": true,
+    "deployment_checks_passed": 23,
+    "workers_verified": 2,
+    "queue": {
+      "requested": 4,
+      "submitted": 4,
+      "completed": 4,
+      "errors": 0,
+      "error_rate": 0.0,
+      "submit_p95_ms": 1237.6564999867696,
+      "end_to_end_p95_ms": 4195.694899972295,
+      "throughput_per_second": 0.590316019185622,
+      "final": {
+        "pending": 0,
+        "claimed": 0,
+        "done": 4,
+        "dead": 0
+      }
+    }
+  },
+  "rollback": {
+    "source_git_sha": "610ca63c23a86d94028f17f45936a725628dc232",
+    "digest": "sha256:9417c1745aa2b0d8b4a731f32cdd0cb0acd43aabbcb37f841492ab0902de63c5",
+    "registry_published": true,
+    "registry_pull_verified": true,
+    "deployment_verified": true,
+    "queue_verified": true,
+    "deployment_checks_passed": 23,
+    "workers_verified": 2,
+    "queue": {
+      "requested": 4,
+      "submitted": 4,
+      "completed": 4,
+      "errors": 0,
+      "error_rate": 0.0,
+      "submit_p95_ms": 1195.5993000010494,
+      "end_to_end_p95_ms": 3533.6931999772787,
+      "throughput_per_second": 0.6743927687430696,
+      "final": {
+        "pending": 0,
+        "claimed": 0,
+        "done": 8,
+        "dead": 0
+      }
+    }
+  },
+  "database_migration_rollback_exercised": false,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false,
+  "limitations": [
+    "loopback_registry_without_tls_or_auth",
+    "single_docker_daemon",
+    "stub_model",
+    "mock_fact_adapters",
+    "application_image_rollback_only"
+  ]
+}

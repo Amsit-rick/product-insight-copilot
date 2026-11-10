@@ -1,0 +1,3614 @@
+{
+  "dataset_version": "tickets-1.1.1",
+  "cases": [
+    {
+      "case_id": "tk-eval-001",
+      "group": "normal",
+      "subject": "常规-未发货-1",
+      "content": "下单三天了一直没发货，麻烦看看什么情况。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1001",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-002",
+      "group": "normal",
+      "subject": "常规-未发货-2",
+      "content": "已经付款两天了，一直没发货，什么时候能发？",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1002",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-003",
+      "group": "normal",
+      "subject": "常规-未发货-3",
+      "content": "订单显示未发货，但我已经等了一周了。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1003",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-004",
+      "group": "normal",
+      "subject": "常规-未发货-4",
+      "content": "我买的东西到现在还没有发货。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1004",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-005",
+      "group": "normal",
+      "subject": "常规-未发货-5",
+      "content": "下单五天了不发货，是不是忘了？",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1005",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-006",
+      "group": "normal",
+      "subject": "常规-未发货-6",
+      "content": "请问这单为什么一直没发货？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1006",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-007",
+      "group": "normal",
+      "subject": "常规-未发货-7",
+      "content": "付了钱以后一直没有发货，麻烦查一下。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1007",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-008",
+      "group": "normal",
+      "subject": "常规-未发货-8",
+      "content": "还没发货吗？我等了四天了。",
+      "user": "pm",
+      "order_id": "TB202609290042",
+      "customer_id": "U1008",
+      "expect": {
+        "issue_type": "not_shipped",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor"
+      },
+      "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发"
+    },
+    {
+      "case_id": "tk-eval-009",
+      "group": "normal",
+      "subject": "常规-物流停滞-1",
+      "content": "物流已经三天没有更新了，麻烦帮我催一下。",
+      "user": "ops",
+      "order_id": "TB202609250004",
+      "customer_id": "U1009",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-010",
+      "group": "normal",
+      "subject": "常规-物流停滞-2",
+      "content": "快递在转运中心停了很久，一直没动。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1010",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-011",
+      "group": "normal",
+      "subject": "常规-物流停滞-3",
+      "content": "包裹物流超时两天了，请帮我跟进一下。",
+      "user": "ops",
+      "order_id": "TB202609280032",
+      "customer_id": "U1011",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-012",
+      "group": "normal",
+      "subject": "常规-物流停滞-4",
+      "content": "单号显示快递异常，包裹好像丢了。",
+      "user": "ops",
+      "order_id": "TB202609250008",
+      "customer_id": "U1012",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-013",
+      "group": "normal",
+      "subject": "常规-物流停滞-5",
+      "content": "物流显示已签收，但我本人没收到。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1013",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-014",
+      "group": "normal",
+      "subject": "常规-物流停滞-6",
+      "content": "我的快递两天没动了，帮忙催件。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1014",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-015",
+      "group": "normal",
+      "subject": "常规-物流停滞-7",
+      "content": "包裹一直不动了，是不是卡在路上了？",
+      "user": "ops",
+      "order_id": "TB202609250001",
+      "customer_id": "U1015",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-016",
+      "group": "normal",
+      "subject": "常规-物流停滞-8",
+      "content": "物流信息一整天没有更新，麻烦看下。",
+      "user": "admin",
+      "order_id": "TB202610010061",
+      "customer_id": "U1016",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 logistics_stalled；同一问题换措辞/换订单事实/换录入角色（admin），结论不变"
+    },
+    {
+      "case_id": "tk-eval-017",
+      "group": "normal",
+      "subject": "常规-少件-1",
+      "content": "我买了两件，包裹里只收到一件，少了一件。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1017",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-018",
+      "group": "normal",
+      "subject": "常规-少件-2",
+      "content": "订单里有两样东西，拆开只有一件，少件了。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1018",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-019",
+      "group": "normal",
+      "subject": "常规-少件-3",
+      "content": "收到的包裹内容不全，缺一个配件。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1019",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-020",
+      "group": "normal",
+      "subject": "常规-少件-4",
+      "content": "只收到一件，另一件不见了，是漏了吗？",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1020",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-021",
+      "group": "normal",
+      "subject": "常规-少件-5",
+      "content": "套装只到货一半，缺件。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1021",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-022",
+      "group": "normal",
+      "subject": "常规-少件-6",
+      "content": "包裹里少了一件，套装不全。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1022",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-023",
+      "group": "normal",
+      "subject": "常规-少件-7",
+      "content": "下单是两件，实际只收到一件，少发了一件。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1023",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-024",
+      "group": "normal",
+      "subject": "常规-少件-8",
+      "content": "三件商品只收到一件，另外两件缺件了。",
+      "user": "reviewer",
+      "order_id": "TB202609240655",
+      "customer_id": "U1024",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 missing_item；同一问题换措辞/换订单事实/换录入角色（reviewer），结论不变"
+    },
+    {
+      "case_id": "tk-eval-025",
+      "group": "normal",
+      "subject": "常规-破损-1",
+      "content": "收到商品外包装破损，担心影响使用。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1025",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-026",
+      "group": "normal",
+      "subject": "常规-破损-2",
+      "content": "商品外包装破了一个洞，里面的东西也坏了，需要补发。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1026",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-027",
+      "group": "normal",
+      "subject": "常规-破损-3",
+      "content": "收到的时候箱子是压坏的，品相很差。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1027",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-028",
+      "group": "normal",
+      "subject": "常规-破损-4",
+      "content": "杯子碎了，包装里全是碎片。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1028",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-029",
+      "group": "normal",
+      "subject": "常规-破损-5",
+      "content": "拆开发现商品是坏的，用不了。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1029",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-030",
+      "group": "normal",
+      "subject": "常规-破损-6",
+      "content": "外箱瘪了，里面的罐子也压变形了。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1030",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-031",
+      "group": "normal",
+      "subject": "常规-破损-7",
+      "content": "商品到手就是破损状态，外壳裂了。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1031",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-032",
+      "group": "normal",
+      "subject": "常规-破损-8",
+      "content": "收到的猫窝架子坏了，腿断了一根。",
+      "user": "pm",
+      "order_id": "TB202609240655",
+      "customer_id": "U1032",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 damaged；同一问题换措辞/换订单事实/换录入角色（pm），结论不变"
+    },
+    {
+      "case_id": "tk-eval-033",
+      "group": "normal",
+      "subject": "常规-错发-1",
+      "content": "收到的商品不是我买的那款，发错货了，我要换货。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1033",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-034",
+      "group": "normal",
+      "subject": "常规-错发-2",
+      "content": "发错货了，型号不对。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1034",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-035",
+      "group": "normal",
+      "subject": "常规-错发-3",
+      "content": "颜色不对，我要的是黑色，收到的是白色。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1035",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-036",
+      "group": "normal",
+      "subject": "常规-错发-4",
+      "content": "这根本不是我买的商品，快递送错了吧。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1036",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-037",
+      "group": "normal",
+      "subject": "常规-错发-5",
+      "content": "收到的型号不对，跟订单上写的不一样。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1037",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-038",
+      "group": "normal",
+      "subject": "常规-错发-6",
+      "content": "你们发错货了，我要的是大号的。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1038",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-039",
+      "group": "normal",
+      "subject": "常规-错发-7",
+      "content": "订单是猫粮，发来的是猫砂，发错货了。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1039",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-040",
+      "group": "normal",
+      "subject": "常规-错发-8",
+      "content": "商品不是我买的那一款，请核实。",
+      "user": "admin",
+      "order_id": "TB202609240655",
+      "customer_id": "U1040",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 wrong_item；同一问题换措辞/换订单事实/换录入角色（admin），结论不变"
+    },
+    {
+      "case_id": "tk-eval-041",
+      "group": "normal",
+      "subject": "常规-优惠未生效-1",
+      "content": "活动页显示满 199 减 30，我结算时没有减，请帮我看看优惠规则。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1041",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-042",
+      "group": "normal",
+      "subject": "常规-优惠未生效-2",
+      "content": "我的券为什么用不了？活动价和优惠能一起用吗？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1042",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-043",
+      "group": "normal",
+      "subject": "常规-优惠未生效-3",
+      "content": "这次活动的门槛是多少？我差一点能不能减？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1043",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-044",
+      "group": "normal",
+      "subject": "常规-优惠未生效-4",
+      "content": "满 200 减 50 的优惠没有生效，麻烦帮我看看。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1044",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-045",
+      "group": "normal",
+      "subject": "常规-优惠未生效-5",
+      "content": "下单时领的优惠券在结算页面用不了。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1045",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-046",
+      "group": "normal",
+      "subject": "常规-优惠未生效-6",
+      "content": "活动价和页面标注的不一致，活动补贴也没到账。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1046",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-047",
+      "group": "normal",
+      "subject": "常规-优惠未生效-7",
+      "content": "请问这次满减活动的规则是什么？我下单时没有减 30。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1047",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-048",
+      "group": "normal",
+      "subject": "常规-优惠未生效-8",
+      "content": "我领的优惠券显示已使用，但我根本没下单。",
+      "user": "reviewer",
+      "order_id": "TB202609240655",
+      "customer_id": "U1048",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "期望归类为 promotion_not_applied；同一问题换措辞/换订单事实/换录入角色（reviewer），结论不变"
+    },
+    {
+      "case_id": "tk-eval-049",
+      "group": "normal",
+      "subject": "常规-与描述不符-1",
+      "content": "实物和图片不一样，与描述不符，尺寸也不对。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1049",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-050",
+      "group": "normal",
+      "subject": "常规-与描述不符-2",
+      "content": "商品跟页面描述不符，材质完全不一样。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1050",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-051",
+      "group": "normal",
+      "subject": "常规-与描述不符-3",
+      "content": "和图片不一样，颜色差很多。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1051",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-052",
+      "group": "normal",
+      "subject": "常规-与描述不符-4",
+      "content": "货不对板，收到的和宣传的差距很大。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1052",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-053",
+      "group": "normal",
+      "subject": "常规-与描述不符-5",
+      "content": "页面宣传的功能，实际商品没有。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1053",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-054",
+      "group": "normal",
+      "subject": "常规-与描述不符-6",
+      "content": "与描述差异太大，实物很小。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1054",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-055",
+      "group": "normal",
+      "subject": "常规-与描述不符-7",
+      "content": "商品与描述不符，尺码标注也是错的。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1055",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-056",
+      "group": "normal",
+      "subject": "常规-与描述不符-8",
+      "content": "和图片不一样，收到的款式不同。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1056",
+      "expect": {
+        "issue_type": "description_mismatch",
+        "action_type": "ask_customer",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 description_mismatch；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-057",
+      "group": "normal",
+      "subject": "常规-退款-1",
+      "content": "商品不想要了，申请退款，请把钱退给我。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1057",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "89.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-058",
+      "group": "normal",
+      "subject": "常规-退款-2",
+      "content": "这个订单我要退款，请尽快处理。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1058",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "268.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-059",
+      "group": "normal",
+      "subject": "常规-退款-3",
+      "content": "东西我不要了，直接退款吧。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1059",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "329.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-060",
+      "group": "normal",
+      "subject": "常规-退款-4",
+      "content": "麻烦把这笔钱退给我，我不需要了。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1060",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "156.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-061",
+      "group": "normal",
+      "subject": "常规-退款-5",
+      "content": "订单要退款，请帮我办一下。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1061",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "189.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-062",
+      "group": "normal",
+      "subject": "常规-退款-6",
+      "content": "这单我申请退款，不想等了。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1062",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "428.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-063",
+      "group": "normal",
+      "subject": "常规-退款-7",
+      "content": "请给我退款，商品用不上了。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1063",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "484.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-064",
+      "group": "normal",
+      "subject": "常规-退款-8",
+      "content": "我要退钱，这个订单不要了。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1064",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "424.00"
+      },
+      "notes": "期望归类为 refund；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-065",
+      "group": "normal",
+      "subject": "常规-退货-1",
+      "content": "商品不想要了，我要退货，怎么寄回？",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1065",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-066",
+      "group": "normal",
+      "subject": "常规-退货-2",
+      "content": "这个商品我想退货，怎么操作？",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1066",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-067",
+      "group": "normal",
+      "subject": "常规-退货-3",
+      "content": "东西用不上，我要退货。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1067",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-068",
+      "group": "normal",
+      "subject": "常规-退货-4",
+      "content": "麻烦帮我办理退货，我不想留了。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1068",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-069",
+      "group": "normal",
+      "subject": "常规-退货-5",
+      "content": "申请退货，包装还没拆。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1069",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-070",
+      "group": "normal",
+      "subject": "常规-退货-6",
+      "content": "这单我要退回，麻烦给个退货地址。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1070",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-071",
+      "group": "normal",
+      "subject": "常规-退货-7",
+      "content": "商品不想要了，直接退货吧。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1071",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-072",
+      "group": "normal",
+      "subject": "常规-退货-8",
+      "content": "请帮我走退货流程。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1072",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 return；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-073",
+      "group": "normal",
+      "subject": "常规-换货-1",
+      "content": "这个能换一个别的颜色吗？",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1073",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-074",
+      "group": "normal",
+      "subject": "常规-换货-2",
+      "content": "尺码不合适，我想换货。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1074",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-075",
+      "group": "normal",
+      "subject": "常规-换货-3",
+      "content": "收到的不合适，想换新。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1075",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-076",
+      "group": "normal",
+      "subject": "常规-换货-4",
+      "content": "能换一个同款不同色的吗？",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1076",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-077",
+      "group": "normal",
+      "subject": "常规-换货-5",
+      "content": "我要换货，怎么寄回去？",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1077",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-078",
+      "group": "normal",
+      "subject": "常规-换货-6",
+      "content": "这个商品我想换一个款式。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1078",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-079",
+      "group": "normal",
+      "subject": "常规-换货-7",
+      "content": "收到的猫窝不能换货吗？我想换新。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1079",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-080",
+      "group": "normal",
+      "subject": "常规-换货-8",
+      "content": "想换个尺码，麻烦帮我换货。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1080",
+      "expect": {
+        "issue_type": "exchange",
+        "action_type": "exchange",
+        "max_risk_tier": "L2"
+      },
+      "notes": "期望归类为 exchange；同一问题换措辞/换订单事实/换录入角色（ops），结论不变"
+    },
+    {
+      "case_id": "tk-eval-081",
+      "group": "refund",
+      "subject": "申请退款-89元",
+      "content": "商品不想要了，申请退款。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1081",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "89.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-082",
+      "group": "refund",
+      "subject": "签收异常要求退款-268元",
+      "content": "包裹显示签收但我没收到，请直接退款给我。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1082",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "ask_customer",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true
+      },
+      "notes": "签收与未收到冲突：先核实签收凭证，不得直接退款"
+    },
+    {
+      "case_id": "tk-eval-083",
+      "group": "refund",
+      "subject": "破损要求退款-329元",
+      "content": "商品破损无法使用，我要退款。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1083",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "329.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-084",
+      "group": "refund",
+      "subject": "少件要求退款-156元",
+      "content": "只收到一件，剩下的那件我要退款。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1084",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "156.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-085",
+      "group": "refund",
+      "subject": "停滞要求退款-428元",
+      "content": "物流停滞两天了，我不要了，退款吧。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1085",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "428.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-086",
+      "group": "refund",
+      "subject": "停滞48h要求退款-671元",
+      "content": "包裹一直不到，我不要了，请退款。",
+      "user": "ops",
+      "order_id": "TB202609280032",
+      "customer_id": "U1086",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "671.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-087",
+      "group": "refund",
+      "subject": "下错单要求退款-484元",
+      "content": "商品下错单了，麻烦退钱给我。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1087",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "484.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-088",
+      "group": "refund",
+      "subject": "等太久要求退款-347元",
+      "content": "等太久了，申请退款，钱退我。",
+      "user": "ops",
+      "order_id": "TB202609250004",
+      "customer_id": "U1088",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "347.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-089",
+      "group": "refund",
+      "subject": "不想要了要退款-424元",
+      "content": "我要退款，这个订单不想要了。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1089",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "424.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-090",
+      "group": "refund",
+      "subject": "催退款-58元",
+      "content": "请把这笔订单的钱退我，谢谢。",
+      "user": "ops",
+      "order_id": "TB202609250008",
+      "customer_id": "U1090",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "58.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-091",
+      "group": "refund",
+      "subject": "再次申请退款-444元",
+      "content": "申请退款，麻烦尽快。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1091",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "444.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-092",
+      "group": "refund",
+      "subject": "未到货要退款-70元",
+      "content": "东西一直没到，我要退款。",
+      "user": "ops",
+      "order_id": "TB202609250001",
+      "customer_id": "U1092",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "70.00"
+      },
+      "notes": "退款一律 L3：金额引用实付金额，需主管审批"
+    },
+    {
+      "case_id": "tk-eval-093",
+      "group": "risk_flag",
+      "subject": "批量退款申请",
+      "content": "我要把这批订单全部退款，一共十二单，请一起处理。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1093",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['batch_refund']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "batch_refund"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-094",
+      "group": "risk_flag",
+      "subject": "账号被限制要求解封",
+      "content": "我的账号被限制了，请帮我解除限制。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1094",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['account_restriction']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "account_restriction"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-095",
+      "group": "risk_flag",
+      "subject": "疑似欺诈投诉",
+      "content": "有人用我的账号下单，我怀疑是被盗刷了，请处理。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1095",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['suspected_fraud']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "suspected_fraud"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-096",
+      "group": "risk_flag",
+      "subject": "批量退款申请-第二次",
+      "content": "这批 12 单我全部要退款，请一起处理。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1096",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['batch_refund']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "batch_refund"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-097",
+      "group": "risk_flag",
+      "subject": "账号被冻结",
+      "content": "我的账号被冻结了，登不上，麻烦解封。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1097",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['account_restriction']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "account_restriction"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-098",
+      "group": "risk_flag",
+      "subject": "盗刷订单投诉",
+      "content": "我的账号可能被盗刷了，有两笔陌生订单。",
+      "user": "ops",
+      "order_id": "TB202609280032",
+      "customer_id": "U1098",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['suspected_fraud']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "suspected_fraud"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-099",
+      "group": "risk_flag",
+      "subject": "批量退款+盗刷",
+      "content": "同一批订单被连续盗刷退款，怀疑是团伙，这批全部订单都要处理。",
+      "user": "ops",
+      "order_id": "TB202609300051",
+      "customer_id": "U1099",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['batch_refund', 'suspected_fraud']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "batch_refund",
+          "suspected_fraud"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-100",
+      "group": "risk_flag",
+      "subject": "多个订单被限制",
+      "content": "账号被限制了，多个订单都不能下单，请解除限制。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1100",
+      "expect": {
+        "risk_tier": "L4",
+        "approval_requirement": "risk_control",
+        "requires_approval": true
+      },
+      "notes": "风控标记 ['account_restriction']：必须转风控",
+      "attributes": {
+        "risk_flags": [
+          "account_restriction"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-101",
+      "group": "sensitive",
+      "subject": "敏感客户要求退款",
+      "content": "我是老客户了，这次必须给我退款，不然我就去投诉。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1101",
+      "expect": {
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true
+      },
+      "notes": "敏感客户（投诉倾向）：需主管审批",
+      "attributes": {
+        "sensitive_customer": true
+      }
+    },
+    {
+      "case_id": "tk-eval-102",
+      "group": "sensitive",
+      "subject": "敏感客户要求补发",
+      "content": "已经不是第一次了，我要投诉，请马上给我补发。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1102",
+      "expect": {
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true
+      },
+      "notes": "敏感客户（投诉倾向）：需主管审批",
+      "attributes": {
+        "sensitive_customer": true
+      }
+    },
+    {
+      "case_id": "tk-eval-103",
+      "group": "sensitive",
+      "subject": "敏感客户要求补偿",
+      "content": "我是老客户了，这次必须给我补偿，不然我就去曝光。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1103",
+      "expect": {
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true
+      },
+      "notes": "敏感客户（投诉倾向）：需主管审批",
+      "attributes": {
+        "sensitive_customer": true
+      }
+    },
+    {
+      "case_id": "tk-eval-104",
+      "group": "sensitive",
+      "subject": "敏感客户-二次投诉",
+      "content": "上次的问题就没解决，这次再不给说法我就投诉到消协。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1104",
+      "expect": {
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true
+      },
+      "notes": "敏感客户（投诉倾向）：需主管审批",
+      "attributes": {
+        "sensitive_customer": true
+      }
+    },
+    {
+      "case_id": "tk-eval-105",
+      "group": "sensitive",
+      "subject": "敏感客户-停滞投诉",
+      "content": "停滞这么久了，我要投诉，请马上给个明确答复。",
+      "user": "ops",
+      "order_id": "TB202609250004",
+      "customer_id": "U1105",
+      "expect": {
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true
+      },
+      "notes": "敏感客户（投诉倾向）：需主管审批",
+      "attributes": {
+        "sensitive_customer": true
+      }
+    },
+    {
+      "case_id": "tk-eval-106",
+      "group": "sensitive",
+      "subject": "敏感客户-破损二次投诉",
+      "content": "商品又破损了，我要投诉，请马上补发。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1106",
+      "expect": {
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true
+      },
+      "notes": "敏感客户（投诉倾向）：需主管审批",
+      "attributes": {
+        "sensitive_customer": true
+      }
+    },
+    {
+      "case_id": "tk-eval-107",
+      "group": "promotion",
+      "subject": "满减未生效-解释口径",
+      "content": "活动说满 199 减 30，为什么我没有减？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1107",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-108",
+      "group": "promotion",
+      "subject": "优惠券不能用",
+      "content": "下单时领的券显示不可用，请问是什么原因？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1108",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-109",
+      "group": "promotion",
+      "subject": "活动门槛咨询",
+      "content": "这次活动要满多少才减？我差 20 块能参加吗？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1109",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-110",
+      "group": "promotion",
+      "subject": "补贴未到账",
+      "content": "活动补贴说 3 天到账，现在还没到，麻烦看看。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1110",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-111",
+      "group": "promotion",
+      "subject": "满减未生效-换店",
+      "content": "结算页没有减 30，活动是不是有门槛？",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1111",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-112",
+      "group": "promotion",
+      "subject": "优惠券不可用-第二次",
+      "content": "优惠券怎么用不了？",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1112",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-113",
+      "group": "promotion",
+      "subject": "满减活动时效",
+      "content": "满减活动什么时候结束？",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1113",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-114",
+      "group": "promotion",
+      "subject": "活动价比平时贵",
+      "content": "活动价为什么比平时还贵？",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1114",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-115",
+      "group": "promotion",
+      "subject": "补贴未到账-催问",
+      "content": "活动补贴 3 天到账，现在还没到，帮我查一下。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1115",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-116",
+      "group": "promotion",
+      "subject": "差一点满减",
+      "content": "我差 5 块就能满减，能不能减？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1116",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "优惠类先解释口径，不涉及赔付"
+    },
+    {
+      "case_id": "tk-eval-117",
+      "group": "damaged",
+      "subject": "破损-无凭证",
+      "content": "收到的商品压坏了，怎么办？",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1117",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-118",
+      "group": "damaged",
+      "subject": "破损-要补发",
+      "content": "外包装破了一个洞，里面的东西也坏了，需要补发。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1118",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-119",
+      "group": "damaged",
+      "subject": "破损-已拍照",
+      "content": "商品破损，我已经拍好照片了，请问怎么补发？",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1119",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-120",
+      "group": "damaged",
+      "subject": "破损-箱子压坏",
+      "content": "收到的时候箱子是压坏的，里面的东西也变形了。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1120",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-121",
+      "group": "damaged",
+      "subject": "破损-杯子碎了",
+      "content": "玻璃杯到手就碎了，箱子里都是碎片。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1121",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-122",
+      "group": "damaged",
+      "subject": "破损-商品是坏的",
+      "content": "收到的商品是坏的，完全用不了。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1122",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-123",
+      "group": "damaged",
+      "subject": "破损-外箱瘪了",
+      "content": "外箱瘪了一块，里面罐子的包装也变形了。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1123",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-124",
+      "group": "damaged",
+      "subject": "破损-外壳裂了",
+      "content": "外壳裂了一道缝，属于运输破损。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1124",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-125",
+      "group": "damaged",
+      "subject": "破损-架子腿断了",
+      "content": "猫窝架子的腿断了，属于破损。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1125",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-126",
+      "group": "damaged",
+      "subject": "破损-箱子压瘪",
+      "content": "包装箱被压瘪了一角，商品外壳也有磕碰。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1126",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "破损优先补发；凭证缺失要写进 missing_information"
+    },
+    {
+      "case_id": "tk-eval-127",
+      "group": "stalled",
+      "subject": "停滞-48h以上",
+      "content": "物流停滞超过 48 小时，按规定是不是可以补偿？",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1127",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-128",
+      "group": "stalled",
+      "subject": "停滞-要催件",
+      "content": "包裹两天没动了，麻烦帮我催一下快递。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1128",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-129",
+      "group": "stalled",
+      "subject": "停滞-询问补偿标准",
+      "content": "物流停滞了，想了解下补偿标准是多少。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1129",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-130",
+      "group": "stalled",
+      "subject": "停滞-超时两天",
+      "content": "快递已经停了 56 小时，我要申请补偿。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1130",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-131",
+      "group": "stalled",
+      "subject": "停滞-48小时整",
+      "content": "物流已经停滞超过 48 小时，按规定可以补偿吗？",
+      "user": "ops",
+      "order_id": "TB202609280032",
+      "customer_id": "U1131",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-132",
+      "group": "stalled",
+      "subject": "停滞-三天没更新",
+      "content": "包裹三天没有更新了，请帮我催件。",
+      "user": "ops",
+      "order_id": "TB202609250004",
+      "customer_id": "U1132",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-133",
+      "group": "stalled",
+      "subject": "停滞-四天补偿咨询",
+      "content": "快递停滞四天了，补偿标准是多少？",
+      "user": "ops",
+      "order_id": "TB202609250008",
+      "customer_id": "U1133",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-134",
+      "group": "stalled",
+      "subject": "停滞-申请补偿",
+      "content": "物流信息超过 48 小时没有更新，我要申请补偿。",
+      "user": "ops",
+      "order_id": "TB202609250007",
+      "customer_id": "U1134",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-135",
+      "group": "stalled",
+      "subject": "停滞-卡在中转站",
+      "content": "包裹卡在中转站三天没动了。",
+      "user": "ops",
+      "order_id": "TB202609270021",
+      "customer_id": "U1135",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-136",
+      "group": "stalled",
+      "subject": "停滞-两天以上",
+      "content": "物流停滞两天以上，能补偿多少？",
+      "user": "ops",
+      "order_id": "TB202609270022",
+      "customer_id": "U1136",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-137",
+      "group": "stalled",
+      "subject": "停滞-超时三天",
+      "content": "快递超时三天了，麻烦跟进。",
+      "user": "ops",
+      "order_id": "TB202610010062",
+      "customer_id": "U1137",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-138",
+      "group": "stalled",
+      "subject": "停滞-按政策补偿",
+      "content": "物流两天没更新，按政策是不是有补偿？",
+      "user": "ops",
+      "order_id": "TB202609300051",
+      "customer_id": "U1138",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）"
+    },
+    {
+      "case_id": "tk-eval-139",
+      "group": "stalled_short",
+      "subject": "停滞-12小时",
+      "content": "包裹好像有点慢，才停了一天不到。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1139",
+      "expect": {
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）"
+    },
+    {
+      "case_id": "tk-eval-140",
+      "group": "stalled_short",
+      "subject": "停滞-未达门槛",
+      "content": "物流一天没更新了，要不要补偿？",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1140",
+      "expect": {
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）"
+    },
+    {
+      "case_id": "tk-eval-141",
+      "group": "stalled_short",
+      "subject": "停滞-24小时",
+      "content": "物流才停了一天，需要补偿吗？",
+      "user": "ops",
+      "order_id": "TB202609250001",
+      "customer_id": "U1141",
+      "expect": {
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）"
+    },
+    {
+      "case_id": "tk-eval-142",
+      "group": "stalled_short",
+      "subject": "停滞-一天没动",
+      "content": "包裹一天没动了，麻烦帮我看看。",
+      "user": "ops",
+      "order_id": "TB202609250006",
+      "customer_id": "U1142",
+      "expect": {
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）"
+    },
+    {
+      "case_id": "tk-eval-143",
+      "group": "stalled_short",
+      "subject": "停滞-刚停一天",
+      "content": "快递刚停了一天，还没到 48 小时。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1143",
+      "expect": {
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）"
+    },
+    {
+      "case_id": "tk-eval-144",
+      "group": "stalled_short",
+      "subject": "停滞-今天没更新",
+      "content": "物流今天没有更新，是不是正常？",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1144",
+      "expect": {
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）"
+    },
+    {
+      "case_id": "tk-eval-145",
+      "group": "reship",
+      "subject": "少件-补发",
+      "content": "只收到一件，请补发缺的那件。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1145",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-146",
+      "group": "reship",
+      "subject": "漏发-补发",
+      "content": "订单里有两样东西，包裹里只有一样，漏发了。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1146",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-147",
+      "group": "reship",
+      "subject": "错发-换货",
+      "content": "收到的型号不对，请给我换货。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1147",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-148",
+      "group": "reship",
+      "subject": "少件-包裹轻",
+      "content": "包裹明显比订单标注的轻，应该是少件了。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1148",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-149",
+      "group": "reship",
+      "subject": "少件-补发一件",
+      "content": "包裹里少了一件，请补发。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1149",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-150",
+      "group": "reship",
+      "subject": "漏发-赠品",
+      "content": "收到的商品不全，漏发了赠品。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1150",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-151",
+      "group": "reship",
+      "subject": "错发-型号错",
+      "content": "发错型号了，麻烦给我寄一件正确的。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1151",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-152",
+      "group": "reship",
+      "subject": "少件-数量不对",
+      "content": "收到的数量不对，比订单少了一件。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1152",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-153",
+      "group": "reship",
+      "subject": "少件-只到一件",
+      "content": "订单里两件只收到一件，请补发剩下的。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1153",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-154",
+      "group": "reship",
+      "subject": "漏发-缺一件",
+      "content": "拆开只有一件，另一个没有，漏发了。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1154",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-155",
+      "group": "reship",
+      "subject": "少件-缺配件",
+      "content": "包裹内容不全，缺少配件。",
+      "user": "ops",
+      "order_id": "TB202609240655",
+      "customer_id": "U1155",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-156",
+      "group": "reship",
+      "subject": "错发-颜色错",
+      "content": "发错颜色了，请补发正确的那款。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1156",
+      "expect": {
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "补发不涉及赔付金额"
+    },
+    {
+      "case_id": "tk-eval-157",
+      "group": "missing_order",
+      "subject": "忘记订单号",
+      "content": "我想问下我的包裹到哪了，但是我忘了订单号。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1157",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-158",
+      "group": "missing_order",
+      "subject": "没有订单号咨询",
+      "content": "麻烦帮我查一下物流，订单号我找不到了。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1158",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-159",
+      "group": "missing_order",
+      "subject": "订单号缺失-退款",
+      "content": "我要退款，但是订单号没带在身上。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1159",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-160",
+      "group": "missing_order",
+      "subject": "订单号缺失-补偿",
+      "content": "物流停滞想申请补偿，订单号我不记得了。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1160",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-161",
+      "group": "missing_order",
+      "subject": "订单号忘了-问到达时间",
+      "content": "想问下我的订单什么时候能到，订单号我忘了。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1161",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-162",
+      "group": "missing_order",
+      "subject": "没有订单号-退货",
+      "content": "我要退货，但没有订单号。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1162",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-163",
+      "group": "missing_order",
+      "subject": "没有订单号-催件",
+      "content": "麻烦催一下快递，我的订单号找不到了。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1163",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-164",
+      "group": "missing_order",
+      "subject": "没有订单号-破损",
+      "content": "收到的商品破损了，想补发，但订单号没填。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1164",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing": [
+          "订单号"
+        ]
+      },
+      "notes": "没有订单号 → 不分析，等客户补充"
+    },
+    {
+      "case_id": "tk-eval-165",
+      "group": "order_not_found",
+      "subject": "订单号查不到",
+      "content": "订单号 TB20260101NODATA，麻烦帮我看看物流。",
+      "user": "ops",
+      "order_id": "TB20260101NODATA",
+      "customer_id": "U1165",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "订单号"
+      },
+      "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充"
+    },
+    {
+      "case_id": "tk-eval-166",
+      "group": "order_not_found",
+      "subject": "订单不存在-退款",
+      "content": "订单 TB20260101NODATA 我要退款。",
+      "user": "ops",
+      "order_id": "TB20260101NODATA",
+      "customer_id": "U1166",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "订单号"
+      },
+      "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充"
+    },
+    {
+      "case_id": "tk-eval-167",
+      "group": "order_not_found",
+      "subject": "订单不存在-补发",
+      "content": "订单 TB20260101NODATA 少件了，请补发。",
+      "user": "ops",
+      "order_id": "TB20260101NODATA",
+      "customer_id": "U1167",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "订单号"
+      },
+      "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充"
+    },
+    {
+      "case_id": "tk-eval-168",
+      "group": "order_not_found",
+      "subject": "订单号查不到-催件",
+      "content": "订单号 TB20260101NODATA，帮我催下物流。",
+      "user": "ops",
+      "order_id": "TB20260101NODATA",
+      "customer_id": "U1168",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "订单号"
+      },
+      "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充"
+    },
+    {
+      "case_id": "tk-eval-169",
+      "group": "order_not_found",
+      "subject": "订单号查不到-破损",
+      "content": "订单 TB20260101NODATA 商品破损了，能补发吗？",
+      "user": "ops",
+      "order_id": "TB20260101NODATA",
+      "customer_id": "U1169",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "订单号"
+      },
+      "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充"
+    },
+    {
+      "case_id": "tk-eval-170",
+      "group": "order_not_found",
+      "subject": "订单号查不到-优惠",
+      "content": "订单 TB20260101NODATA 的满减没有生效。",
+      "user": "ops",
+      "order_id": "TB20260101NODATA",
+      "customer_id": "U1170",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "订单号"
+      },
+      "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充"
+    },
+    {
+      "case_id": "tk-eval-171",
+      "group": "adapter_timeout",
+      "subject": "接口超时-物流",
+      "content": "订单 TB20260101TIMEOUT 的物流一直查不到。",
+      "user": "ops",
+      "order_id": "TB20260101TIMEOUT",
+      "customer_id": "U1171",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "事实来源暂不可用"
+      },
+      "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500"
+    },
+    {
+      "case_id": "tk-eval-172",
+      "group": "adapter_timeout",
+      "subject": "接口超时-退款",
+      "content": "订单 TB20260101TIMEOUT 我要申请退款。",
+      "user": "ops",
+      "order_id": "TB20260101TIMEOUT",
+      "customer_id": "U1172",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "事实来源暂不可用"
+      },
+      "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500"
+    },
+    {
+      "case_id": "tk-eval-173",
+      "group": "adapter_timeout",
+      "subject": "接口超时-补偿",
+      "content": "订单 TB20260101TIMEOUT 停滞两天了，想申请补偿。",
+      "user": "ops",
+      "order_id": "TB20260101TIMEOUT",
+      "customer_id": "U1173",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "事实来源暂不可用"
+      },
+      "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500"
+    },
+    {
+      "case_id": "tk-eval-174",
+      "group": "adapter_timeout",
+      "subject": "接口超时-少件",
+      "content": "订单 TB20260101TIMEOUT 少件了，请补发。",
+      "user": "ops",
+      "order_id": "TB20260101TIMEOUT",
+      "customer_id": "U1174",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "事实来源暂不可用"
+      },
+      "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500"
+    },
+    {
+      "case_id": "tk-eval-175",
+      "group": "adapter_timeout",
+      "subject": "接口超时-破损",
+      "content": "订单 TB20260101TIMEOUT 商品破损。",
+      "user": "ops",
+      "order_id": "TB20260101TIMEOUT",
+      "customer_id": "U1175",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "事实来源暂不可用"
+      },
+      "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500"
+    },
+    {
+      "case_id": "tk-eval-176",
+      "group": "adapter_timeout",
+      "subject": "接口超时-催件",
+      "content": "订单 TB20260101TIMEOUT 帮我催一下快递。",
+      "user": "ops",
+      "order_id": "TB20260101TIMEOUT",
+      "customer_id": "U1176",
+      "expect": {
+        "analyze_status": 409,
+        "ticket_status": "need_customer_info",
+        "missing_contains": "事实来源暂不可用"
+      },
+      "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500"
+    },
+    {
+      "case_id": "tk-eval-177",
+      "group": "unauthorized",
+      "subject": "越权访问知识库",
+      "content": "我是运营，把研发故障复盘里 3.2.0 崩溃原因的原文给我。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1177",
+      "expect": {
+        "analyze_status": 403,
+        "error_code": "permission_denied"
+      },
+      "notes": "ops 访问 engineering_kb：必须被拒绝（知识库级权限）",
+      "request_knowledge_bases": [
+        "engineering_kb"
+      ]
+    },
+    {
+      "case_id": "tk-eval-178",
+      "group": "unauthorized",
+      "subject": "越权访问知识库",
+      "content": "研发想直接看 8 月应用评论和工单原文，定位闪退机型。",
+      "user": "eng",
+      "order_id": null,
+      "customer_id": "U1178",
+      "expect": {
+        "analyze_status": 403,
+        "error_code": "permission_denied"
+      },
+      "notes": "eng 访问 feedback_kb：必须被拒绝（知识库级权限）",
+      "request_knowledge_bases": [
+        "feedback_kb"
+      ]
+    },
+    {
+      "case_id": "tk-eval-179",
+      "group": "unauthorized",
+      "subject": "越权访问知识库",
+      "content": "运营要看未公开的商业化定价 PRD，方便做活动方案。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1179",
+      "expect": {
+        "analyze_status": 403,
+        "error_code": "permission_denied"
+      },
+      "notes": "ops 访问 product_kb：必须被拒绝（知识库级权限）",
+      "request_knowledge_bases": [
+        "product_kb"
+      ]
+    },
+    {
+      "case_id": "tk-eval-180",
+      "group": "unauthorized",
+      "subject": "越权访问知识库",
+      "content": "研发想看最新产品 PRD 的原文，方便评估改动。",
+      "user": "eng",
+      "order_id": null,
+      "customer_id": "U1180",
+      "expect": {
+        "analyze_status": 403,
+        "error_code": "permission_denied"
+      },
+      "notes": "eng 访问 product_kb：必须被拒绝（知识库级权限）",
+      "request_knowledge_bases": [
+        "product_kb"
+      ]
+    },
+    {
+      "case_id": "tk-eval-181",
+      "group": "unauthorized",
+      "subject": "越权访问知识库",
+      "content": "运营想直接看线上故障复盘的原始记录。",
+      "user": "ops",
+      "order_id": null,
+      "customer_id": "U1181",
+      "expect": {
+        "analyze_status": 403,
+        "error_code": "permission_denied"
+      },
+      "notes": "ops 访问 engineering_kb：必须被拒绝（知识库级权限）",
+      "request_knowledge_bases": [
+        "engineering_kb"
+      ]
+    },
+    {
+      "case_id": "tk-eval-182",
+      "group": "unauthorized",
+      "subject": "越权访问知识库",
+      "content": "研发要看评论原文，定位闪退机型。",
+      "user": "eng",
+      "order_id": null,
+      "customer_id": "U1182",
+      "expect": {
+        "analyze_status": 403,
+        "error_code": "permission_denied"
+      },
+      "notes": "eng 访问 feedback_kb：必须被拒绝（知识库级权限）",
+      "request_knowledge_bases": [
+        "feedback_kb"
+      ]
+    },
+    {
+      "case_id": "tk-eval-183",
+      "group": "duplicate_decision",
+      "subject": "重复审批-退款",
+      "content": "商品不要了，请把钱退给我。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1183",
+      "expect": {
+        "idempotent_decision": true
+      },
+      "notes": "同一幂等键重复审批：只允许一次状态迁移"
+    },
+    {
+      "case_id": "tk-eval-184",
+      "group": "duplicate_decision",
+      "subject": "重复审批-补发",
+      "content": "商品破损，请补发一件。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1184",
+      "expect": {
+        "idempotent_decision": true
+      },
+      "notes": "同一幂等键重复审批：只允许一次状态迁移"
+    },
+    {
+      "case_id": "tk-eval-185",
+      "group": "duplicate_decision",
+      "subject": "重复审批-退款第二次",
+      "content": "订单我要退款，麻烦尽快处理。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1185",
+      "expect": {
+        "idempotent_decision": true
+      },
+      "notes": "同一幂等键重复审批：只允许一次状态迁移"
+    },
+    {
+      "case_id": "tk-eval-186",
+      "group": "duplicate_decision",
+      "subject": "重复审批-风控批量退款",
+      "content": "这批订单全部退款，请一起处理。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1186",
+      "expect": {
+        "idempotent_decision": true
+      },
+      "notes": "同一幂等键重复审批：只允许一次状态迁移",
+      "attributes": {
+        "risk_flags": [
+          "batch_refund"
+        ]
+      }
+    },
+    {
+      "case_id": "tk-eval-187",
+      "group": "duplicate_decision",
+      "subject": "重复审批-破损补发",
+      "content": "收到就破损了，请补发。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1187",
+      "expect": {
+        "idempotent_decision": true
+      },
+      "notes": "同一幂等键重复审批：只允许一次状态迁移"
+    },
+    {
+      "case_id": "tk-eval-188",
+      "group": "duplicate_decision",
+      "subject": "重复审批-优惠解释",
+      "content": "满减没有生效，帮我看看。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1188",
+      "expect": {
+        "idempotent_decision": true
+      },
+      "notes": "同一幂等键重复审批：只允许一次状态迁移"
+    },
+    {
+      "case_id": "tk-eval-189",
+      "group": "low_confidence",
+      "subject": "低置信度-信息不足",
+      "content": "有点问题，你帮我看看。",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1189",
+      "expect": {
+        "min_risk_tier": "L2"
+      },
+      "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information"
+    },
+    {
+      "case_id": "tk-eval-190",
+      "group": "low_confidence",
+      "subject": "低置信度-无凭证",
+      "content": "东西好像不对，具体我说不上来。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1190",
+      "expect": {
+        "min_risk_tier": "L2"
+      },
+      "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information"
+    },
+    {
+      "case_id": "tk-eval-191",
+      "group": "low_confidence",
+      "subject": "低置信度-描述含糊",
+      "content": "东西用起来怪怪的，我也说不上来哪里有问题。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1191",
+      "expect": {
+        "min_risk_tier": "L2"
+      },
+      "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information"
+    },
+    {
+      "case_id": "tk-eval-192",
+      "group": "low_confidence",
+      "subject": "低置信度-只说要看看",
+      "content": "麻烦你们看一下，我这边好像有点问题。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1192",
+      "expect": {
+        "min_risk_tier": "L2"
+      },
+      "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information"
+    },
+    {
+      "case_id": "tk-eval-193",
+      "group": "low_confidence",
+      "subject": "低置信度-未说明诉求",
+      "content": "有个情况想反馈一下，你帮我看看怎么处理。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1193",
+      "expect": {
+        "min_risk_tier": "L2"
+      },
+      "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information"
+    },
+    {
+      "case_id": "tk-eval-194",
+      "group": "low_confidence",
+      "subject": "低置信度-只发截图",
+      "content": "我发了个截图，你看下这是什么情况。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1194",
+      "expect": {
+        "min_risk_tier": "L2"
+      },
+      "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information"
+    },
+    {
+      "case_id": "tk-eval-195",
+      "group": "cross_shop",
+      "subject": "跨店-少件（抖音店）",
+      "content": "在你们抖音店买的，包裹里只收到一件。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1195",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S02",
+        "platform": "抖音商城"
+      }
+    },
+    {
+      "case_id": "tk-eval-196",
+      "group": "cross_shop",
+      "subject": "跨店-破损（天猫店）",
+      "content": "天猫店发的货，外包装破损了。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1196",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S01",
+        "platform": "天猫"
+      }
+    },
+    {
+      "case_id": "tk-eval-197",
+      "group": "cross_shop",
+      "subject": "跨店-停滞（京东店）",
+      "content": "京东店的订单物流停滞超过两天了。",
+      "user": "ops",
+      "order_id": "TB202609280032",
+      "customer_id": "U1197",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S03",
+        "platform": "京东"
+      }
+    },
+    {
+      "case_id": "tk-eval-198",
+      "group": "cross_shop",
+      "subject": "跨平台-优惠未生效（拼多多）",
+      "content": "拼多多店的满减没有生效。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1198",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S04",
+        "platform": "拼多多"
+      }
+    },
+    {
+      "case_id": "tk-eval-199",
+      "group": "cross_shop",
+      "subject": "跨店-错发（手淘旗舰店）",
+      "content": "手淘旗舰店发错货了，型号不对。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1199",
+      "expect": {
+        "issue_type": "wrong_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S05",
+        "platform": "手淘"
+      }
+    },
+    {
+      "case_id": "tk-eval-200",
+      "group": "cross_shop",
+      "subject": "跨店-催件（抖音店）",
+      "content": "抖音店的快递三天没动了，帮我催一下。",
+      "user": "ops",
+      "order_id": "TB202609250004",
+      "customer_id": "U1200",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S02",
+        "platform": "抖音商城"
+      }
+    },
+    {
+      "case_id": "tk-eval-201",
+      "group": "cross_shop",
+      "subject": "跨店-退货（天猫旗舰店）",
+      "content": "天猫旗舰店买的，我想退货。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1201",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S01",
+        "platform": "天猫"
+      }
+    },
+    {
+      "case_id": "tk-eval-202",
+      "group": "cross_shop",
+      "subject": "跨店-退款（京东自营）",
+      "content": "京东自营买的，申请退款。",
+      "user": "ops",
+      "order_id": "TB202609241501",
+      "customer_id": "U1202",
+      "expect": {
+        "issue_type": "refund",
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "89.00"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S03",
+        "platform": "京东"
+      }
+    },
+    {
+      "case_id": "tk-eval-203",
+      "group": "cross_shop",
+      "subject": "跨店-少件（抖音店-第二次）",
+      "content": "抖音店下单两件只收到一件。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1203",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S02",
+        "platform": "抖音商城"
+      }
+    },
+    {
+      "case_id": "tk-eval-204",
+      "group": "cross_shop",
+      "subject": "跨平台-停滞补偿（拼多多）",
+      "content": "拼多多店的包裹停滞四天了，按政策有补偿吗？",
+      "user": "ops",
+      "order_id": "TB202609250008",
+      "customer_id": "U1204",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S04",
+        "platform": "拼多多"
+      }
+    },
+    {
+      "case_id": "tk-eval-205",
+      "group": "cross_shop",
+      "subject": "跨店-破损已拍照（抖音店）",
+      "content": "抖音店买的猫爬架外包装破损，已拍照。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1205",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S02",
+        "platform": "抖音商城"
+      }
+    },
+    {
+      "case_id": "tk-eval-206",
+      "group": "cross_shop",
+      "subject": "跨店-活动门槛（天猫店）",
+      "content": "天猫店这次活动的门槛是多少？",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1206",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+      "attributes": {
+        "shop_id": "S01",
+        "platform": "天猫"
+      }
+    },
+    {
+      "case_id": "tk-eval-207",
+      "group": "fact_variant",
+      "subject": "事实差异-停滞补偿申请·事实 72h",
+      "content": "物流停滞两天以上，能补偿吗？",
+      "user": "ops",
+      "order_id": "TB202609250004",
+      "customer_id": "U1207",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-208",
+      "group": "fact_variant",
+      "subject": "事实差异-停滞补偿申请·事实 0h",
+      "content": "物流停滞两天以上，能补偿吗？",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1208",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-209",
+      "group": "fact_variant",
+      "subject": "事实差异-少件补发·事实含重量异常",
+      "content": "包裹里少了一件，请补发。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1209",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-210",
+      "group": "fact_variant",
+      "subject": "事实差异-少件补发·事实无重量",
+      "content": "包裹里少了一件，请补发。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1210",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-211",
+      "group": "fact_variant",
+      "subject": "事实差异-退款金额·实付 189",
+      "content": "这个订单我要退款。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1211",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "189.00"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-212",
+      "group": "fact_variant",
+      "subject": "事实差异-退款金额·实付 658",
+      "content": "这个订单我要退款。",
+      "user": "ops",
+      "order_id": "TB202609250007",
+      "customer_id": "U1212",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "658.00"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-213",
+      "group": "fact_variant",
+      "subject": "事实差异-口述 1 天·事实 48h",
+      "content": "快递好像才停了一天，能补偿吗？",
+      "user": "ops",
+      "order_id": "TB202609280032",
+      "customer_id": "U1213",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-214",
+      "group": "fact_variant",
+      "subject": "事实差异-口述 1 天·事实 24h",
+      "content": "快递好像才停了一天，能补偿吗？",
+      "user": "ops",
+      "order_id": "TB202609250001",
+      "customer_id": "U1214",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-215",
+      "group": "fact_variant",
+      "subject": "事实差异-签收异常·事实已签收",
+      "content": "包裹显示签收但我没收到，怎么办？",
+      "user": "ops",
+      "order_id": "TB202609241806",
+      "customer_id": "U1215",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "amount": "0"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-216",
+      "group": "fact_variant",
+      "subject": "事实差异-签收异常·事实运输中 72h",
+      "content": "包裹显示签收但我没收到，怎么办？",
+      "user": "ops",
+      "order_id": "TB202609270022",
+      "customer_id": "U1216",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-217",
+      "group": "fact_variant",
+      "subject": "事实差异-破损补发·事实 329 元订单",
+      "content": "商品破损了，请补发。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1217",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-218",
+      "group": "fact_variant",
+      "subject": "事实差异-破损补发·事实 444 元订单",
+      "content": "商品破损了，请补发。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1218",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述"
+    },
+    {
+      "case_id": "tk-eval-219",
+      "group": "escalation_wording",
+      "subject": "二次追问-少件",
+      "content": "这是我第二次来问了，包裹里少了一件，上次没人回复。",
+      "user": "ops",
+      "order_id": "TB202609241742",
+      "customer_id": "U1219",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-220",
+      "group": "escalation_wording",
+      "subject": "二次追问-破损",
+      "content": "第二次反馈了，商品外包装破损，一直没人处理。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1220",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-221",
+      "group": "escalation_wording",
+      "subject": "三次催办-停滞",
+      "content": "已经第三次来催了，物流停滞三天还没动。",
+      "user": "ops",
+      "order_id": "TB202610010062",
+      "customer_id": "U1221",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-222",
+      "group": "escalation_wording",
+      "subject": "二次追问-优惠",
+      "content": "又来问了，满减还是没有生效。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1222",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-223",
+      "group": "escalation_wording",
+      "subject": "催办-退货",
+      "content": "麻烦尽快处理，我要退货，已经等三天了。",
+      "user": "ops",
+      "order_id": "TB202609250002",
+      "customer_id": "U1223",
+      "expect": {
+        "issue_type": "return",
+        "action_type": "return_goods",
+        "max_risk_tier": "L2"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-224",
+      "group": "escalation_wording",
+      "subject": "二次追问-退款",
+      "content": "再次申请退款，麻烦尽快处理。",
+      "user": "ops",
+      "order_id": "TB202609290042",
+      "customer_id": "U1224",
+      "expect": {
+        "action_type": "refund",
+        "risk_tier": "L3",
+        "approval_requirement": "supervisor",
+        "requires_approval": true,
+        "amount": "424.00"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-225",
+      "group": "escalation_wording",
+      "subject": "情绪升级-停滞",
+      "content": "太差了！物流停滞两天了，再不处理我就投诉。",
+      "user": "ops",
+      "order_id": "TB202609300051",
+      "customer_id": "U1225",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2",
+        "policy_version_included": "v3.0",
+        "amount": "30.00"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-226",
+      "group": "escalation_wording",
+      "subject": "再次反馈-少件",
+      "content": "又要麻烦你们了，包裹里缺件，请补发。",
+      "user": "ops",
+      "order_id": "TB202610010061",
+      "customer_id": "U1226",
+      "expect": {
+        "issue_type": "missing_item",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-227",
+      "group": "escalation_wording",
+      "subject": "再次追问-优惠券",
+      "content": "第二次问了，优惠券还是用不了。",
+      "user": "ops",
+      "order_id": "TB202609240821",
+      "customer_id": "U1227",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    },
+    {
+      "case_id": "tk-eval-228",
+      "group": "escalation_wording",
+      "subject": "再次反馈-破损",
+      "content": "上次的照片已经发过了，商品还是破损状态，麻烦补发。",
+      "user": "ops",
+      "order_id": "TB202609240992",
+      "customer_id": "U1228",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "reship",
+        "max_risk_tier": "L2"
+      },
+      "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径"
+    }
+  ]
+}

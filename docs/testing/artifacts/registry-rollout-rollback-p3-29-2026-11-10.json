@@ -1,0 +1,38 @@
+{
+  "schema_version": "registry-rollout-rollback-evidence-v1",
+  "generated_at": "2026-11-10T11:48:25.7974040+00:00",
+  "executed": true,
+  "passed": true,
+  "registry_scope": "local_loopback",
+  "registry_endpoint_fingerprint": "7efbb80cf450d221",
+  "current": {
+    "source_git_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+    "digest": "sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+    "digest_reference": "127.0.0.1:15012/pic-api@sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+    "registry_published": true,
+    "registry_pull_verified": true,
+    "deployment_verified": true,
+    "queue_verified": true
+  },
+  "rollback": {
+    "source_git_sha": "f3a6586d64e5a4f90a418942259b1d1f8a228102",
+    "digest": "sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+    "digest_reference": "127.0.0.1:15012/pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+    "registry_published": true,
+    "registry_pull_verified": true,
+    "deployment_verified": true,
+    "queue_verified": true
+  },
+  "database_migration_rollback_exercised": false,
+  "current_restored_for_target_probe": true,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false,
+  "limitations": [
+    "loopback_registry_without_tls_or_auth",
+    "single_docker_daemon",
+    "stub_model",
+    "mock_fact_adapters",
+    "application_image_rollback_only"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "after-sales-usability-test-v1",
+  "record_valid": true,
+  "participant_count": 5,
+  "role_counts": {
+    "frontline": 3,
+    "supervisor": 2
+  },
+  "task_count": 18,
+  "completed_task_count": 0,
+  "independent_observed_count": 0,
+  "independent_completed_count": 0,
+  "independent_completion_rate": null,
+  "issue_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "conclusion_provided": false,
+  "note": "这是记录格式与已填写数据汇总，不代表产品达标结论。"
+}

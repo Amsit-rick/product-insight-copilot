@@ -1,0 +1,38 @@
+{
+  "schema_version": "release-compose-probe-v1",
+  "generated_at": "2026-11-09T16:30:20.947407+00:00",
+  "executed": true,
+  "passed": true,
+  "status": "passed",
+  "image_reference": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+  "source_build_disabled": true,
+  "pull_policy": "never",
+  "services": {
+    "migrate": {
+      "image": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+      "has_build": false,
+      "pull_policy": "never"
+    },
+    "api": {
+      "image": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+      "has_build": false,
+      "pull_policy": "never"
+    },
+    "worker": {
+      "image": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+      "has_build": false,
+      "pull_policy": "never"
+    },
+    "proactive-scheduler": {
+      "image": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+      "has_build": false,
+      "pull_policy": "never"
+    },
+    "integration-sandbox": {
+      "image": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+      "has_build": false,
+      "pull_policy": "never"
+    }
+  },
+  "production_ready": false
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": "target-environment-probe-v1",
+  "configuration": {
+    "passed": true,
+    "checks": {
+      "nodes_configured": true,
+      "node_definitions_valid": true,
+      "expected_environment_valid": true,
+      "timeout_valid": true,
+      "distinct_host_attestation_shape_valid": true
+    },
+    "node_count": 1,
+    "nodes": [
+      {
+        "label": "local-api",
+        "endpoint_fingerprint": "9a3b98b4a13807f4"
+      }
+    ]
+  },
+  "expected_env": "test",
+  "distinct_hosts_attested": false,
+  "executed": true,
+  "passed": true,
+  "runtime_shape_ready": true,
+  "target_environment_ready": false,
+  "cross_host_or_target_environment_verified": false,
+  "verification_basis": "live_runtime_checks_without_cross_host_attestation",
+  "node_results": [
+    {
+      "label": "local-api",
+      "endpoint_fingerprint": "9a3b98b4a13807f4",
+      "passed": true,
+      "checks": {
+        "http_200": true,
+        "status_ready": true,
+        "environment_matches": true,
+        "database_ok": true,
+        "redis_cache_ok": true,
+        "queue_execution_ok": true,
+        "shared_checkpointer_ok": true,
+        "shared_storage_ok": true
+      },
+      "latency_ms": 1147
+    }
+  ],
+  "production_ready": false
+}

@@ -1,0 +1,301 @@
+{
+  "latency_ms": {
+    "submit_p50": 1354.0841999929398,
+    "submit_p95": 1577.5884999893606,
+    "submit_p99": 1577.5884999893606,
+    "end_to_end_p50": 4406.187399988994,
+    "end_to_end_p95": 4670.205999980681,
+    "end_to_end_p99": 4670.205999980681
+  },
+  "counts": {
+    "requested": 4,
+    "submitted": 4,
+    "completed": 4,
+    "errors": 0
+  },
+  "error_rate": 0.0,
+  "throughput_per_second": 0.5254679952610839,
+  "elapsed_seconds": 7.612,
+  "workers": [
+    "240966e4813d-7",
+    "7f8fd2ba6fc5-7"
+  ],
+  "queue_final": {
+    "pending": 0,
+    "claimed": 0,
+    "done": 8,
+    "dead": 0
+  },
+  "submission_errors": [],
+  "completion_errors": [],
+  "run_id": "20261110215513-3ad3fb6e",
+  "runtime_health": {
+    "status": "ok",
+    "app": "After-sales Ticket Copilot",
+    "env": "test",
+    "database": "postgres",
+    "llm": {
+      "provider": "stub",
+      "enabled": false,
+      "model": "stub",
+      "routing": [
+        {
+          "key": "product_agent",
+          "model": "stub",
+          "base_url": null,
+          "provider": "stub",
+          "configured": false,
+          "source": "global",
+          "temperature": 0.2,
+          "max_output_tokens": 4000
+        },
+        {
+          "key": "feedback_agent",
+          "model": "stub",
+          "base_url": null,
+          "provider": "stub",
+          "configured": false,
+          "source": "global",
+          "temperature": 0.2,
+          "max_output_tokens": 4000
+        },
+        {
+          "key": "release_agent",
+          "model": "stub",
+          "base_url": null,
+          "provider": "stub",
+          "configured": false,
+          "source": "global",
+          "temperature": 0.2,
+          "max_output_tokens": 4000
+        },
+        {
+          "key": "metric_agent",
+          "model": "stub",
+          "base_url": null,
+          "provider": "stub",
+          "configured": false,
+          "source": "global",
+          "temperature": 0.2,
+          "max_output_tokens": 4000
+        },
+        {
+          "key": "report_agent",
+          "model": "stub",
+          "base_url": null,
+          "provider": "stub",
+          "configured": false,
+          "source": "global",
+          "temperature": 0.2,
+          "max_output_tokens": 4000
+        }
+      ],
+      "override_count": 0,
+      "runtime_metrics": {
+        "chat_calls": 0,
+        "chat_json_calls": 0,
+        "json_parse_failures": 0,
+        "json_retries": 0,
+        "fallbacks": 0
+      },
+      "canary": [],
+      "canary_experiment": {
+        "configured": false,
+        "targets": [],
+        "min_sample": 5
+      }
+    },
+    "embedding": {
+      "provider": "stub",
+      "enabled": false,
+      "model": "stub-hashing-v1",
+      "dim": 1024,
+      "failure_mode": "fallback",
+      "runtime_metrics": {
+        "enabled": true,
+        "entries": 0,
+        "max_entries": 512,
+        "hits": 0,
+        "misses": 0,
+        "hit_rate": 0.0,
+        "requests": 0,
+        "failures": 0,
+        "fallbacks": 0,
+        "failure_mode": "fallback"
+      }
+    },
+    "reranker": {
+      "configured": false,
+      "authenticated": false,
+      "failure_mode": "fallback"
+    },
+    "storage": "minio",
+    "storage_status": {
+      "ok": true,
+      "required": true,
+      "backend": "minio",
+      "shared": true
+    },
+    "fact_adapter": {
+      "backend": "mock",
+      "configured": true,
+      "is_mock": true,
+      "mcp": {
+        "enabled": false,
+        "configured": false,
+        "transport_available": false,
+        "tool_map_valid": true,
+        "tools": {
+          "order": "commerce.get_order",
+          "payment": "commerce.get_payment",
+          "logistics": "commerce.get_logistics",
+          "aftersale": "commerce.get_aftersale"
+        },
+        "max_response_bytes": 262144,
+        "configuration_errors": []
+      }
+    },
+    "vector_backend": "pgvector",
+    "vector_store": {
+      "configured": "pgvector",
+      "effective": "pgvector",
+      "identity": "pgvector:chunk_vectors@1024",
+      "qdrant_url": null,
+      "qdrant_collection": null,
+      "embedding_dim": 1024
+    },
+    "workflow_version": "wf-1.0.0",
+    "prompt_version": "prompt-1.0.0",
+    "reflection": {
+      "enabled": false,
+      "ticket_enabled": true,
+      "report_enabled": true,
+      "rollout_percent": 100,
+      "rollout_tenants": [],
+      "rollout_risk_levels": [],
+      "rollout_issue_types": [],
+      "release_min_sample": 20,
+      "auto_guard": true,
+      "max_rounds": 1,
+      "timeout_seconds": 30.0,
+      "max_tokens": 1800,
+      "cost_limit": 0.0,
+      "stores_chain_of_thought": false
+    },
+    "alerting": {
+      "webhook": {
+        "enabled": false,
+        "configured": false,
+        "signed": false,
+        "max_attempts": 5
+      },
+      "delivery_queue": {
+        "pending": 0,
+        "claimed": 0,
+        "sent": 0,
+        "dead": 0
+      }
+    },
+    "limits": {
+      "model_max_concurrency": 4,
+      "task_submit_rate_limit_per_minute": 0,
+      "login_attempt_rate_limit_per_minute": 10,
+      "task_token_limit": 0,
+      "task_cost_limit": 0.0,
+      "tenant_daily_cost_limit": 0.0,
+      "budget_exceeded_action": "degrade",
+      "retrieval_cache_ttl_seconds": 300,
+      "metric_cache_ttl_seconds": 300,
+      "fallback_models": []
+    },
+    "cache": {
+      "backend": "redis",
+      "configured": "redis",
+      "healthy": true,
+      "degraded_reason": null,
+      "runtime_error": null,
+      "hits": 0,
+      "misses": 0,
+      "errors": 0,
+      "skipped": 0,
+      "total_lookups": 0,
+      "hit_rate": 0.0,
+      "namespaces": {},
+      "recent": {
+        "window": 0,
+        "hits": 0,
+        "hit_rate": 0.0
+      },
+      "vector_cache": {
+        "enabled": true,
+        "entries": 0,
+        "max_entries": 512,
+        "hits": 0,
+        "misses": 0,
+        "hit_rate": 0.0,
+        "requests": 0,
+        "failures": 0,
+        "fallbacks": 0,
+        "failure_mode": "fallback"
+      }
+    },
+    "cost": {
+      "currency": "CNY",
+      "priced_models": []
+    },
+    "execution": {
+      "backend": "queue",
+      "configured_backend": "queue",
+      "worker_embedded": false,
+      "worker_concurrency": 2,
+      "checkpointer": {
+        "backend": "postgres",
+        "shared": true,
+        "note": "尚未初始化（进程启动后首次执行工作流时建立）"
+      },
+      "queue": {
+        "pending": 0,
+        "claimed": 0,
+        "done": 8,
+        "dead": 0,
+        "oldest_pending_at": null
+      }
+    }
+  },
+  "acceptance": [
+    {
+      "name": "提交 P95",
+      "passed": true,
+      "actual": 1577.5884999893606,
+      "target": "<= 3000 ms"
+    },
+    {
+      "name": "端到端 P95",
+      "passed": true,
+      "actual": 4670.205999980681,
+      "target": "<= 30000 ms"
+    },
+    {
+      "name": "错误率",
+      "passed": true,
+      "actual": 0.0,
+      "target": "<= 0.00%"
+    },
+    {
+      "name": "独立 worker 数",
+      "passed": true,
+      "actual": 2,
+      "target": ">= 2"
+    },
+    {
+      "name": "队列最终清空",
+      "passed": true,
+      "actual": {
+        "pending": 0,
+        "claimed": 0,
+        "dead": 0
+      },
+      "target": "pending=0, claimed=0, dead=0"
+    }
+  ]
+}

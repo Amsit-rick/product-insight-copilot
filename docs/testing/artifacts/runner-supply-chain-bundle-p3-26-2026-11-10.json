@@ -1,0 +1,34 @@
+{
+  "schema_version": "self-hosted-supply-chain-bundle-v1",
+  "generated_at": "2026-11-10T10:12:37.422953+00:00",
+  "executed": true,
+  "passed": true,
+  "release_sha": "089504ea2876cb8a956fa5998879d72b00ba1901",
+  "bundle_id": "86923a7bda639e0db581d891ec5de90ea6a14ccc783afc8eaba6fa8a426598d8",
+  "runner_provider": "gitee_go",
+  "runner_scope": "local_host_rehearsal",
+  "host_group_fingerprint": null,
+  "image_digest": "sha256:fcd79c7da7b1d4890b01fc11ec83b163ace188c0c7f596e61008baad2e16e754",
+  "files": {
+    "runner-readiness.json": {
+      "sha256": "a9edb38a139883d8bba4a0249701c1f5dc0d97de863816e16c9cc3bee033a0d4",
+      "schema_version": "self-hosted-runner-readiness-v1"
+    },
+    "image-attestations.json": {
+      "sha256": "0f813aa0f0b27fa4fe74cc17cf3d339f4b8676bb6d375955af66616cd1d05635",
+      "schema_version": "image-attestation-verification-v1"
+    },
+    "image-signature.json": {
+      "sha256": "503ae00b95e6b419634ced129cc27638f2076eaf99ada84d97e92a4b0977e29a",
+      "schema_version": "image-signature-verification-v1"
+    }
+  },
+  "provenance_verified": true,
+  "sbom_verified": true,
+  "signature_verified": true,
+  "self_hosted_runner_verified": false,
+  "local_runner_rehearsal_verified": true,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false
+}

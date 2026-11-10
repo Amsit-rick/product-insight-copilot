@@ -1,0 +1,485 @@
+{
+  "schema_version": "fact-integration-probe-v1",
+  "generated_at": "2026-11-08T11:53:04.954067+00:00",
+  "plan": {
+    "schema_version": "fact-integration-probe-v1",
+    "plan_version": "local-reference-v1",
+    "plan_sha256": "200f0bf5b5af20940d0604551d744988fa86af7c6486c8e5b9325415b6b03d4e",
+    "scenario_count": 5,
+    "scenario_ids": [
+      "success",
+      "not-found",
+      "logistics-timeout",
+      "auth-failure",
+      "invalid-response"
+    ]
+  },
+  "runtime": {
+    "adapter": "http-fact-adapter",
+    "runs": 1,
+    "max_p95_ms": 10000,
+    "max_observed_age_seconds": 300
+  },
+  "passed": true,
+  "summary": {
+    "checks_total": 181,
+    "checks_passed": 181,
+    "scenario_consistency_rate": 1.0,
+    "p95_latency_ms": 256,
+    "latency_within_limit": true,
+    "per_source": {
+      "order": {
+        "calls": 5,
+        "pass_rate": 1.0,
+        "p95_latency_ms": 8
+      },
+      "payment": {
+        "calls": 5,
+        "pass_rate": 1.0,
+        "p95_latency_ms": 7
+      },
+      "logistics": {
+        "calls": 5,
+        "pass_rate": 1.0,
+        "p95_latency_ms": 254
+      },
+      "aftersale": {
+        "calls": 5,
+        "pass_rate": 1.0,
+        "p95_latency_ms": 8
+      }
+    }
+  },
+  "trials": [
+    {
+      "scenario_id": "success",
+      "run": 1,
+      "passed": true,
+      "latency_ms": 11,
+      "sources": {
+        "order": {
+          "passed": true,
+          "outcome": "ok",
+          "latency_ms": 8,
+          "payload_fields": [
+            "address",
+            "category",
+            "order_amount",
+            "order_channel",
+            "order_items",
+            "order_status",
+            "receiver_phone"
+          ],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "payment": {
+          "passed": true,
+          "outcome": "ok",
+          "latency_ms": 7,
+          "payload_fields": [
+            "paid_amount",
+            "pay_channel",
+            "refundable_amount"
+          ],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "logistics": {
+          "passed": true,
+          "outcome": "ok",
+          "latency_ms": 8,
+          "payload_fields": [
+            "carrier",
+            "eta",
+            "latest_track",
+            "package_weight",
+            "signed_at",
+            "stalled_hours",
+            "tracking_no"
+          ],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "aftersale": {
+          "passed": true,
+          "outcome": "ok",
+          "latency_ms": 8,
+          "payload_fields": [
+            "aftersale_history",
+            "customer_id",
+            "eligible_amount",
+            "excluded_items",
+            "gross_amount",
+            "last_case_result",
+            "promotion_result",
+            "promotion_threshold"
+          ],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        }
+      }
+    },
+    {
+      "scenario_id": "not-found",
+      "run": 1,
+      "passed": true,
+      "latency_ms": 9,
+      "sources": {
+        "order": {
+          "passed": true,
+          "outcome": "order_not_found",
+          "latency_ms": 6,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "payment": {
+          "passed": true,
+          "outcome": "order_not_found",
+          "latency_ms": 5,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "logistics": {
+          "passed": true,
+          "outcome": "order_not_found",
+          "latency_ms": 7,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "aftersale": {
+          "passed": true,
+          "outcome": "order_not_found",
+          "latency_ms": 6,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        }
+      }
+    },
+    {
+      "scenario_id": "logistics-timeout",
+      "run": 1,
+      "passed": true,
+      "latency_ms": 256,
+      "sources": {
+        "order": {
+          "passed": true,
+          "outcome": "ok",
+          "latency_ms": 5,
+          "payload_fields": [
+            "address",
+            "category",
+            "order_amount",
+            "order_channel",
+            "order_items",
+            "order_status",
+            "receiver_phone"
+          ],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "payment": {
+          "passed": true,
+          "outcome": "ok",
+          "latency_ms": 7,
+          "payload_fields": [
+            "paid_amount",
+            "pay_channel",
+            "refundable_amount"
+          ],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "logistics": {
+          "passed": true,
+          "outcome": "adapter_timeout",
+          "latency_ms": 254,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "aftersale": {
+          "passed": true,
+          "outcome": "ok",
+          "latency_ms": 6,
+          "payload_fields": [
+            "aftersale_history",
+            "customer_id",
+            "eligible_amount",
+            "excluded_items",
+            "gross_amount",
+            "last_case_result",
+            "promotion_result",
+            "promotion_threshold"
+          ],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        }
+      }
+    },
+    {
+      "scenario_id": "auth-failure",
+      "run": 1,
+      "passed": true,
+      "latency_ms": 7,
+      "sources": {
+        "order": {
+          "passed": true,
+          "outcome": "adapter_auth_error",
+          "latency_ms": 5,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "payment": {
+          "passed": true,
+          "outcome": "adapter_auth_error",
+          "latency_ms": 5,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "logistics": {
+          "passed": true,
+          "outcome": "adapter_auth_error",
+          "latency_ms": 6,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "aftersale": {
+          "passed": true,
+          "outcome": "adapter_auth_error",
+          "latency_ms": 5,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        }
+      }
+    },
+    {
+      "scenario_id": "invalid-response",
+      "run": 1,
+      "passed": true,
+      "latency_ms": 7,
+      "sources": {
+        "order": {
+          "passed": true,
+          "outcome": "adapter_invalid_response",
+          "latency_ms": 5,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "payment": {
+          "passed": true,
+          "outcome": "adapter_invalid_response",
+          "latency_ms": 7,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "logistics": {
+          "passed": true,
+          "outcome": "adapter_invalid_response",
+          "latency_ms": 6,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        },
+        "aftersale": {
+          "passed": true,
+          "outcome": "adapter_invalid_response",
+          "latency_ms": 4,
+          "payload_fields": [],
+          "checks": {
+            "expected_outcome": true,
+            "source_matches": true,
+            "real_adapter": true,
+            "adapter_identified": true,
+            "request_id_present": true,
+            "observed_at_fresh": true,
+            "allowed_fields_only": true,
+            "required_fields_present": true,
+            "sensitive_values_absent": true
+          }
+        }
+      }
+    }
+  ]
+}

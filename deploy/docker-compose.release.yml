@@ -1,0 +1,30 @@
+# Release-only override. Use together with docker-compose.yml on a target node:
+#   docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.release.yml up -d
+#
+# PIC_API_IMAGE must be an immutable registry reference (name@sha256:digest).
+# `!reset null` removes every source build definition from the merged model.
+services:
+  migrate:
+    build: !reset null
+    image: ${PIC_API_IMAGE:?PIC_API_IMAGE must be name@sha256:digest}
+    pull_policy: ${PIC_RELEASE_PULL_POLICY:-always}
+
+  api:
+    build: !reset null
+    image: ${PIC_API_IMAGE:?PIC_API_IMAGE must be name@sha256:digest}
+    pull_policy: ${PIC_RELEASE_PULL_POLICY:-always}
+
+  worker:
+    build: !reset null
+    image: ${PIC_API_IMAGE:?PIC_API_IMAGE must be name@sha256:digest}
+    pull_policy: ${PIC_RELEASE_PULL_POLICY:-always}
+
+  proactive-scheduler:
+    build: !reset null
+    image: ${PIC_API_IMAGE:?PIC_API_IMAGE must be name@sha256:digest}
+    pull_policy: ${PIC_RELEASE_PULL_POLICY:-always}
+
+  integration-sandbox:
+    build: !reset null
+    image: ${PIC_API_IMAGE:?PIC_API_IMAGE must be name@sha256:digest}
+    pull_policy: ${PIC_RELEASE_PULL_POLICY:-always}

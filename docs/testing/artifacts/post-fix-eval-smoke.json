@@ -1,0 +1,868 @@
+{
+  "dataset": {
+    "version": "tickets-1.1.0",
+    "kind": "internal_generated_regression",
+    "sha256": "5c188215cafbbf8eecafcbc7410d153f050db244a4b46da11712769aeab32120",
+    "case_count": 8
+  },
+  "runtime": {
+    "llm_provider": "stub",
+    "llm_model": "deepseek-chat",
+    "fact_adapter": "mock",
+    "currency": "CNY"
+  },
+  "summary": {
+    "run_count": 1,
+    "pass_rate_mean": 1.0,
+    "pass_rate_min": 1.0,
+    "pass_rate_max": 1.0,
+    "case_consistency_rate": 1.0,
+    "p95_latency_ms": 1429,
+    "total_cost_amount": 0.0,
+    "avg_cost_per_run": 0.0,
+    "model_calls": 0
+  },
+  "runs": [
+    {
+      "run_id": "677e25d1-051c-402e-8f97-cd64ff1831a4",
+      "name": "post-fix-smoke-green",
+      "status": "completed",
+      "dataset_version": "tickets-1.1.0",
+      "case_count": 8,
+      "avg_latency_ms": 252.8,
+      "metrics": {
+        "dataset_version": "tickets-1.1.0",
+        "dataset_kind": "internal_generated_regression",
+        "dataset_sha256": "5c188215cafbbf8eecafcbc7410d153f050db244a4b46da11712769aeab32120",
+        "case_count": 8,
+        "passed": 8,
+        "pass_rate": 1.0,
+        "issue_macro_f1": 1.0,
+        "action_accuracy": 1.0,
+        "risk_accuracy": 1.0,
+        "approval_gate_recall": null,
+        "expired_policy_leak_rate": 0.0,
+        "evidence_support_rate": 1.0,
+        "adapter_failure_handling_rate": null,
+        "tenant_isolation_rate": null,
+        "duplicate_write_blocked_rate": null,
+        "classification_accuracy": 1.0,
+        "policy_version_recall": null,
+        "p95_latency_ms": 1429,
+        "avg_latency_ms": 252.8,
+        "total_tokens": 0,
+        "avg_tokens": 0.0,
+        "currency": "CNY",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_hit_tokens": 0,
+        "model_calls": 0,
+        "total_cost_amount": 0.0,
+        "avg_cost_amount": 0.0,
+        "per_model": {},
+        "unpriced_models": [],
+        "per_group": {
+          "normal": {
+            "count": 8,
+            "pass_rate": 1.0
+          }
+        },
+        "note": "内部生成回归集基线：数字用于回归对比，不得写成生产效果（需求书 §11）"
+      },
+      "details": [
+        {
+          "case_id": "tk-eval-001",
+          "group": "normal",
+          "subject": "常规-未发货-1",
+          "order_id": "TB202609241806",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "f2277e69-d8b4-4a61-967e-6cc1778d975b",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 1429,
+          "notes": "客户称未发货，但 mock 订单事实已签收；必须先核实履约冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-002",
+          "group": "normal",
+          "subject": "常规-未发货-2",
+          "order_id": "TB202609250002",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "27bf3439-48fa-4408-90b9-dbf6271f8218",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 86,
+          "notes": "客户称未发货，但 mock 订单事实已签收；必须先核实履约冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-003",
+          "group": "normal",
+          "subject": "常规-未发货-3",
+          "order_id": "TB202609240992",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "842f346f-82f5-4784-bec2-8447439d8109",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 84,
+          "notes": "客户称未发货，但 mock 订单事实已签收；必须先核实履约冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-004",
+          "group": "normal",
+          "subject": "常规-未发货-4",
+          "order_id": "TB202609241742",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "4e724dbb-be8b-45be-9597-27a8bc697e47",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 79,
+          "notes": "客户称未发货，但 mock 订单事实已签收；必须先核实履约冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-005",
+          "group": "normal",
+          "subject": "常规-未发货-5",
+          "order_id": "TB202609240655",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "610f75d3-7e4d-454e-9b26-8e3f0613c309",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已发货）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 93,
+          "notes": "客户称未发货，但 mock 订单事实已发货；必须先核实履约冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-006",
+          "group": "normal",
+          "subject": "常规-未发货-6",
+          "order_id": "TB202609240821",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "82f1a51e-bf4d-4993-974c-02cea9e4d124",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已完成）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 81,
+          "notes": "客户称未发货，但 mock 订单事实已完成；必须先核实履约冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-007",
+          "group": "normal",
+          "subject": "常规-未发货-7",
+          "order_id": "TB202609241501",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "93355411-d82b-4089-856e-b3c90cf75216",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 78,
+          "notes": "客户称未发货，但 mock 订单事实已签收；必须先核实履约冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-008",
+          "group": "normal",
+          "subject": "常规-未发货-8",
+          "order_id": "TB202609290042",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "53153540-0eb5-4478-b4c0-e3be5db9161c",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 92,
+          "notes": "客户称未发货，但 mock 订单事实已签收；必须先核实履约冲突，不得重复补发",
+          "error": null
+        }
+      ]
+    }
+  ]
+}

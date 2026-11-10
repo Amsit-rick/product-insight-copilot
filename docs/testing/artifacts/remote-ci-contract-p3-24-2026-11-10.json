@@ -1,0 +1,20 @@
+{
+  "schema_version": "remote-ci-contract-evidence-v1",
+  "generated_at": "2026-11-10T09:23:21.178533+00:00",
+  "executed": true,
+  "passed": true,
+  "provider": "gitee_go",
+  "scope": "remote_ci_contract",
+  "source_git_sha": "aec4c1b6a9d5eb67642960bf44ce11a086e2a1b5",
+  "executor_runtime_reference": "gitee-go/python-build:3.12",
+  "executor_runtime_immutable": false,
+  "test_count": 45,
+  "failure_count": 0,
+  "error_count": 0,
+  "skipped_count": 0,
+  "image_supply_chain_executed": false,
+  "docker_daemon_verified": false,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false
+}

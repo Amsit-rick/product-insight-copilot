@@ -1,0 +1,23 @@
+{
+  "schema_version": "image-signature-verification-v1",
+  "generated_at": "2026-11-10T10:12:36.583760+00:00",
+  "executed": true,
+  "passed": true,
+  "image_reference": "127.0.0.1:15010/pic-api@sha256:fcd79c7da7b1d4890b01fc11ec83b163ace188c0c7f596e61008baad2e16e754",
+  "image_digest": "sha256:fcd79c7da7b1d4890b01fc11ec83b163ace188c0c7f596e61008baad2e16e754",
+  "source_git_sha": "089504ea2876cb8a956fa5998879d72b00ba1901",
+  "signature_count": 1,
+  "public_key_fingerprint": "35266260ea0cb256",
+  "cosign_image": "ghcr.io/sigstore/cosign/cosign@sha256:0f06154836d2de34f887a5c273506d52ca43edaa1d9e53e6510fa78a48f69c2d",
+  "cosign_version": "v3.1.4",
+  "signature_verified": true,
+  "release_annotation_verified": true,
+  "transparency_log_verified": false,
+  "keyless_identity_verified": false,
+  "kms_verified": false,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "scope": "local_loopback_registry",
+  "key_management": "ephemeral_local_key",
+  "production_ready": false
+}

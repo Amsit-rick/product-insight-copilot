@@ -1,0 +1,3 @@
+# Compatibility entrypoint for existing setup commands.
+# Windows compatibility entrypoint. Linux/macOS and CI use requirements-dev.lock.
+-r requirements-dev-windows.lock

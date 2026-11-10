@@ -1,0 +1,378 @@
+name: CI
+
+# 与本地 scripts/ci.ps1 保持同一套检查：Compose 配置 → 后端全量测试 → 前端类型检查 → 前端构建。
+# e2e 冒烟需要真实浏览器与自起后端，本地用 `scripts\ci.ps1 -WithE2E` 跑；
+# 流水线里只在 ubuntu 上额外跑一次 e2e（Chrome 预装在 GitHub runner 里）。
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    name: 后端测试（pytest，离线）
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker Compose 配置校验
+        working-directory: ${{ github.workspace }}
+        env:
+          PIC_API_IMAGE: registry.invalid/pic-api@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          PIC_RELEASE_PULL_POLICY: never
+        run: |
+          docker compose -f deploy/docker-compose.yml config --quiet
+          docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.release.yml \
+            --profile proactive --profile sandbox config --quiet
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.lock
+      - name: 校验 Python 哈希锁
+        run: python scripts/verify_dependency_locks.py
+      - name: 安装依赖
+        run: |
+          pip install --require-hashes -r requirements-dev.lock
+      - name: 全量测试
+        env:
+          PYTHONPATH: ${{ github.workspace }}/backend
+          # 测试必须离线可跑：不配置任何真实模型密钥
+          LLM_PROVIDER: stub
+        run: python -m pytest tests -q
+      - name: 发布报告语句与分支覆盖率（均不低于 80%）
+        env:
+          PYTHONPATH: ${{ github.workspace }}/backend
+          COVERAGE_FILE: ${{ github.workspace }}/backend/.tmp/.coverage.release-report
+        run: |
+          python -m coverage erase
+          python -m coverage run --branch --include=scripts/after_sales_release_report.py -m pytest tests/unit/test_after_sales_release_report.py -q
+          python -m coverage report --include=scripts/after_sales_release_report.py --fail-under=80
+          python -m coverage json --include=scripts/after_sales_release_report.py -o .tmp/coverage-release-report.json
+          python scripts/verify_coverage_report.py --coverage-json .tmp/coverage-release-report.json --file scripts/after_sales_release_report.py --min-statements 80 --min-branches 80
+      - name: 政策检索 Recall@5 门禁
+        env:
+          PYTHONPATH: ${{ github.workspace }}/backend
+          LLM_PROVIDER: stub
+          EMBEDDING_PROVIDER: stub
+        run: python scripts/benchmark_policy_retrieval.py --json-out .tmp/policy-retrieval-benchmark.json
+      - name: 发布前自检（preflight）
+        env:
+          PYTHONPATH: ${{ github.workspace }}/backend
+          LLM_PROVIDER: stub
+        # 常规档：CI 里没有真实密钥与 Redis，按生产标准会误报；
+        # 发布流程里改用 --strict 作为门禁（见 RELEASE_CHECKLIST.md）
+        run: python scripts/preflight_check.py
+
+  frontend:
+    name: 前端类型检查与构建
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: 安装依赖
+        run: npm ci --no-audit --no-fund
+      - name: 类型检查
+        run: npm run typecheck
+      - name: 构建
+        run: npm run build
+      - name: 产物检查
+        run: test -f dist/index.html
+
+  e2e:
+    name: 前端端到端冒烟（stub 后端 + 无头 Chrome）
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.lock
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: 安装依赖
+        run: |
+          pip install --require-hashes -r backend/requirements-dev.lock
+          (cd frontend && npm ci --no-audit --no-fund && npm run build)
+      - name: 启动 stub 后端
+        env:
+          PYTHONPATH: ${{ github.workspace }}/backend
+          LLM_PROVIDER: stub
+          LLM_API_KEY: ''
+          AGENT_MODEL_OVERRIDES: '{}'
+          AUTO_SEED: 'true'
+          DATABASE_URL: sqlite:///${{ github.workspace }}/backend/.tmp/ci_e2e.db
+        run: |
+          mkdir -p backend/.tmp
+          cd backend
+          nohup python -m uvicorn app.main:app --host 127.0.0.1 --port 8199 > .tmp/ci_server.log 2>&1 &
+          for i in $(seq 1 30); do
+            sleep 2
+            if curl -sf http://127.0.0.1:8199/health/ready > /dev/null; then echo "后端就绪"; exit 0; fi
+          done
+          echo "后端启动失败"; cat .tmp/ci_server.log; exit 1
+      - name: 启动 Chrome（远程调试）
+        run: |
+          google-chrome --headless=new --remote-debugging-port=9224 \
+            --user-data-dir=/tmp/ci_chrome --no-first-run --window-size=1440,1000 about:blank &
+          for i in $(seq 1 15); do
+            sleep 1
+            if curl -sf http://127.0.0.1:9224/json/version > /dev/null; then echo "Chrome 就绪"; exit 0; fi
+          done
+          echo "Chrome 未就绪"; exit 1
+      - name: 售后活体 API 校验
+        env:
+          API_BASE: http://127.0.0.1:8199
+        run: |
+          python backend/scripts/verify_tickets.py --base-url http://127.0.0.1:8199
+          python backend/scripts/verify_ticket_l2_send.py
+      - name: 浏览器主线与售后角色回归
+        env:
+          APP_URL: http://127.0.0.1:8199/
+          CDP_URL: http://127.0.0.1:9224
+          E2E_SHOT_DIR: ${{ github.workspace }}/backend/.tmp/e2e/
+        run: |
+          node frontend/e2e/smoke.mjs
+          node frontend/e2e/after-sales.mjs
+          node frontend/e2e/accessibility.mjs
+      - name: 上传失败截图
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: |
+            backend/.tmp/e2e/
+            backend/.tmp/ci_server.log
+          if-no-files-found: ignore
+
+  supply-chain:
+    name: 镜像供应链证明（本地 Registry + SLSA + SPDX）
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+          buildkitd-config-inline: |
+            [registry."127.0.0.1:15000"]
+              http = true
+              insecure = true
+      - name: 构建并验证带 provenance 和 SBOM 的镜像
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+          EVIDENCE_SCOPE: remote_ci_local_registry
+          JSON_OUT: docs/testing/artifacts/remote-ci-image-attestations.json
+          SIGN_IMAGE: 'true'
+          SIGNATURE_JSON_OUT: docs/testing/artifacts/remote-ci-image-signature.json
+        run: |
+          bash scripts/ci-image-attestations.sh
+      - name: 上传提交绑定的供应链证据
+        uses: actions/upload-artifact@v4
+        with:
+          name: supply-chain-evidence-${{ github.sha }}
+          path: |
+            docs/testing/artifacts/remote-ci-image-attestations.json
+            docs/testing/artifacts/remote-ci-image-signature.json
+          if-no-files-found: error
+          retention-days: 14
+
+  release-evidence:
+    name: 交付证据制品（绑定提交，只读复验）
+    runs-on: ubuntu-latest
+    needs: [backend, frontend, e2e, production-shape, supply-chain]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements-dev.lock
+      - name: 安装依赖
+        run: |
+          pip install --require-hashes -r backend/requirements-dev.lock
+      - name: 下载当前提交的远程生产形态证据
+        uses: actions/download-artifact@v4
+        with:
+          name: remote-ci-production-shape-${{ github.sha }}
+          path: backend/.tmp/release-evidence
+      - name: 下载当前提交的供应链证明
+        uses: actions/download-artifact@v4
+        with:
+          name: supply-chain-evidence-${{ github.sha }}
+          path: backend/.tmp/release-evidence
+      - name: 生成绑定当前提交的交付证据包
+        env:
+          PYTHONPATH: ${{ github.workspace }}/backend
+          LLM_PROVIDER: stub
+          EMBEDDING_PROVIDER: stub
+        run: |
+          evidence_dir="backend/.tmp/release-evidence"
+          mkdir -p "$evidence_dir"
+          python backend/scripts/benchmark_policy_retrieval.py \
+            --json-out backend/.tmp/policy-retrieval-benchmark.json
+          python backend/scripts/after_sales_release_report.py \
+            --policy-benchmark-evidence backend/.tmp/policy-retrieval-benchmark.json \
+            --expected-release-sha "$GITHUB_SHA" \
+            --json-out "$evidence_dir/after-sales-release-readiness.json"
+          python backend/scripts/after_sales_delivery_check.py \
+            --report "$evidence_dir/after-sales-release-readiness.json" \
+            --json-out "$evidence_dir/after-sales-delivery-check.json" \
+            --fail-if-not-local-demo
+          python backend/scripts/package_delivery_evidence.py \
+            --evidence-dir "$evidence_dir" \
+            --attachment remote-ci-object-storage.json \
+            --attachment remote-ci-production-shape.json \
+            --attachment remote-ci-scheduler-failover.json \
+            --attachment remote-ci-image-attestations.json \
+            --attachment remote-ci-image-signature.json
+          python backend/scripts/verify_delivery_evidence_bundle.py \
+            --evidence-dir "$evidence_dir" \
+            --expected-release-sha "$GITHUB_SHA" \
+            --json-out "$evidence_dir/delivery-evidence-verification.json"
+      - name: 上传不可变交付证据制品
+        uses: actions/upload-artifact@v4
+        with:
+          name: delivery-evidence-${{ github.sha }}
+          path: |
+            backend/.tmp/release-evidence/after-sales-release-readiness.json
+            backend/.tmp/release-evidence/after-sales-delivery-check.json
+            backend/.tmp/release-evidence/delivery-evidence-manifest.json
+            backend/.tmp/release-evidence/delivery-evidence-verification.json
+            backend/.tmp/release-evidence/remote-ci-object-storage.json
+            backend/.tmp/release-evidence/remote-ci-production-shape.json
+            backend/.tmp/release-evidence/remote-ci-scheduler-failover.json
+            backend/.tmp/release-evidence/remote-ci-image-attestations.json
+            backend/.tmp/release-evidence/remote-ci-image-signature.json
+          if-no-files-found: error
+          retention-days: 14
+
+  production-shape:
+    name: 远程单机生产形态（Postgres + Redis + MinIO + 双 Worker）
+    runs-on: ubuntu-latest
+    needs: [backend]
+    steps:
+      - uses: actions/checkout@v4
+      - name: 生成隔离测试配置
+        shell: bash
+        run: |
+          minio_user="ci$(openssl rand -hex 6)"
+          minio_password="$(openssl rand -hex 32)"
+          echo "::add-mask::$minio_user"
+          echo "::add-mask::$minio_password"
+          {
+            echo "COMPOSE_PROJECT_NAME=pic-ci-shape"
+            echo "API_PORT=18210"
+            echo "POSTGRES_PORT=15442"
+            echo "REDIS_PORT=16389"
+            echo "MINIO_PORT=19010"
+            echo "MINIO_CONSOLE_PORT=19011"
+            echo "APP_RELEASE_SHA=$GITHUB_SHA"
+            echo "PIC_API_IMAGE=pic-api:$GITHUB_SHA"
+            echo "APP_ENV=test"
+            echo "DEBUG=false"
+            echo "AUTO_SEED=true"
+            echo "STORAGE_BACKEND=minio"
+            echo "TASK_SUBMIT_RATE_LIMIT_PER_MINUTE=5"
+            echo "MINIO_ROOT_USER=$minio_user"
+            echo "MINIO_ROOT_PASSWORD=$minio_password"
+          } >> "$GITHUB_ENV"
+      - name: 启动远程 runner 生产形态
+        run: |
+          docker compose -p "$COMPOSE_PROJECT_NAME" -f deploy/docker-compose.yml \
+            --profile minio up -d --build --scale worker=2
+          for i in $(seq 1 60); do
+            sleep 2
+            if curl -sf http://127.0.0.1:18210/health/ready > /dev/null; then
+              workers=$(docker compose -p "$COMPOSE_PROJECT_NAME" -f deploy/docker-compose.yml ps --status running -q worker | wc -l)
+              test "$workers" -eq 2
+              exit 0
+            fi
+          done
+          docker compose -p "$COMPOSE_PROJECT_NAME" -f deploy/docker-compose.yml ps
+          exit 1
+      - name: 共享对象存储真实读写
+        run: |
+          mkdir -p docs/testing/artifacts
+          docker exec "$COMPOSE_PROJECT_NAME-api-1" python scripts/verify_object_storage.py \
+            --allow-real-storage-calls --action full --probe-id remote-ci-storage \
+            --json-out /tmp/remote-ci-object-storage.json
+          docker cp "$COMPOSE_PROJECT_NAME-api-1:/tmp/remote-ci-object-storage.json" \
+            docs/testing/artifacts/remote-ci-object-storage.json
+      - name: 校验不可变应用镜像与无源码发布编排
+        run: |
+          revision=$(docker image inspect "$PIC_API_IMAGE" --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}')
+          test "$revision" = "$GITHUB_SHA"
+          docker exec "$COMPOSE_PROJECT_NAME-api-1" python -c \
+            "import importlib.util; assert importlib.util.find_spec('pytest') is None"
+          image_ref=$(docker image inspect "$PIC_API_IMAGE" --format '{{ index .RepoDigests 0 }}')
+          python3 backend/scripts/verify_release_compose.py \
+            --image "$image_ref" --pull-policy never \
+            --json-out docs/testing/artifacts/remote-ci-release-compose.json
+      - name: 生成远程运行形态脱敏证据
+        run: |
+          docker exec "$COMPOSE_PROJECT_NAME-api-1" python scripts/verify_target_environment.py \
+            --node github-runner=http://127.0.0.1:8000 \
+            --expected-env test --allow-insecure-http --allow-real-target-calls \
+            --json-out /tmp/remote-ci-production-shape.json
+          docker cp "$COMPOSE_PROJECT_NAME-api-1:/tmp/remote-ci-production-shape.json" \
+            docs/testing/artifacts/remote-ci-production-shape.json
+      - name: 主动调度器 PostgreSQL 崩溃接管演练
+        run: |
+          docker exec "$COMPOSE_PROJECT_NAME-api-1" sh -lc \
+            'SCHEDULER_REHEARSAL_DATABASE_URL="$DATABASE_URL" python scripts/verify_scheduler_failover.py \
+            --allow-real-database-call --lease-seconds 3 \
+            --json-out /tmp/remote-ci-scheduler-failover.json'
+          docker cp "$COMPOSE_PROJECT_NAME-api-1:/tmp/remote-ci-scheduler-failover.json" \
+            docs/testing/artifacts/remote-ci-scheduler-failover.json
+      - name: 收集失败日志
+        if: failure()
+        run: |
+          mkdir -p backend/.tmp/remote-ci
+          docker compose -p "$COMPOSE_PROJECT_NAME" -f deploy/docker-compose.yml \
+            --profile minio logs --no-color > backend/.tmp/remote-ci/compose.log
+      - name: 上传远程生产形态证据
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: remote-ci-production-shape-${{ github.sha }}
+          path: |
+            docs/testing/artifacts/remote-ci-object-storage.json
+            docs/testing/artifacts/remote-ci-production-shape.json
+            docs/testing/artifacts/remote-ci-scheduler-failover.json
+            docs/testing/artifacts/remote-ci-release-compose.json
+          if-no-files-found: error
+      - name: 上传远程生产形态失败日志
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: remote-ci-production-shape-failure-${{ github.sha }}
+          path: |
+            backend/.tmp/remote-ci/
+          if-no-files-found: ignore
+      - name: 清理隔离环境
+        if: always()
+        run: |
+          docker compose -p "$COMPOSE_PROJECT_NAME" -f deploy/docker-compose.yml \
+            --profile minio down -v --remove-orphans

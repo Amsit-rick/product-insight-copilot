@@ -1,0 +1,299 @@
+{
+  "schema_version": "compose-deployment-probe-v1",
+  "generated_at": "2026-11-10T13:25:16.671426+00:00",
+  "commit_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+  "scope": "single_host_compose",
+  "single_host": true,
+  "project": "pic-p3-31-app",
+  "configuration": {
+    "base_url_fingerprint": "fe09f5bb8cc02d9f",
+    "expected_env": "test",
+    "expected_workers": 2,
+    "expected_image": "127.0.0.1:15014/pic-api@sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+    "timeout_seconds": 10.0
+  },
+  "checks": {
+    "project_found": true,
+    "api_singleton": true,
+    "worker_count_met": true,
+    "postgres_running": true,
+    "redis_running": true,
+    "api_healthy": true,
+    "workers_healthy": true,
+    "app_non_root": true,
+    "app_read_only_rootfs": true,
+    "app_capabilities_dropped": true,
+    "app_no_new_privileges": true,
+    "app_resource_limits": true,
+    "infrastructure_resource_limits": true,
+    "application_image_immutable": true,
+    "running_image_matches_expected": true,
+    "release_sha_bound": true,
+    "status_ready": true,
+    "environment_matches": true,
+    "database_ok": true,
+    "redis_cache_ok": true,
+    "queue_execution_ok": true,
+    "shared_checkpointer_ok": true,
+    "shared_storage_ok": true
+  },
+  "runtime_shape_ready": true,
+  "application_runtime_hardening_ready": true,
+  "deployment_hardening_ready": true,
+  "passed": true,
+  "target_environment_ready": false,
+  "cross_host_or_target_environment_verified": false,
+  "production_ready": false,
+  "verification_basis": "single_host_compose_live_checks",
+  "readiness_error": null,
+  "service_counts": {
+    "api": 1,
+    "migrate": 1,
+    "minio": 1,
+    "minio-init": 1,
+    "postgres": 1,
+    "redis": 1,
+    "worker": 2
+  },
+  "containers": [
+    {
+      "service": "api",
+      "state": "running",
+      "exit_code": 0,
+      "health": "healthy",
+      "uptime_seconds": 8,
+      "image_reference": "127.0.0.1:15014/pic-api@sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+      "non_root": true,
+      "read_only_rootfs": true,
+      "cap_drop_all": true,
+      "no_new_privileges": true,
+      "resource_limits": {
+        "memory_bytes": 2147483648,
+        "nano_cpus": 2000000000,
+        "pids_limit": 256
+      },
+      "release_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+      "runtime_profile": {
+        "app_env": "test",
+        "debug": "false",
+        "storage_backend": "minio",
+        "task_execution_backend": "queue",
+        "vector_backend": "pgvector",
+        "auto_seed": "true",
+        "cache_backend": "redis",
+        "checkpointer_backend": "postgres",
+        "worker_embedded": "false"
+      }
+    },
+    {
+      "service": "worker",
+      "state": "running",
+      "exit_code": 0,
+      "health": "healthy",
+      "uptime_seconds": 8,
+      "image_reference": "127.0.0.1:15014/pic-api@sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+      "non_root": true,
+      "read_only_rootfs": true,
+      "cap_drop_all": true,
+      "no_new_privileges": true,
+      "resource_limits": {
+        "memory_bytes": 2147483648,
+        "nano_cpus": 2000000000,
+        "pids_limit": 256
+      },
+      "release_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+      "runtime_profile": {
+        "app_env": "test",
+        "debug": "false",
+        "storage_backend": "minio",
+        "task_execution_backend": "queue",
+        "vector_backend": "pgvector",
+        "auto_seed": "true",
+        "cache_backend": "redis",
+        "checkpointer_backend": "postgres",
+        "worker_embedded": "false"
+      }
+    },
+    {
+      "service": "worker",
+      "state": "running",
+      "exit_code": 0,
+      "health": "healthy",
+      "uptime_seconds": 8,
+      "image_reference": "127.0.0.1:15014/pic-api@sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+      "non_root": true,
+      "read_only_rootfs": true,
+      "cap_drop_all": true,
+      "no_new_privileges": true,
+      "resource_limits": {
+        "memory_bytes": 2147483648,
+        "nano_cpus": 2000000000,
+        "pids_limit": 256
+      },
+      "release_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+      "runtime_profile": {
+        "app_env": "test",
+        "debug": "false",
+        "storage_backend": "minio",
+        "task_execution_backend": "queue",
+        "vector_backend": "pgvector",
+        "auto_seed": "true",
+        "cache_backend": "redis",
+        "checkpointer_backend": "postgres",
+        "worker_embedded": "false"
+      }
+    },
+    {
+      "service": "migrate",
+      "state": "exited",
+      "exit_code": 0,
+      "health": "completed",
+      "uptime_seconds": null,
+      "image_reference": "127.0.0.1:15014/pic-api@sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+      "non_root": true,
+      "read_only_rootfs": true,
+      "cap_drop_all": true,
+      "no_new_privileges": true,
+      "resource_limits": {
+        "memory_bytes": 1073741824,
+        "nano_cpus": 1000000000,
+        "pids_limit": 128
+      },
+      "release_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+      "runtime_profile": {
+        "app_env": "test",
+        "debug": "false",
+        "storage_backend": "minio",
+        "task_execution_backend": "",
+        "vector_backend": "pgvector",
+        "auto_seed": "false",
+        "cache_backend": "redis",
+        "checkpointer_backend": "postgres",
+        "worker_embedded": ""
+      }
+    },
+    {
+      "service": "minio-init",
+      "state": "exited",
+      "exit_code": 0,
+      "health": "completed",
+      "uptime_seconds": null,
+      "image_reference": "bitnamilegacy/minio:2025.7.23-debian-12-r5@sha256:6dabb4a2088c9a79908de3bc05f4586c23ad2182c8908e7e3acbf61c1467fb20",
+      "non_root": true,
+      "read_only_rootfs": false,
+      "cap_drop_all": false,
+      "no_new_privileges": false,
+      "resource_limits": {
+        "memory_bytes": 268435456,
+        "nano_cpus": 500000000,
+        "pids_limit": 64
+      },
+      "release_sha": "",
+      "runtime_profile": {
+        "app_env": "",
+        "debug": "",
+        "storage_backend": "",
+        "task_execution_backend": "",
+        "vector_backend": "",
+        "auto_seed": "",
+        "cache_backend": "",
+        "checkpointer_backend": "",
+        "worker_embedded": ""
+      }
+    },
+    {
+      "service": "redis",
+      "state": "running",
+      "exit_code": 0,
+      "health": "healthy",
+      "uptime_seconds": 16,
+      "image_reference": "redis:7-alpine@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf",
+      "non_root": false,
+      "read_only_rootfs": false,
+      "cap_drop_all": false,
+      "no_new_privileges": false,
+      "resource_limits": {
+        "memory_bytes": 536870912,
+        "nano_cpus": 1000000000,
+        "pids_limit": 128
+      },
+      "release_sha": "",
+      "runtime_profile": {
+        "app_env": "",
+        "debug": "",
+        "storage_backend": "",
+        "task_execution_backend": "",
+        "vector_backend": "",
+        "auto_seed": "",
+        "cache_backend": "",
+        "checkpointer_backend": "",
+        "worker_embedded": ""
+      }
+    },
+    {
+      "service": "postgres",
+      "state": "running",
+      "exit_code": 0,
+      "health": "healthy",
+      "uptime_seconds": 16,
+      "image_reference": "pgvector/pgvector:pg16@sha256:ccc6e83d6e35e931dc7c5def2022729d5a6c370318d099181995567ff1fb4d6b",
+      "non_root": false,
+      "read_only_rootfs": false,
+      "cap_drop_all": false,
+      "no_new_privileges": false,
+      "resource_limits": {
+        "memory_bytes": 2147483648,
+        "nano_cpus": 2000000000,
+        "pids_limit": 256
+      },
+      "release_sha": "",
+      "runtime_profile": {
+        "app_env": "",
+        "debug": "",
+        "storage_backend": "",
+        "task_execution_backend": "",
+        "vector_backend": "",
+        "auto_seed": "",
+        "cache_backend": "",
+        "checkpointer_backend": "",
+        "worker_embedded": ""
+      }
+    },
+    {
+      "service": "minio",
+      "state": "running",
+      "exit_code": 0,
+      "health": "healthy",
+      "uptime_seconds": 16,
+      "image_reference": "bitnamilegacy/minio:2025.7.23-debian-12-r5@sha256:6dabb4a2088c9a79908de3bc05f4586c23ad2182c8908e7e3acbf61c1467fb20",
+      "non_root": true,
+      "read_only_rootfs": false,
+      "cap_drop_all": false,
+      "no_new_privileges": false,
+      "resource_limits": {
+        "memory_bytes": 1073741824,
+        "nano_cpus": 1000000000,
+        "pids_limit": 256
+      },
+      "release_sha": "",
+      "runtime_profile": {
+        "app_env": "",
+        "debug": "",
+        "storage_backend": "",
+        "task_execution_backend": "",
+        "vector_backend": "",
+        "auto_seed": "",
+        "cache_backend": "",
+        "checkpointer_backend": "",
+        "worker_embedded": ""
+      }
+    }
+  ],
+  "limitations": [
+    "single_host_compose",
+    "no_cross_host_attestation",
+    "no_real_model_quality_claim",
+    "no_real_fact_platform_claim",
+    "no_release_approval"
+  ]
+}

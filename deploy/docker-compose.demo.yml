@@ -1,0 +1,73 @@
+# =============================================================================
+# 售后工单系统 —— 隔离演示编排（stub / SQLite / 无真实 Key）
+# =============================================================================
+# 用途：把仓库交给演示用户/评审后，一条命令起一套可点的演示，不碰生产依赖。
+#
+#   docker compose -f deploy/docker-compose.demo.yml up -d --build
+#   打开 http://127.0.0.1:8010/   （ops/ops123、reviewer/reviewer123、admin/admin123）
+#   停止并清空演示数据：docker compose -f deploy/docker-compose.demo.yml down
+#
+# 与 docker-compose.yml 的区别：
+# - 不启动 Postgres/Redis/MinIO/Qdrant；SQLite + 内存缓存 + 本地存储；
+# - LLM/Embedding 强制 stub，LLM_API_KEY 为空，绝不产生真实费用；
+# - 演示文档只读挂载，数据库在容器可写层，down 即清空；
+# - 关闭 /docs，演示账号是公开的，不能直接当公网服务。
+# =============================================================================
+name: deal-risk-agent-demo
+
+services:
+  demo:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        APP_RELEASE_SHA: ${APP_RELEASE_SHA:-demo}
+    image: deal-risk-agent-demo:local
+    environment:
+      APP_NAME: 售后工单演示
+      APP_ENV: local
+      DEBUG: "false"
+      EXPOSE_DOCS: "false"
+
+      # 真实模型/外部接口一律关闭：演示不花钱、不联网
+      LLM_PROVIDER: stub
+      EMBEDDING_PROVIDER: stub
+      LLM_API_KEY: ""
+      EMBEDDING_API_KEY: ""
+      AGENT_MODEL_OVERRIDES: "{}"
+      TICKET_USE_MOCK_ADAPTERS: "true"
+      ALERT_WEBHOOK_ENABLED: "false"
+      METRIC_SOURCE_HTTP_ENABLED: "false"
+
+      # 单容器零依赖
+      DATABASE_URL: sqlite:////app/data/demo.db
+      DEMO_DATA_DIR: /app/data/demo
+      AUTO_INIT_DB: "true"
+      AUTO_SEED: "true"
+      CACHE_BACKEND: memory
+      STORAGE_BACKEND: local
+      STORAGE_LOCAL_DIR: /app/data/objects
+      VECTOR_BACKEND: fallback
+      TASK_EXECUTION_BACKEND: threadpool
+      WORKER_EMBEDDED: "true"
+      CHECKPOINTER_BACKEND: memory
+
+      # 演示也在入口处限流，避免被误刷
+      TASK_SUBMIT_RATE_LIMIT_PER_MINUTE: "10"
+      LOGIN_ATTEMPT_RATE_LIMIT_PER_MINUTE: "10"
+      MODEL_MAX_CONCURRENCY: "2"
+
+      # 仅为本地演示；公网必须换成随机密钥并加访问控制
+      JWT_SECRET: demo-only-secret-change-before-public-32bytes
+    ports:
+      - "${DEMO_PORT:-8010}:8000"
+    volumes:
+      # 演示文档只读；数据库在 /app/data/demo.db（容器可写层），down 即清空
+      - ../backend/data/demo:/app/data/demo:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      start_period: 40s
+      retries: 5

@@ -1,0 +1,19 @@
+{
+  "schema_version": "metric-source-probe-v1",
+  "generated_at": "2026-11-08T16:35:02.824877+00:00",
+  "read_only": true,
+  "external_network_used": false,
+  "production_ready": false,
+  "configuration": {
+    "app_env": "local",
+    "enabled": false,
+    "read_method": "GET",
+    "https": false,
+    "auth_configured": false,
+    "tenant_scope_provided": true,
+    "metric_whitelist_count": 0,
+    "runs_requested": 3
+  },
+  "status": "blocked_not_authorized",
+  "reason": "缺少 --allow-real-source-call，未连接指标源"
+}

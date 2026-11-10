@@ -1,0 +1,219 @@
+{
+  "schema_version": "after-sales-usability-test-v1",
+  "test_date": "",
+  "facilitator": "",
+  "environment": "local_demo_only",
+  "participant_scope_confirmed": null,
+  "participants": [
+    {
+      "participant_id": "U1",
+      "role": "frontline",
+      "is_developer": null
+    },
+    {
+      "participant_id": "U2",
+      "role": "frontline",
+      "is_developer": null
+    },
+    {
+      "participant_id": "U3",
+      "role": "frontline",
+      "is_developer": null
+    },
+    {
+      "participant_id": "U4",
+      "role": "supervisor",
+      "is_developer": null
+    },
+    {
+      "participant_id": "U5",
+      "role": "supervisor",
+      "is_developer": null
+    }
+  ],
+  "tasks": [
+    {
+      "participant_id": "U1",
+      "task_code": "A",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U1",
+      "task_code": "B",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U1",
+      "task_code": "C",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U1",
+      "task_code": "D",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U2",
+      "task_code": "A",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U2",
+      "task_code": "B",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U2",
+      "task_code": "C",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U2",
+      "task_code": "D",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U3",
+      "task_code": "A",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U3",
+      "task_code": "B",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U3",
+      "task_code": "C",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U3",
+      "task_code": "D",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U4",
+      "task_code": "A",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U4",
+      "task_code": "B",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U4",
+      "task_code": "E",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U5",
+      "task_code": "A",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U5",
+      "task_code": "B",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    },
+    {
+      "participant_id": "U5",
+      "task_code": "E",
+      "completed": null,
+      "independent": null,
+      "duration_seconds": null,
+      "mistakes": 0,
+      "blocked_at": "",
+      "notes": ""
+    }
+  ],
+  "issues": [],
+  "conclusion": "",
+  "next_changes": []
+}

@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "runtime_package_count": 92,
+  "development_package_count": 97,
+  "windows_development_package_count": 97,
+  "runtime_test_dependencies": [],
+  "development_test_dependencies_present": [
+    "pytest",
+    "pytest-asyncio"
+  ],
+  "windows_platform_contract": {
+    "excluded": [
+      "uvloop"
+    ],
+    "required": [
+      "colorama"
+    ]
+  },
+  "hashes_required": true,
+  "production_ready": false
+}

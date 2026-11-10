@@ -1,0 +1,14 @@
+{
+  "schema_version": "secure-registry-material-v1",
+  "generated_at": "2026-11-10T13:21:35.552301+00:00",
+  "executed": true,
+  "passed": true,
+  "ca_fingerprint": "333cd4f9db10fb23",
+  "server_certificate_fingerprint": "3e58b0d85ea66ea1",
+  "username_fingerprint": "65da4f0232c0f1f3",
+  "httpd_tool_image": "httpd@sha256:698a0f59374eeb59c2c3ae6385c5f346edd2c70c2b63f7b552fb3d64dbc3cf66",
+  "tls_enabled": true,
+  "basic_auth_enabled": true,
+  "ephemeral_material": true,
+  "production_ready": false
+}

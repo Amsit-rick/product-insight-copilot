@@ -1,0 +1,44 @@
+{
+  "schema_version": "single-host-queue-validation-v1",
+  "generated_at": "2026-11-10T00:29:48+08:00",
+  "commit_sha": "f3a6586d64e5a4f90a418942259b1d1f8a228102",
+  "image_reference": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+  "scope": "single_host_compose_immutable_image",
+  "source_redacted": true,
+  "counts": {
+    "requested": 8,
+    "submitted": 8,
+    "completed": 8,
+    "errors": 0
+  },
+  "latency_ms": {
+    "submit_p50": 1408.0205999780446,
+    "submit_p95": 1566.518499981612,
+    "end_to_end_p50": 3705.751400004374,
+    "end_to_end_p95": 4302.279900002759
+  },
+  "throughput_per_second": 1.2200232658439218,
+  "elapsed_seconds": 6.557,
+  "worker_count": 2,
+  "queue_final": {
+    "pending": 0,
+    "claimed": 0,
+    "done": 8,
+    "dead": 0
+  },
+  "acceptance": {
+    "submit_p95": true,
+    "end_to_end_p95": true,
+    "error_rate": true,
+    "independent_worker_count": true,
+    "queue_drained": true
+  },
+  "limitations": [
+    "stub_model",
+    "mock_fact_adapters",
+    "single_host_compose",
+    "registry_not_published",
+    "redacted_worker_identity"
+  ],
+  "production_ready": false
+}

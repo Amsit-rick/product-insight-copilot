@@ -1,0 +1,49 @@
+{
+  "schema_version": "target-release-admission-v1",
+  "generated_at": "2026-11-10T15:24:07.606344+00:00",
+  "executed": true,
+  "passed": false,
+  "status": "blocked",
+  "expected_release_sha": "80098eb4c948013a5c886f421f09130d6c51a48c",
+  "evidence_release_shas": [
+    "80098eb4c948013a5c886f421f09130d6c51a48c"
+  ],
+  "image_digest": "sha256:9ed12b43de3ae90b0b369218dbabce9f38da0d4334b75bca2bb351b162afd6cf",
+  "registry_control_source_sha": "80098eb4c948013a5c886f421f09130d6c51a48c",
+  "admission_bundle_id": "763e286af0263345a7d3ea721efd43b89a8af430773b2a71e5d1530ebef87a63",
+  "evidence_files": {
+    "runner_readiness": "e3fd742a29f185d34a67b2ad740b246398a2acb812c219da42f7d73e0a90f1ed",
+    "attestation": "0aa5b50057b82d791e0b7910d4cb9ad7287e45be774dada644204d0089cbcbeb",
+    "signature": "655d72f9675c7f16228cfe133ed3dbb5c9de3f89ba6396f9f7930599988dd924",
+    "bundle": "f335bda72fdc4aaa89865dbd9f971c3fb103c1e10eb29a4d042efb8b57fab687",
+    "secure_registry": "730e96d216e79836829648b7977c604ab9732d7894545e442bee286bdb6d4c64",
+    "rollout": "9bc157f2f126143e34eb1a0137350ae200622bd169fc3a6c12b2f69a55ce5fc5",
+    "target_environment": "3b85029e4043f38bc0081b940493f25b7599f798f1d566301fcd61c0e56d117f",
+    "database_recovery": "8ecef79c7f600241bffaafb6e0ca7d149d4da8d4e16eb6589d82d0fe4b85fc94"
+  },
+  "checks": {
+    "bundle_hashes_verified": true,
+    "self_claims_safe": true,
+    "evidence_fresh": true,
+    "release_sha_verified": true,
+    "image_digest_verified": true,
+    "supply_chain_verified": true,
+    "secure_registry_controls_verified": true,
+    "registry_control_release_bound": true,
+    "local_rollout_verified": true,
+    "target_runtime_verified": true,
+    "database_recovery_objectives_verified": true,
+    "enterprise_registry_verified": false,
+    "cross_host_verified": false,
+    "enterprise_backup_governance_verified": false
+  },
+  "blockers": [
+    "enterprise_registry_verified",
+    "cross_host_verified",
+    "enterprise_backup_governance_verified"
+  ],
+  "machine_admission_ready": false,
+  "human_approval_required": true,
+  "release_authorized": false,
+  "production_ready": false
+}

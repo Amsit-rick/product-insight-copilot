@@ -1,0 +1,43 @@
+{
+  "schema_version": "single-host-queue-validation-v1",
+  "generated_at": "2026-11-09T14:27:41.7611429Z",
+  "commit_sha": "32322bd0c57001f3cd9f64d7a2be13e47b8cdb62",
+  "scope": "single_host_compose",
+  "source_redacted": true,
+  "counts": {
+    "requested": 8,
+    "submitted": 8,
+    "completed": 8,
+    "errors": 0
+  },
+  "latency_ms": {
+    "submit_p50": 1576.8814000184648,
+    "submit_p95": 1641.4571999921463,
+    "end_to_end_p50": 3548.6050999898,
+    "end_to_end_p95": 4384.531799994875
+  },
+  "throughput_per_second": 1.2136202353800738,
+  "elapsed_seconds": 6.592,
+  "worker_count": 2,
+  "queue_final": {
+    "pending": 0,
+    "claimed": 0,
+    "done": 8,
+    "dead": 0
+  },
+  "acceptance": {
+    "submit_p95": true,
+    "end_to_end_p95": true,
+    "error_rate": true,
+    "independent_worker_count": true,
+    "queue_drained": true
+  },
+  "target_environment_ready": false,
+  "production_ready": false,
+  "limitations": [
+    "stub_model",
+    "mock_fact_adapters",
+    "single_host_compose",
+    "redacted_worker_identity"
+  ]
+}

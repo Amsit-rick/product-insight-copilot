@@ -1,0 +1,10 @@
+# Development and CI dependencies. Runtime dependencies are defined once in
+# requirements-runtime.in; the generated runtime lock constrains the dev layer
+# so production and CI cannot silently resolve different shared versions.
+# Lock compiler: pip-tools==7.6.2 in pinned python:3.12-slim container.
+-c requirements-runtime.lock
+-r requirements-runtime.in
+
+pytest>=8,<9
+pytest-asyncio>=0.24,<1
+coverage>=7.17,<8

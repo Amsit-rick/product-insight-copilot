@@ -1,0 +1,47 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+.coverage.*
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# ---- 本地运行产物（数据/日志/临时文件）----
+# SQLite 的库与 WAL/SHM 一起忽略：只写 data/*.db 会漏掉 -wal / -shm，
+# 结果是"提交里混进几 MB 的二进制增量日志"（踩过一次，提交前审计才发现）
+*.db
+*.db-wal
+*.db-shm
+data/objects/
+data/demo_report_*.md
+backend/.tmp/
+backend/data/objects/
+.tmp/
+
+# ---- 测试与沙箱遗留空目录（Windows 下由测试工具创建）----
+ptfresh_*/
+pypt/
+pytest-cache-files-*/
+
+# ---- 本地工作簿与临时日志（非交付物）----
+.workbuddy/
+
+# ---- 环境与密钥（绝不入库）----
+.env
+.env.local
+*.pem
+*.key
+
+# ---- 编辑器 / 系统 ----
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ---- 前端（若后续加入 Vue 工程）----
+frontend/node_modules/
+frontend/dist/

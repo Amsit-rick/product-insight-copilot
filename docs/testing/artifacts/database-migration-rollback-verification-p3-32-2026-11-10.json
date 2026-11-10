@@ -1,0 +1,20 @@
+{
+  "schema_version": "database-migration-rollback-verification-v1",
+  "generated_at": "2026-11-10T13:53:21.008591+00:00",
+  "passed": true,
+  "checks": {
+    "execution_verified": true,
+    "evidence_fresh": true,
+    "release_sha_verified": true,
+    "migration_inventory_verified": true,
+    "migration_change_verified": true,
+    "schema_fingerprints_verified": true,
+    "restore_guarantees_verified": true,
+    "self_claims_safe": true
+  },
+  "blockers": [],
+  "current_source_git_sha": "501de6e53e0c3e109b1472ff175d556182629b87",
+  "rollback_source_git_sha": "d6bff1e08451cbb9384450ad8db6f637864d4598",
+  "database_release_safety_verified": true,
+  "production_ready": false
+}

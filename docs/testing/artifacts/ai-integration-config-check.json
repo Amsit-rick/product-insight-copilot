@@ -1,0 +1,22 @@
+{
+  "schema_version": "ai-integration-probe-v1",
+  "ready": false,
+  "components": {
+    "llm": {
+      "configured": true,
+      "provider": "openai_compatible",
+      "model": "deepseek-chat"
+    },
+    "embedding": {
+      "configured": false,
+      "provider": "stub",
+      "model": "BAAI/bge-m3",
+      "expected_dimension": 1024
+    },
+    "reranker": {
+      "configured": false,
+      "provider": "http"
+    }
+  },
+  "executed": false
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "secure-registry-rehearsal-v1",
+  "generated_at": "2026-11-10T11:46:41.441637+00:00",
+  "executed": true,
+  "passed": true,
+  "scope": "local_tls_authenticated_registry",
+  "source_git_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+  "registry_endpoint_fingerprint": "aa81181fa9d41d55",
+  "ca_certificate_fingerprint": "954ea305f155c44c",
+  "username_fingerprint": "65da4f0232c0f1f3",
+  "tls_verified": true,
+  "untrusted_tls_rejected": true,
+  "basic_auth_required": true,
+  "wrong_credentials_rejected": true,
+  "push_verified": true,
+  "digest_pull_verified": true,
+  "manifest_digest": "sha256:49fa73cd89936b6db356d64b70e757dfc4379024a163921d4ff909bd92bd2cae",
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false
+}

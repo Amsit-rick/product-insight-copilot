@@ -1,0 +1,10 @@
+{
+  "proxy_header_statuses": [
+    401,
+    401,
+    429
+  ],
+  "redis_outage_login_status": 503,
+  "redis_recovery_login_status": 200,
+  "cache_healthy_after_recovery": true
+}

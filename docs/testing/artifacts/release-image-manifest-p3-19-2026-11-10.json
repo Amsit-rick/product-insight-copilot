@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-11-09T16:28:36.391894+00:00",
+  "source_git_sha": "f3a6586d64e5a4f90a418942259b1d1f8a228102",
+  "image_input": "pic-api:p3-19-final",
+  "image_revision": "f3a6586d64e5a4f90a418942259b1d1f8a228102",
+  "image_config_digest": "sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+  "image_repo_digest": "pic-api@sha256:968aff6743cbc770e17db3251589817fd736f7fc7a82ab5a17978ecc22bdd123",
+  "archive_name": "pic-api-p3-19-final.tar",
+  "archive_sha256": "980eb68a5c58ce60d898df7f7ed3d5a0a0dcb686bee74a86077a07bc725647fd",
+  "archive_size_bytes": 173293568,
+  "artifact_ready": true,
+  "registry_published": false,
+  "production_ready": false
+}

@@ -1,0 +1,24 @@
+# Local-only OCI Registry used by the P3-20 push/pull and rollback rehearsal.
+# It binds to loopback and is not an enterprise registry substitute.
+services:
+  registry:
+    image: registry:2@sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${LOCAL_REGISTRY_PORT:-15000}:5000"
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+    volumes:
+      - registry_data:/var/lib/registry
+    cpus: ${LOCAL_REGISTRY_CPUS:-1.0}
+    mem_limit: ${LOCAL_REGISTRY_MEMORY_LIMIT:-512m}
+    pids_limit: ${LOCAL_REGISTRY_PIDS_LIMIT:-128}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:5000/v2/ >/dev/null || exit 1"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+      start_period: 2s
+
+volumes:
+  registry_data:

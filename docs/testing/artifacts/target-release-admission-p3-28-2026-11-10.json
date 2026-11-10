@@ -1,0 +1,48 @@
+{
+  "schema_version": "target-release-admission-v1",
+  "generated_at": "2026-11-10T10:23:16.200408+00:00",
+  "executed": true,
+  "passed": false,
+  "status": "blocked",
+  "expected_release_sha": "c7f454df2eb10275f1172be4647f789d143aff2e",
+  "evidence_release_shas": [
+    "089504ea2876cb8a956fa5998879d72b00ba1901",
+    "f3a6586d64e5a4f90a418942259b1d1f8a228102"
+  ],
+  "image_digest": "sha256:fcd79c7da7b1d4890b01fc11ec83b163ace188c0c7f596e61008baad2e16e754",
+  "registry_control_source_sha": "509d909ce21a52fcfc65cc102655e175dd387f28",
+  "admission_bundle_id": "4d7de63376b9d92c24d9b1dfe4a0aea70b864cdd168cc3fb435655c338897167",
+  "evidence_files": {
+    "runner_readiness": "a9edb38a139883d8bba4a0249701c1f5dc0d97de863816e16c9cc3bee033a0d4",
+    "attestation": "0f813aa0f0b27fa4fe74cc17cf3d339f4b8676bb6d375955af66616cd1d05635",
+    "signature": "503ae00b95e6b419634ced129cc27638f2076eaf99ada84d97e92a4b0977e29a",
+    "bundle": "6890f7469e0c7a75c15d2bf468b90e323e0c7da780b9dbebfaff2ca943d1b73f",
+    "secure_registry": "767e06c5df6145f60a2275206d2ccf6ec76044c2320fc05bef096097f3ca9685",
+    "rollout": "b5b6eb7eee8719c5b3ac82d0f06638b4686dcd2062619d68cce9a798bcd1ead2",
+    "target_environment": "7654917f5e5ecae8708a8aefa2e2f11be95bfd671f832c9b76de88eb89aba59a"
+  },
+  "checks": {
+    "bundle_hashes_verified": true,
+    "self_claims_safe": true,
+    "evidence_fresh": false,
+    "release_sha_verified": false,
+    "image_digest_verified": false,
+    "supply_chain_verified": true,
+    "secure_registry_controls_verified": true,
+    "local_rollout_verified": true,
+    "target_runtime_verified": true,
+    "enterprise_registry_verified": false,
+    "cross_host_verified": false
+  },
+  "blockers": [
+    "evidence_fresh",
+    "release_sha_verified",
+    "image_digest_verified",
+    "enterprise_registry_verified",
+    "cross_host_verified"
+  ],
+  "machine_admission_ready": false,
+  "human_approval_required": true,
+  "release_authorized": false,
+  "production_ready": false
+}

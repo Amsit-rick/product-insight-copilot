@@ -1,0 +1,59 @@
+{
+  "schema_version": "after-sales-usability-prep-v1",
+  "data_kind": "demo_preparation_only",
+  "tenant": "demo",
+  "test_url": "http://127.0.0.1:8000/#/login",
+  "participants": [
+    {
+      "role": "客服",
+      "username": "ops"
+    },
+    {
+      "role": "主管/质检",
+      "username": "reviewer"
+    }
+  ],
+  "tasks": [
+    {
+      "code": "A",
+      "ticket_id": "TK-260924-0186",
+      "title": "找到下一步",
+      "prompt": "客户遇到什么问题、下一步是什么、是否已经超时？",
+      "ticket_available": true,
+      "ticket_analyzed": true
+    },
+    {
+      "code": "B",
+      "ticket_id": "TK-260924-0184",
+      "title": "判断是否需要主管",
+      "prompt": "这张退货退款工单能否直接发给客户？下一步应该怎么做？",
+      "ticket_available": true,
+      "ticket_analyzed": true
+    },
+    {
+      "code": "C",
+      "ticket_id": "TK-260924-0181",
+      "title": "准备客户回复",
+      "prompt": "使用常用回复作为起点，修改成准备发送的内容，但先不要发送。",
+      "ticket_available": true,
+      "ticket_analyzed": true
+    },
+    {
+      "code": "D",
+      "ticket_id": "TK-260924-0186",
+      "title": "内部协作",
+      "prompt": "留一条客户不可见备注并 @ 售后主管，请他关注这张工单。",
+      "ticket_available": true,
+      "ticket_analyzed": true
+    },
+    {
+      "code": "E",
+      "ticket_id": null,
+      "title": "主管维护话术",
+      "prompt": "主管新增一条物流问题常用回复并停用；客服账号不应看到维护入口。",
+      "ticket_available": null,
+      "ticket_analyzed": false
+    }
+  ],
+  "not_a_user_test_result": true
+}

@@ -1,0 +1,320 @@
+{
+  "scenario": "Android 版 3.2.0 发布后次日留存由约 0.31 降至约 0.26：低端机与 channel_a 渠道降幅最大、iOS 持平；客服工单与商店评论集中反馈启动闪退与登录失败，而研发复盘结论为崩溃率与登录成功率均正常，需要跨知识库交叉取证并保留冲突。",
+  "knowledge_bases": [
+    {
+      "code": "product_kb",
+      "name": "产品知识库",
+      "description": "产品需求文档、埋点字典与产品评审会议纪要，用于确认版本目标、埋点与指标口径以及同期上线的功能范围。",
+      "security_level": "internal"
+    },
+    {
+      "code": "feedback_kb",
+      "name": "用户反馈知识库",
+      "description": "客服工单汇总与应用商店评论摘要，用于聚类用户反馈现象、影响机型与渠道分布。",
+      "security_level": "internal"
+    },
+    {
+      "code": "engineering_kb",
+      "name": "研发知识库",
+      "description": "版本变更（含接口变更明细）与故障复盘，用于关联版本改动、技术风险与监控口径差异。",
+      "security_level": "internal"
+    },
+    {
+      "code": "operation_kb",
+      "name": "运营知识库",
+      "description": "指标口径与报表说明、A/B 实验记录，用于解读指标含义、数据质量缺口与归因限制。",
+      "security_level": "internal"
+    }
+  ],
+  "documents": [
+    {
+      "path": "documents/01_prd_xingye_community_3.2.0.md",
+      "kb": "product_kb",
+      "name": "星野社区 3.2.0 产品需求文档",
+      "source_name": "星野社区3.2.0产品需求文档.md",
+      "security_level": "internal",
+      "document_version": "3.2.0",
+      "department": "产品部",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-08"
+    },
+    {
+      "path": "documents/02_product_tracking_dictionary.md",
+      "kb": "product_kb",
+      "name": "星野社区埋点字典 v1.4.0",
+      "source_name": "星野社区埋点字典v1.4.0.md",
+      "security_level": "internal",
+      "document_version": "1.4.0",
+      "department": "数据产品部",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-18"
+    },
+    {
+      "path": "documents/03_product_review_meeting_20260812.md",
+      "kb": "product_kb",
+      "name": "3.2.0 产品评审会议纪要（2026-08-12）",
+      "source_name": "3.2.0产品评审会议纪要20260812.md",
+      "security_level": "internal",
+      "document_version": "1.0.0",
+      "department": "产品部",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-12"
+    },
+    {
+      "path": "documents/04_feedback_customer_tickets_20260821_0827.md",
+      "kb": "feedback_kb",
+      "name": "客服工单汇总（2026-08-21 ~ 2026-08-27）",
+      "source_name": "客服工单汇总20260821-0827.md",
+      "security_level": "internal",
+      "document_version": "1.0.0",
+      "department": "客服中心",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-28"
+    },
+    {
+      "path": "documents/05_feedback_app_store_reviews.md",
+      "kb": "feedback_kb",
+      "name": "应用商店评论摘要（2026-08-20 ~ 2026-08-28）",
+      "source_name": "应用商店评论摘要20260820-0828.md",
+      "security_level": "internal",
+      "document_version": "1.0.0",
+      "department": "用户运营部",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-29"
+    },
+    {
+      "path": "documents/06_engineering_release_notes_3.2.0.md",
+      "kb": "engineering_kb",
+      "name": "星野社区 3.2.0 版本变更与接口变更记录",
+      "source_name": "星野社区3.2.0版本变更记录.md",
+      "security_level": "internal",
+      "document_version": "3.2.0",
+      "department": "研发中心",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-22"
+    },
+    {
+      "path": "documents/07_engineering_incident_review_retention.md",
+      "kb": "engineering_kb",
+      "name": "3.2.0 次日留存波动故障复盘（内部）",
+      "source_name": "3.2.0次日留存波动故障复盘-内部.md",
+      "security_level": "confidential",
+      "document_version": "1.0.0",
+      "department": "质量保障部",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-31"
+    },
+    {
+      "path": "documents/08_operation_metric_definition_and_report.md",
+      "kb": "operation_kb",
+      "name": "指标口径与报表说明（3.2.0 观测期）",
+      "source_name": "指标口径与报表说明.md",
+      "security_level": "internal",
+      "document_version": "2.1.0",
+      "department": "数据运营部",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-30"
+    },
+    {
+      "path": "documents/09_operation_ab_experiment_onboarding.md",
+      "kb": "operation_kb",
+      "name": "新手引导改版 A/B 实验记录（exp_onboarding_v2）",
+      "source_name": "新手引导改版AB实验记录.md",
+      "security_level": "internal",
+      "document_version": "1.0.0",
+      "department": "数据运营部",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-08-31"
+    }
+  ],
+  "metrics": [
+    {
+      "path": "metrics/next_day_retention.csv",
+      "dataset_version": "metric_snapshot_20260831",
+      "metric_name": "next_day_retention",
+      "display_name": "次日留存率",
+      "description": "次日活跃去重用户数 / 当日新增用户数，按平台、版本、渠道与设备分群拆分。含 2026-08-25 整日缺数、2026-08-24 低端机小样本（sample_size=312）与 2026-08-26 重复行等数据质量问题。",
+      "unit": "ratio",
+      "period": "day",
+      "allowed_dimensions": ["platform", "app_version", "channel", "device"],
+      "higher_is_better": true
+    },
+    {
+      "path": "metrics/crash_rate.csv",
+      "dataset_version": "metric_snapshot_20260831",
+      "metric_name": "crash_rate",
+      "display_name": "崩溃率",
+      "description": "当日崩溃次数（含 java 与 native）/ 当日冷启动次数。iOS 不产出 low_end 分群；2026-08-25 整日缺数。与研发崩溃看板的 Java 层口径不一致。",
+      "unit": "ratio",
+      "period": "day",
+      "allowed_dimensions": ["platform", "app_version", "channel", "device"],
+      "higher_is_better": false
+    },
+    {
+      "path": "metrics/dau.csv",
+      "dataset_version": "metric_snapshot_20260831",
+      "metric_name": "dau",
+      "display_name": "日活跃用户数",
+      "description": "当日存在启动行为的去重用户数，不提供 device 维度（device 列留空，sample_size 等于当日活跃用户数）。2026-08-25 整日缺数。",
+      "unit": "count",
+      "period": "day",
+      "allowed_dimensions": ["platform", "app_version", "channel"],
+      "higher_is_better": true
+    },
+    {
+      "path": "metrics/order_conversion_rate.csv",
+      "dataset_version": "metric_snapshot_20260831",
+      "metric_name": "order_conversion_rate",
+      "display_name": "下单转化率",
+      "description": "当日下单去重用户数 / 当日活跃去重用户数，仅覆盖 Android 的 channel_a / channel_b，统计窗口为 2026-08-10 起。2026-08-25 整日缺数；2026-08-24 channel_a 低端机为小样本点。",
+      "unit": "ratio",
+      "period": "day",
+      "allowed_dimensions": ["platform", "app_version", "channel", "device"],
+      "higher_is_better": true
+    }
+  ],
+  "policies": [
+    {
+      "path": "documents/10_policy_aftersales_logistics_v3_current.md",
+      "kb": "policy_kb",
+      "name": "售后政策：物流时效与补偿标准 v3.0（现行）",
+      "source_name": "售后政策-物流时效与补偿标准v3.0.md",
+      "security_level": "internal",
+      "document_version": "3.0",
+      "department": "售后服务中心",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-07-01",
+      "policy": {
+        "title": "物流时效与补偿标准",
+        "version": "v3.0",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "scope": {"platform": "全平台", "shop_id": null, "member_level": null},
+        "note": "现行版本：停滞 48 小时、补偿 5% 且单笔不超过 ¥30；退款需主管审批。"
+      }
+    },
+    {
+      "path": "documents/13_policy_aftersales_promotion_v3_current.md",
+      "kb": "policy_kb",
+      "name": "售后政策：促销优惠与满减规则 v3.0（现行）",
+      "source_name": "售后政策-促销优惠与满减规则v3.0.md",
+      "security_level": "internal",
+      "document_version": "3.0",
+      "department": "售后服务中心",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-07-01",
+      "policy": {
+        "title": "促销优惠与满减规则",
+        "version": "v3.0",
+        "effective_from": "2026-07-01",
+        "effective_to": null,
+        "scope": {"platform": "全平台"},
+        "note": "现行版本：满减与优惠券解释口径；只解释与核实，不自动退款、补发或赔付。"
+      }
+    },
+    {
+      "path": "documents/11_policy_aftersales_logistics_v1_expired.md",
+      "kb": "policy_kb",
+      "name": "售后政策：物流时效与补偿标准 v1.0（已失效）",
+      "source_name": "售后政策-物流时效与补偿标准v1.0（已失效）.md",
+      "security_level": "internal",
+      "document_version": "1.0",
+      "department": "售后服务中心",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2025-01-01",
+      "policy": {
+        "title": "物流时效与补偿标准",
+        "version": "v1.0",
+        "effective_from": "2025-01-01",
+        "effective_to": "2026-06-30",
+        "scope": {"platform": "全平台"},
+        "note": "**已失效**：旧口径 72 小时 / ¥20 固定补偿。用于验证「过期政策不得被引用」。"
+      }
+    },
+    {
+      "path": "documents/12_policy_aftersales_logistics_v4_future.md",
+      "kb": "policy_kb",
+      "name": "售后政策：物流时效与补偿标准 v4.0（未生效）",
+      "source_name": "售后政策-物流时效与补偿标准v4.0（未生效）.md",
+      "security_level": "internal",
+      "document_version": "4.0",
+      "department": "售后服务中心",
+      "app_version": "3.2.0",
+      "doc_updated_at": "2026-09-01",
+      "policy": {
+        "title": "物流时效与补偿标准",
+        "version": "v4.0",
+        "effective_from": "2027-01-01",
+        "effective_to": null,
+        "scope": {"platform": "全平台", "shop_id": "self_operated"},
+        "note": "**未生效**：2027 年起生效，仅自营店铺适用。用于验证「未生效政策不得被引用」。"
+      }
+    }
+  ],
+  "tickets": [
+    {
+      "external_id": "TK-260924-0186",
+      "subject": "包裹显示签收，但实际未收到",
+      "content": "物流显示 9 月 23 日已签收（本人签收），但我没有收到包裹，也没有接到快递电话。请帮我核实。",
+      "customer_id": "陈女士 · 尾号 3821",
+      "order_id": "TB202609241806",
+      "priority": "high",
+      "channel": "manual",
+      "assignee": "ops",
+      "attributes": {"shop_id": "self_operated", "platform": "Android", "receiver_note": "本人未签收"}
+    },
+    {
+      "external_id": "TK-260924-0185",
+      "subject": "购买两件，包裹中仅收到一件",
+      "content": "我买了两件猫砂，包裹里只收到一件，包裹重量也和订单标注的不一样。请补发缺的那件。",
+      "customer_id": "周先生 · 尾号 0165",
+      "order_id": "TB202609241742",
+      "priority": "high",
+      "channel": "manual",
+      "assignee": "ops",
+      "attributes": {"shop_id": "self_operated", "platform": "Android"}
+    },
+    {
+      "external_id": "TK-260924-0184",
+      "subject": "申请退货退款，商品未拆封",
+      "content": "商品不想要了，未拆封，申请退货退款，请问怎么寄回？",
+      "customer_id": "刘女士 · 尾号 7402",
+      "order_id": "TB202609241501",
+      "priority": "medium",
+      "channel": "manual",
+      "attributes": {"shop_id": "pop_shop_1", "platform": "Android"}
+    },
+    {
+      "external_id": "TK-260924-0183",
+      "subject": "收到商品外包装破损，担心影响使用",
+      "content": "收到猫爬架时外包装已经破损，里面有磕碰痕迹，担心影响使用。",
+      "customer_id": "张女士 · 尾号 2930",
+      "order_id": "TB202609240992",
+      "priority": "medium",
+      "channel": "manual",
+      "assignee": "ops",
+      "attributes": {"shop_id": "self_operated", "platform": "Android"}
+    },
+    {
+      "external_id": "TK-260924-0182",
+      "subject": "活动页显示满 199 减 30，结算未生效",
+      "content": "活动页显示满 199 减 30，我结算时没有减，请帮我看看优惠规则。",
+      "customer_id": "赵先生 · 尾号 5680",
+      "order_id": "TB202609240821",
+      "priority": "low",
+      "channel": "manual",
+      "attributes": {"shop_id": "self_operated", "platform": "Android"}
+    },
+    {
+      "external_id": "TK-260924-0181",
+      "subject": "物流超过 48 小时没有更新",
+      "content": "包裹物流超过 48 小时没有更新了（当前已停滞 56 小时），麻烦帮我催一下，并说明是否达到补偿标准。",
+      "customer_id": "吴女士 · 尾号 1047",
+      "order_id": "TB202609240655",
+      "priority": "high",
+      "channel": "manual",
+      "assignee": "ops",
+      "attributes": {"shop_id": "self_operated", "platform": "Android"}
+    }
+  ]
+}

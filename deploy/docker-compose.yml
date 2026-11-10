@@ -1,0 +1,603 @@
+# =============================================================================
+# 电商售后工单智能处理系统 / After-sales Ticket Copilot —— Docker Compose 全栈编排
+# =============================================================================
+#
+# 一条命令启动默认开发环境（Postgres+pgvector / Redis / 本地对象存储 / API）：
+#
+#     docker compose -f deploy/docker-compose.yml up -d --build
+#
+#     查看状态：docker compose -f deploy/docker-compose.yml ps
+#     查看日志：docker compose -f deploy/docker-compose.yml logs -f api
+#     停止服务：docker compose -f deploy/docker-compose.yml down
+#     连数据一起清空：docker compose -f deploy/docker-compose.yml down -v
+#
+# 启动后：
+#     接口文档   http://127.0.0.1:8000/docs
+#     健康检查   http://127.0.0.1:8000/health
+#     可选 MinIO：追加 --profile minio，并显式配置可用镜像与 STORAGE_BACKEND=minio
+#     Postgres   127.0.0.1:5432（用户/库默认 pic）
+#     Redis      127.0.0.1:6379
+#
+# 关于密钥：模型 Key 一律不写入本文件，使用 ${LLM_API_KEY:-} 这类透传写法，
+# 由宿主机环境变量或 deploy/.env（不被提交）注入；未提供时 api 以 stub 模型运行，
+# 主流程仍可跑通，不会因为缺少密钥而启动失败。
+#
+# 关于"不用 Docker 也能跑"：本项目所有外部依赖都可降级，
+# 直接使用 SQLite + 进程内缓存 + 本地文件存储即可零依赖运行主流程，
+# 完全不需要本文件中的任何容器：
+#
+#     scripts\dev.ps1 setup     # 建虚拟环境并安装依赖
+#     scripts\dev.ps1 seed      # 写入演示数据（存在种子脚本时）
+#     scripts\dev.ps1 run       # 启动 http://127.0.0.1:8000
+#
+# 此时生效的默认配置为：DATABASE_URL=sqlite:///<项目根>/data/pic.db、
+# CACHE_BACKEND=auto（Redis 不可用自动退化为进程内缓存）、
+# STORAGE_BACKEND=local（落盘到 <项目根>/data/objects）、VECTOR_BACKEND=auto。
+# 更多说明见 deploy/README.md。
+# =============================================================================
+
+# 保留旧 Compose project name 以复用既有本地数据卷；业务显示名已切换为售后工单。
+name: product-insight-copilot
+
+# ---------------------------------------------------------------------------
+# 共享环境变量（YAML 锚点）：api 与 worker 必须完全一致
+#   为什么用锚点而不是复制一份：worker 与 API 的配置（模型路由、预算、密级、缓存…）
+#   一旦不一致，问题会在上线后以很难查的方式暴露；这里保证只有一份定义。
+# ---------------------------------------------------------------------------
+x-pic-env: &pic-env
+  # ---- 基础 ----
+  APP_NAME: ${APP_NAME:-After-sales Ticket Copilot}
+  APP_ENV: ${APP_ENV:-dev}
+  DEBUG: ${DEBUG:-true}
+  API_PREFIX: ${API_PREFIX:-/api/v1}
+  APP_RELEASE_SHA: ${APP_RELEASE_SHA:-}
+  DELIVERY_EVIDENCE_DIR: /app/delivery-evidence
+  DELIVERY_EVIDENCE_MAX_AGE_HOURS: ${DELIVERY_EVIDENCE_MAX_AGE_HOURS:-24}
+  # 默认不采信 X-Forwarded-*；经网关部署时只填写明确代理 IP/CIDR，生产禁止 *
+  FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-}
+
+  # ---- 数据库：容器内用服务名 postgres，驱动为 psycopg3 ----
+  DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pic}:${POSTGRES_PASSWORD:-pic_dev_password}@postgres:5432/${POSTGRES_DB:-pic}
+  DB_ECHO: ${DB_ECHO:-false}
+  DB_POOL_SIZE: ${DB_POOL_SIZE:-10}
+  DB_MAX_OVERFLOW: ${DB_MAX_OVERFLOW:-20}
+
+  # ---- 向量：三档可选（fallback / pgvector / qdrant）----
+  # auto 的顺序：配了 QDRANT_URL → qdrant；否则 Postgres → pgvector；否则 fallback。
+  # 想强制用 pgvector（不选 Qdrant）就把 QDRANT_URL 置空。
+  VECTOR_BACKEND: ${VECTOR_BACKEND:-auto}
+  QDRANT_URL: ${QDRANT_URL:-}
+  QDRANT_API_KEY: ${QDRANT_API_KEY:-}
+  QDRANT_COLLECTION: ${QDRANT_COLLECTION:-pic_chunks}
+  EMBEDDING_DIM: ${EMBEDDING_DIM:-1024}
+  VECTOR_TABLE_NAME: ${VECTOR_TABLE_NAME:-chunk_vectors}
+
+  # ---- 缓存：容器内用服务名 redis ----
+  REDIS_URL: redis://redis:6379/0
+  CACHE_BACKEND: ${CACHE_BACKEND:-redis}
+  CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-300}
+
+  # ---- 对象存储：默认本地卷；MinIO 通过可选 profile 显式启用 ----
+  STORAGE_BACKEND: ${STORAGE_BACKEND:-local}
+  MINIO_ENDPOINT: ${MINIO_ENDPOINT:-minio:9000}
+  # 本地验收可让应用凭据回退为 root；真实部署必须显式注入独立的最小权限账号。
+  MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-${MINIO_ROOT_USER:-picminio}}
+  MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-${MINIO_ROOT_PASSWORD:-picminio123}}
+  MINIO_BUCKET: ${MINIO_BUCKET:-pic-documents}
+  MINIO_SECURE: ${MINIO_SECURE:-false}
+  # 回退到本地存储时的落盘目录（已挂载 api_data 卷）
+  STORAGE_LOCAL_DIR: /app/data/objects
+
+  # ---- 启动行为：建表；开发环境可播种演示数据（APP_ENV=prod 时 AUTO_SEED=true 会拒绝启动） ----
+  AUTO_INIT_DB: ${AUTO_INIT_DB:-true}
+  AUTO_SEED: ${AUTO_SEED:-true}
+  # 允许跨域的前端来源（默认放开本地开发端口）
+  CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://127.0.0.1:5173}
+  # 多模型路由：按 Agent/节点覆盖模型（JSON，未列出的落回全局 LLM_* 配置）
+  # 例：{"report_agent":{"model":"deepseek-reasoner"}}
+  AGENT_MODEL_OVERRIDES: ${AGENT_MODEL_OVERRIDES:-{}}
+
+  # ---- 认证：生产环境务必用环境变量覆盖 JWT_SECRET ----
+  JWT_SECRET: ${JWT_SECRET:-dev-only-secret-change-me-in-production}
+  JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
+  JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-720}
+  PASSWORD_SCHEME: ${PASSWORD_SCHEME:-pbkdf2}
+
+  # ---- 模型网关：默认 stub，不填密钥也能启动 ----
+  # 接入真实模型时设置 LLM_PROVIDER=openai_compatible 并注入 LLM_API_KEY
+  LLM_PROVIDER: ${LLM_PROVIDER:-stub}
+  LLM_BASE_URL: ${LLM_BASE_URL:-https://api.deepseek.com/v1}
+  LLM_API_KEY: ${LLM_API_KEY:-}
+  LLM_MODEL: ${LLM_MODEL:-deepseek-chat}
+  LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
+  LLM_MAX_RETRIES: ${LLM_MAX_RETRIES:-2}
+  LLM_TEMPERATURE: ${LLM_TEMPERATURE:-0.2}
+  LLM_MAX_OUTPUT_TOKENS: ${LLM_MAX_OUTPUT_TOKENS:-4000}
+  # 主模型调用失败时的降级链（JSON 数组，按顺序重试）
+  LLM_FALLBACK_MODELS: ${LLM_FALLBACK_MODELS:-[]}
+  # 模型灰度：按任务百分比分桶试用候选模型（其余任务继续用对照模型）
+  # 例：{"report_agent":{"model":"deepseek-reasoner-v2","percent":15}}
+  MODEL_CANARY: ${MODEL_CANARY:-{}}
+  MODEL_CANARY_SALT: ${MODEL_CANARY_SALT:-pic-canary-1}
+
+  # ---- Embedding：默认 stub（离线确定性向量）----
+  EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-stub}
+  EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-}
+  EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-BAAI/bge-m3}
+  EMBEDDING_FAILURE_MODE: ${EMBEDDING_FAILURE_MODE:-fallback}
+
+  # ---- 售后事实接口：API 与 worker 必须使用同一组只读端点 ----
+  TICKET_USE_MOCK_ADAPTERS: ${TICKET_USE_MOCK_ADAPTERS:-true}
+  TICKET_FACT_ORDER_URL: ${TICKET_FACT_ORDER_URL:-}
+  TICKET_FACT_PAYMENT_URL: ${TICKET_FACT_PAYMENT_URL:-}
+  TICKET_FACT_LOGISTICS_URL: ${TICKET_FACT_LOGISTICS_URL:-}
+  TICKET_FACT_AFTERSALE_URL: ${TICKET_FACT_AFTERSALE_URL:-}
+  TICKET_FACT_AUTH_HEADERS: ${TICKET_FACT_AUTH_HEADERS:-{}}
+  TICKET_FACT_TIMEOUT_SECONDS: ${TICKET_FACT_TIMEOUT_SECONDS:-3}
+  TICKET_FACT_MAX_RETRIES: ${TICKET_FACT_MAX_RETRIES:-2}
+  TICKET_FACT_RETRY_BACKOFF_SECONDS: ${TICKET_FACT_RETRY_BACKOFF_SECONDS:-0.2}
+
+  # ---- 工作流 / Agent 受控参数 ----
+  AGENT_TIMEOUT_SECONDS: ${AGENT_TIMEOUT_SECONDS:-90}
+  AGENT_MAX_RETRIES: ${AGENT_MAX_RETRIES:-1}
+  AGENT_MAX_TOKENS: ${AGENT_MAX_TOKENS:-6000}
+  AGENT_MAX_TOOL_CALLS: ${AGENT_MAX_TOOL_CALLS:-6}
+  WORKFLOW_MAX_RETRIEVE_ROUNDS: ${WORKFLOW_MAX_RETRIEVE_ROUNDS:-2}
+  WORKFLOW_VERSION: ${WORKFLOW_VERSION:-wf-1.0.0}
+  PROMPT_VERSION: ${PROMPT_VERSION:-prompt-1.0.0}
+  EMBEDDING_VERSION: ${EMBEDDING_VERSION:-emb-1.0.0}
+  INDEX_VERSION: ${INDEX_VERSION:-index-1.0.0}
+  REPORT_MAX_EVIDENCE: ${REPORT_MAX_EVIDENCE:-30}
+  EVIDENCE_MIN_RELEVANCE: ${EVIDENCE_MIN_RELEVANCE:-0.02}
+  CONFLICT_SIMILARITY_THRESHOLD: ${CONFLICT_SIMILARITY_THRESHOLD:-0.35}
+  RISK_SCORE_HIGH_THRESHOLD: ${RISK_SCORE_HIGH_THRESHOLD:-0.7}
+  CONFIDENCE_LOW_THRESHOLD: ${CONFIDENCE_LOW_THRESHOLD:-0.6}
+  MIN_EVIDENCE_COUNT: ${MIN_EVIDENCE_COUNT:-3}
+
+  # ---- 阶段六：成本核算 / 限额熔断 / 缓存与并发 ----
+  # 单价表（每百万 token，JSON）；未列出的模型用 MODEL_PRICE_DEFAULT 兜底
+  # 例：{"deepseek-chat":{"input":2.0,"output":8.0},"deepseek-reasoner":{"input":4.0,"output":16.0}}
+  MODEL_PRICES: ${MODEL_PRICES:-{}}
+  MODEL_PRICE_DEFAULT: ${MODEL_PRICE_DEFAULT:-{"input":0.0,"output":0.0}}
+  CURRENCY: ${CURRENCY:-CNY}
+  # 0 表示不限额；超限动作 degrade=降级为确定性归纳，abort=直接失败
+  TASK_TOKEN_LIMIT: ${TASK_TOKEN_LIMIT:-0}
+  TASK_COST_LIMIT: ${TASK_COST_LIMIT:-0}
+  TENANT_DAILY_COST_LIMIT: ${TENANT_DAILY_COST_LIMIT:-0}
+  BUDGET_EXCEEDED_ACTION: ${BUDGET_EXCEEDED_ACTION:-degrade}
+  # 同一模型的并发上限（保护供应商配额与本地连接数）
+  MODEL_MAX_CONCURRENCY: ${MODEL_MAX_CONCURRENCY:-4}
+  MODEL_CONCURRENCY_TIMEOUT_SECONDS: ${MODEL_CONCURRENCY_TIMEOUT_SECONDS:-30}
+  # 建任务限流（每租户每分钟），0 表示不限流；多副本共享计数需 Redis
+  TASK_SUBMIT_RATE_LIMIT_PER_MINUTE: ${TASK_SUBMIT_RATE_LIMIT_PER_MINUTE:-0}
+  # 登录尝试限流（每个直连 IP + 用户名每分钟）；生产不可关闭
+  LOGIN_ATTEMPT_RATE_LIMIT_PER_MINUTE: ${LOGIN_ATTEMPT_RATE_LIMIT_PER_MINUTE:-10}
+  # 检索/指标结果缓存 TTL（基于数据指纹自动失效，模型输出不缓存）
+  RETRIEVAL_CACHE_TTL_SECONDS: ${RETRIEVAL_CACHE_TTL_SECONDS:-300}
+  METRIC_CACHE_TTL_SECONDS: ${METRIC_CACHE_TTL_SECONDS:-300}
+  # 进程重启后把残留的 running 任务标记为可重试失败
+  RECONCILE_STALE_TASKS: ${RECONCILE_STALE_TASKS:-true}
+  # 证据可回答性门控：覆盖面低于该值触发补检索/如实说明无法回答
+  ANSWERABILITY_MIN_COVERAGE: ${ANSWERABILITY_MIN_COVERAGE:-0.2}
+  ANSWERABILITY_HIGH_SCORE: ${ANSWERABILITY_HIGH_SCORE:-0.26}
+  RETRIEVAL_MIN_SCORE: ${RETRIEVAL_MIN_SCORE:-0.05}
+
+  # ---- 指标导入 / 演示数据 ----
+  METRIC_IMPORT_MAX_ROWS: ${METRIC_IMPORT_MAX_ROWS:-200000}
+  METRIC_RATIO_BOUNDS: ${METRIC_RATIO_BOUNDS:-1.5}
+  # 容器内路径与下方只读挂载的演示数据目录保持一致
+  DEMO_DATA_DIR: /app/data/demo
+
+  # ---- 安全 ----
+  MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-20}
+
+  # ---- 检索 ----
+  RETRIEVAL_TOP_K: ${RETRIEVAL_TOP_K:-8}
+  RETRIEVAL_CANDIDATE_K: ${RETRIEVAL_CANDIDATE_K:-50}
+  CHUNK_SIZE: ${CHUNK_SIZE:-600}
+  CHUNK_OVERLAP: ${CHUNK_OVERLAP:-80}
+  # 可选 BGE-Reranker HTTP 服务；留空则使用内置启发式重排
+  RERANKER_ENDPOINT: ${RERANKER_ENDPOINT:-}
+  RERANKER_API_KEY: ${RERANKER_API_KEY:-}
+  RERANKER_TIMEOUT_SECONDS: ${RERANKER_TIMEOUT_SECONDS:-20}
+  RERANKER_FAILURE_MODE: ${RERANKER_FAILURE_MODE:-fallback}
+
+  # ---- 任务执行 ----
+  TASK_WORKER_THREADS: ${TASK_WORKER_THREADS:-4}
+  TASK_POLL_INTERVAL_SECONDS: ${TASK_POLL_INTERVAL_SECONDS:-0.5}
+
+  # ---- 默认关闭的只读主动异常调度 ----
+  PROACTIVE_ANOMALY_ENABLED: ${PROACTIVE_ANOMALY_ENABLED:-false}
+  PROACTIVE_ANOMALY_METRICS: ${PROACTIVE_ANOMALY_METRICS:-[]}
+  PROACTIVE_ANOMALY_LOOKBACK_DAYS: ${PROACTIVE_ANOMALY_LOOKBACK_DAYS:-30}
+  PROACTIVE_ANOMALY_MAX_DATA_AGE_DAYS: ${PROACTIVE_ANOMALY_MAX_DATA_AGE_DAYS:-2}
+  PROACTIVE_ANOMALY_MAX_DATA_AGE_BY_METRIC: ${PROACTIVE_ANOMALY_MAX_DATA_AGE_BY_METRIC:-{}}
+  PROACTIVE_ANOMALY_METHOD: ${PROACTIVE_ANOMALY_METHOD:-zscore}
+  PROACTIVE_ANOMALY_THRESHOLD: ${PROACTIVE_ANOMALY_THRESHOLD:-2.5}
+  PROACTIVE_ANOMALY_INTERVAL_SECONDS: ${PROACTIVE_ANOMALY_INTERVAL_SECONDS:-300}
+  PROACTIVE_ANOMALY_LEASE_SECONDS: ${PROACTIVE_ANOMALY_LEASE_SECONDS:-900}
+  METRIC_SOURCE_HTTP_ENABLED: ${METRIC_SOURCE_HTTP_ENABLED:-false}
+  METRIC_SOURCE_HTTP_URL: ${METRIC_SOURCE_HTTP_URL:-}
+  METRIC_SOURCE_HTTP_AUTH_HEADERS: ${METRIC_SOURCE_HTTP_AUTH_HEADERS:-{}}
+  METRIC_SOURCE_HTTP_TIMEOUT_SECONDS: ${METRIC_SOURCE_HTTP_TIMEOUT_SECONDS:-5}
+  METRIC_SOURCE_HTTP_MAX_RETRIES: ${METRIC_SOURCE_HTTP_MAX_RETRIES:-2}
+  METRIC_SOURCE_HTTP_RETRY_BACKOFF_SECONDS: ${METRIC_SOURCE_HTTP_RETRY_BACKOFF_SECONDS:-0.2}
+  METRIC_SOURCE_HTTP_MAX_ROWS: ${METRIC_SOURCE_HTTP_MAX_ROWS:-50000}
+  METRIC_SOURCE_HTTP_MAX_RESPONSE_BYTES: ${METRIC_SOURCE_HTTP_MAX_RESPONSE_BYTES:-4194304}
+
+  # ---- 断点恢复：API 与所有 worker 共用同一 Postgres checkpoint ----
+  CHECKPOINTER_BACKEND: ${CHECKPOINTER_BACKEND:-postgres}
+  CHECKPOINTER_POSTGRES_URL: postgresql://${POSTGRES_USER:-pic}:${POSTGRES_PASSWORD:-pic_dev_password}@postgres:5432/${POSTGRES_DB:-pic}
+
+# 应用容器统一最小权限边界。业务可写目录必须通过 volume/tmpfs 明确声明，
+# 避免代码或依赖意外写入镜像层；资源上限由各服务单独配置。
+x-pic-app-hardening: &pic-app-hardening
+  init: true
+  read_only: true
+  cap_drop: ["ALL"]
+  security_opt: ["no-new-privileges:true"]
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=64m
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL + pgvector：业务数据、元数据与向量统一存储
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: ${POSTGRES_IMAGE:-pgvector/pgvector:pg16@sha256:ccc6e83d6e35e931dc7c5def2022729d5a6c370318d099181995567ff1fb4d6b}
+    cpus: ${POSTGRES_CPUS:-2.0}
+    mem_limit: ${POSTGRES_MEMORY_LIMIT:-2g}
+    pids_limit: ${POSTGRES_PIDS_LIMIT:-256}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-pic}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pic_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-pic}
+      # UTF-8 编码，避免中文文档内容写入异常
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pic} -d ${POSTGRES_DB:-pic}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # Redis：任务幂等键、限流、短周期缓存
+  # ---------------------------------------------------------------------------
+  redis:
+    image: ${REDIS_IMAGE:-redis:7-alpine@sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf}
+    cpus: ${REDIS_CPUS:-1.0}
+    mem_limit: ${REDIS_MEMORY_LIMIT:-512m}
+    pids_limit: ${REDIS_PIDS_LIMIT:-128}
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "1"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # Qdrant：向量库（`VECTOR_BACKEND=qdrant` 时使用）
+  # 为什么放在这里：FallbackVectorStore 是 O(n) 全扫描（1000 条切片 p50≈0.5s，
+  # 其中 350ms 花在把 1024 维向量从 JSON 列搬回 Python）；Qdrant 把 ANN 与
+  # **权限过滤**一起下推，且服务端模式天然被 API 与多个 worker 共享。
+  # 只配了 QDRANT_URL 就会自动走这一档（见 app/rag/vectorstore.py 的 auto 判定）。
+  # ---------------------------------------------------------------------------
+  qdrant:
+    image: ${QDRANT_IMAGE:-qdrant/qdrant:v1.13.2@sha256:81bdf0a9deedbeec68eed207145ade0b9d5db15e2f84069180711aa9698445b1}
+    cpus: ${QDRANT_CPUS:-2.0}
+    mem_limit: ${QDRANT_MEMORY_LIMIT:-2g}
+    pids_limit: ${QDRANT_PIDS_LIMIT:-256}
+    profiles: ["qdrant"]
+    restart: unless-stopped
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"
+      - "${QDRANT_GRPC_PORT:-6334}:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      # 镜像里没有 curl，用 bash 的 /dev/tcp 探活（Qdrant 官方镜像基于 debian slim）
+      test: ["CMD-SHELL", "bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # MinIO：原始文档与解析结果的对象存储（S3 兼容）
+  # 该 profile 只用于本地共享存储闭环；生产应接企业对象存储或经审计的自建镜像。
+  # ---------------------------------------------------------------------------
+  minio:
+    image: ${MINIO_IMAGE:-bitnamilegacy/minio:2025.7.23-debian-12-r5@sha256:6dabb4a2088c9a79908de3bc05f4586c23ad2182c8908e7e3acbf61c1467fb20}
+    cpus: ${MINIO_CPUS:-1.0}
+    mem_limit: ${MINIO_MEMORY_LIMIT:-1g}
+    pids_limit: ${MINIO_PIDS_LIMIT:-256}
+    profiles: ["minio"]
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-picminio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-picminio123}
+    ports:
+      # 9000 = S3 API，9001 = 控制台
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - minio_data:/bitnami/minio/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9000/minio/health/live >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # minio-init：一次性任务，按 MINIO_BUCKET 创建存储桶后退出
+  # 不需要时可整段删除，或仅在需要时用 --profile init 启动
+  # ---------------------------------------------------------------------------
+  minio-init:
+    image: ${MINIO_IMAGE:-bitnamilegacy/minio:2025.7.23-debian-12-r5@sha256:6dabb4a2088c9a79908de3bc05f4586c23ad2182c8908e7e3acbf61c1467fb20}
+    cpus: ${MINIO_INIT_CPUS:-0.5}
+    mem_limit: ${MINIO_INIT_MEMORY_LIMIT:-256m}
+    pids_limit: ${MINIO_INIT_PIDS_LIMIT:-64}
+    profiles: ["minio"]
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-picminio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-picminio123}
+      MINIO_BUCKET: ${MINIO_BUCKET:-pic-documents}
+    entrypoint: ["/bin/bash", "-ec"]
+    command:
+      - |
+        attempt=1
+        until /opt/bitnami/minio-client/bin/mc alias set pic http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD"; do
+          if [ "$$attempt" -ge 20 ]; then
+            echo "[minio-init] MinIO 在 20 次尝试后仍未接受连接" >&2
+            exit 1
+          fi
+          attempt=$$((attempt + 1))
+          sleep 2
+        done
+        /opt/bitnami/minio-client/bin/mc mb --ignore-existing "pic/$$MINIO_BUCKET"
+        echo "[minio-init] 存储桶已就绪: $$MINIO_BUCKET"
+    restart: "no"
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # 数据库迁移：API / worker 启动前必须先完成版本化迁移
+  #   - 使用独立一次性容器，失败时阻止业务进程启动；
+  #   - `AUTO_INIT_DB` 仍可用于本地演示播种，但不能替代 schema_migrations 记录。
+  # ---------------------------------------------------------------------------
+  migrate:
+    <<: *pic-app-hardening
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        APP_RELEASE_SHA: ${APP_RELEASE_SHA:-dev}
+    image: ${PIC_API_IMAGE:-pic-api:local}
+    cpus: ${MIGRATE_CPUS:-1.0}
+    mem_limit: ${MIGRATE_MEMORY_LIMIT:-1g}
+    pids_limit: ${MIGRATE_PIDS_LIMIT:-128}
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["python", "-m", "app.db.migrate", "apply"]
+    environment:
+      <<: *pic-env
+      AUTO_INIT_DB: "false"
+      AUTO_SEED: "false"
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # API：FastAPI 服务（镜像由 backend/Dockerfile 构建）
+  # 环境变量名与 backend/app/config.py 的字段名一一对应（统一大写）
+  # ---------------------------------------------------------------------------
+  api:
+    <<: *pic-app-hardening
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        APP_RELEASE_SHA: ${APP_RELEASE_SHA:-dev}
+    image: ${PIC_API_IMAGE:-pic-api:local}
+    cpus: ${API_CPUS:-2.0}
+    mem_limit: ${API_MEMORY_LIMIT:-2g}
+    pids_limit: ${API_PIDS_LIMIT:-256}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    environment:
+      <<: *pic-env
+      # ---- API 专属：任务分发与断点恢复（多副本见 README §7.4）----
+      # API 只入队，执行交给 worker 服务，因此 API 副本可以随便滚动重启
+      TASK_EXECUTION_BACKEND: ${TASK_EXECUTION_BACKEND:-queue}
+      WORKER_EMBEDDED: "false"
+      # 生产默认使用共享 Postgres，避免 API/worker 各自持有容器内 SQLite 文件。
+      CHECKPOINTER_BACKEND: ${CHECKPOINTER_BACKEND:-postgres}
+      CHECKPOINTER_POSTGRES_URL: ${CHECKPOINTER_POSTGRES_URL:-postgresql://${POSTGRES_USER:-pic}:${POSTGRES_PASSWORD:-pic_dev_password}@postgres:5432/${POSTGRES_DB:-pic}}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      # 本地存储回退目录（STORAGE_BACKEND=local 时落盘到这里）；
+      # 只挂载 data/objects 子目录，避免遮蔽镜像内 <项目根>/data 下的其它内容
+      - api_data:/app/data/objects
+      # 仓库自带的演示数据（只读）：容器内换用本地存储/播种时可直接读取
+      - ../backend/data/demo:/app/data/demo:ro
+      # 正式发布证据只读挂载；页面只展示固定 JSON，不在应用内生成或修改证据
+      - ${DELIVERY_EVIDENCE_HOST_DIR:-../docs/testing/artifacts}:/app/delivery-evidence:ro
+    networks:
+      - pic-net
+    # 开发热重载：取消下面注释即可让源码改动即时生效
+    # volumes:
+    #   - ../backend/app:/app/app:ro
+    #   - api_data:/app/data/objects
+    #   - ../backend/data/demo:/app/data/demo:ro
+    # command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  # ---------------------------------------------------------------------------
+  # 任务 worker：从 task_queue_items 领取任务并执行（可独立扩缩容）
+  #   横向扩容：docker compose -f deploy/docker-compose.yml up -d --scale worker=3
+  #   worker 崩溃不影响交付：租约到期后任务会被其它 worker 回收重跑
+  # ---------------------------------------------------------------------------
+  worker:
+    <<: *pic-app-hardening
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        APP_RELEASE_SHA: ${APP_RELEASE_SHA:-dev}
+    image: ${PIC_API_IMAGE:-pic-api:local}
+    cpus: ${WORKER_CPUS:-2.0}
+    mem_limit: ${WORKER_MEMORY_LIMIT:-2g}
+    pids_limit: ${WORKER_PIDS_LIMIT:-256}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    # worker 只做执行，不对外暴露端口
+    command: ["python", "-m", "app.worker"]
+    # worker 不提供 HTTP 服务；独立心跳线程写入 /tmp，探针只验证进程循环仍在刷新。
+    healthcheck:
+      test: ["CMD", "python", "-m", "app.worker_health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    environment:
+      <<: *pic-env
+      # ---- worker 专属 ----
+      TASK_EXECUTION_BACKEND: ${TASK_EXECUTION_BACKEND:-queue}
+      WORKER_EMBEDDED: "false"
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-2}
+      WORKER_LEASE_SECONDS: ${WORKER_LEASE_SECONDS:-600}
+      WORKER_MAX_ATTEMPTS: ${WORKER_MAX_ATTEMPTS:-3}
+      WORKER_POLL_INTERVAL_SECONDS: ${WORKER_POLL_INTERVAL_SECONDS:-1}
+      WORKER_HEARTBEAT_PATH: /tmp/pic-worker-heartbeat
+      WORKER_HEARTBEAT_INTERVAL_SECONDS: ${WORKER_HEARTBEAT_INTERVAL_SECONDS:-5}
+      WORKER_HEARTBEAT_MAX_AGE_SECONDS: ${WORKER_HEARTBEAT_MAX_AGE_SECONDS:-20}
+      CHECKPOINTER_BACKEND: ${CHECKPOINTER_BACKEND:-postgres}
+      CHECKPOINTER_POSTGRES_URL: ${CHECKPOINTER_POSTGRES_URL:-postgresql://${POSTGRES_USER:-pic}:${POSTGRES_PASSWORD:-pic_dev_password}@postgres:5432/${POSTGRES_DB:-pic}}
+    volumes:
+      - api_data:/app/data/objects
+      - ../backend/data/demo:/app/data/demo:ro
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # 只读主动异常调度器：仅在显式 --profile proactive 时启动。
+  # 多副本即使误启动多个，也通过 scheduler_leases 数据库租约只允许一个实例扫描。
+  # 扫描只生成候选告警，仍需管理员确认后才创建诊断任务。
+  # ---------------------------------------------------------------------------
+  proactive-scheduler:
+    <<: *pic-app-hardening
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        APP_RELEASE_SHA: ${APP_RELEASE_SHA:-dev}
+    image: ${PIC_API_IMAGE:-pic-api:local}
+    cpus: ${SCHEDULER_CPUS:-1.0}
+    mem_limit: ${SCHEDULER_MEMORY_LIMIT:-1g}
+    pids_limit: ${SCHEDULER_PIDS_LIMIT:-128}
+    profiles: ["proactive"]
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    command: ["python", "-m", "app.proactive_scheduler"]
+    healthcheck:
+      disable: true
+    environment:
+      <<: *pic-env
+      AUTO_INIT_DB: "false"
+      AUTO_SEED: "false"
+      CHECKPOINTER_BACKEND: ${CHECKPOINTER_BACKEND:-postgres}
+      CHECKPOINTER_POSTGRES_URL: ${CHECKPOINTER_POSTGRES_URL:-postgresql://${POSTGRES_USER:-pic}:${POSTGRES_PASSWORD:-pic_dev_password}@postgres:5432/${POSTGRES_DB:-pic}}
+    volumes:
+      - ../backend/data/demo:/app/data/demo:ro
+    networks:
+      - pic-net
+
+  # ---------------------------------------------------------------------------
+  # 本地集成 Sandbox：事实、指标与 Webhook 的统一参考上游。
+  # 仅在显式 --profile sandbox 时启动；不依赖生产数据库、Redis 或主应用配置。
+  # 它只用于本地联调、演示和契约验证，不能作为企业生产接口已验收的证据。
+  # ---------------------------------------------------------------------------
+  integration-sandbox:
+    <<: *pic-app-hardening
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+      args:
+        APP_RELEASE_SHA: ${APP_RELEASE_SHA:-dev}
+    image: ${PIC_API_IMAGE:-pic-api:local}
+    cpus: ${SANDBOX_CPUS:-1.0}
+    mem_limit: ${SANDBOX_MEMORY_LIMIT:-512m}
+    pids_limit: ${SANDBOX_PIDS_LIMIT:-128}
+    profiles: ["sandbox"]
+    restart: unless-stopped
+    command:
+      ["python", "scripts/reference_integration_api.py", "--host", "0.0.0.0", "--port", "8091"]
+    environment:
+      SANDBOX_API_KEY: ${SANDBOX_API_KEY:-local-sandbox-key}
+      SANDBOX_WEBHOOK_SECRET: ${SANDBOX_WEBHOOK_SECRET:-local-webhook-secret}
+      SANDBOX_DELAY_SECONDS: ${SANDBOX_DELAY_SECONDS:-0.6}
+    ports:
+      - "${SANDBOX_PORT:-8091}:8091"
+    healthcheck:
+      test:
+        ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8091/health', timeout=4)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - pic-net
+
+
+networks:
+  pic-net:
+    driver: bridge
+
+volumes:
+  qdrant_data:
+  pg_data:
+  redis_data:
+  minio_data:
+  api_data:

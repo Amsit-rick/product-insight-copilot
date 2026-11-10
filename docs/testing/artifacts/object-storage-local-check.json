@@ -1,0 +1,25 @@
+{
+  "schema_version": "object-storage-probe-v1",
+  "configuration": {
+    "passed": true,
+    "checks": {
+      "shared_backend": true,
+      "endpoint_configured": true,
+      "credentials_configured": true,
+      "bucket_configured": true,
+      "configuration_valid": true
+    }
+  },
+  "action": "full",
+  "executed": true,
+  "passed": true,
+  "shared_storage_ready": true,
+  "production_ready": false,
+  "checks": {
+    "write_succeeded": true,
+    "read_matches": true,
+    "delete_succeeded": true
+  },
+  "payload_bytes": 32,
+  "latency_ms": 30
+}

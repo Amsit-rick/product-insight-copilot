@@ -1,0 +1,34 @@
+{
+  "schema_version": "self-hosted-supply-chain-bundle-v1",
+  "generated_at": "2026-11-10T09:45:34.479866+00:00",
+  "executed": true,
+  "passed": true,
+  "release_sha": "10a782113b8b5289ca6329ae2daa1e3b9de08f95",
+  "bundle_id": "f74b7fa75c71ea60adf580b8214f04ab46fa911648f086ad74e3a1f816a8be98",
+  "runner_provider": "local_docker_desktop",
+  "runner_scope": "local_host_rehearsal",
+  "host_group_fingerprint": null,
+  "image_digest": "sha256:f311de65b37bb0600ef6679e368fe2b31276ee78e20281acd8284c0321a8bcd3",
+  "files": {
+    "runner-readiness.json": {
+      "sha256": "7fece66a85d285030fa1ec6d5ea18443e6f23e56e84017c271f1a79f863f6630",
+      "schema_version": "self-hosted-runner-readiness-v1"
+    },
+    "image-attestations.json": {
+      "sha256": "a87c827d963b211155cb85f157b7d5ebedce7578a743cd30ed225d86c1d91782",
+      "schema_version": "image-attestation-verification-v1"
+    },
+    "image-signature.json": {
+      "sha256": "44ecb2d7ee6856025948e9ced018ed1cdb434e90d217362ec2413f779c778486",
+      "schema_version": "image-signature-verification-v1"
+    }
+  },
+  "provenance_verified": true,
+  "sbom_verified": true,
+  "signature_verified": true,
+  "self_hosted_runner_verified": false,
+  "local_runner_rehearsal_verified": true,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false
+}

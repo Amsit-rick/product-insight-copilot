@@ -1,0 +1,3 @@
+# Optional local semantic retrieval runtime. Keep it separate from the API image:
+# ordinary development and CI continue to use the deterministic stub models.
+fastembed==0.9.1

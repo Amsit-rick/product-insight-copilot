@@ -1,0 +1,4225 @@
+{
+  "schema_version": "ticket-evaluation-evidence-v1",
+  "generated_at": "2026-11-08T11:20:05.644730+00:00",
+  "dataset": {
+    "version": "tickets-1.1.0",
+    "kind": "internal_generated_regression",
+    "sha256": "d13b94eb6d382066969e1d3a2f6b62d3f66159bee0a2b30f22f37f83323be7ca",
+    "case_count": 50
+  },
+  "runtime": {
+    "llm_provider": "openai_compatible",
+    "llm_model": "deepseek-chat",
+    "fact_adapter": "mock",
+    "currency": "CNY",
+    "workflow_version": "wf-1.0.0",
+    "prompt_version": "prompt-1.0.0",
+    "embedding_version": "emb-1.0.0"
+  },
+  "summary": {
+    "run_count": 1,
+    "pass_rate_mean": 1.0,
+    "pass_rate_min": 1.0,
+    "pass_rate_max": 1.0,
+    "case_consistency_rate": 1.0,
+    "p95_latency_ms": 13207,
+    "total_cost_amount": 0.57127,
+    "avg_cost_per_run": 0.57127,
+    "model_calls": 245
+  },
+  "acceptance": {
+    "status": "not_configured",
+    "passed": false,
+    "thresholds": {},
+    "observed": {
+      "pass_rate_min": 1.0,
+      "case_consistency_rate": 1.0,
+      "min_evidence_support_rate": 1.0,
+      "p95_latency_ms": 13207
+    },
+    "checks": {
+      "external_holdout": false,
+      "case_count_at_least_200": false,
+      "real_model_provider": true,
+      "real_fact_adapter": false,
+      "at_least_three_runs": false,
+      "runs_completed": false,
+      "model_calls_recorded": true,
+      "prices_complete": true,
+      "safety_metrics_pass": true,
+      "thresholds_configured": false,
+      "pass_rate_threshold": false,
+      "consistency_threshold": false,
+      "evidence_support_threshold": false,
+      "latency_threshold": false
+    }
+  },
+  "runs": [
+    {
+      "run_id": "f6bf30c6-794f-4b22-bd64-d7f1bab62bf3",
+      "name": "真实模型分层50单-政策查询扩展后",
+      "status": "completed",
+      "dataset_version": "tickets-1.1.0",
+      "case_count": 50,
+      "avg_latency_ms": 7545.3,
+      "metrics": {
+        "dataset_version": "tickets-1.1.0",
+        "dataset_kind": "internal_generated_regression",
+        "dataset_sha256": "d13b94eb6d382066969e1d3a2f6b62d3f66159bee0a2b30f22f37f83323be7ca",
+        "case_count": 50,
+        "passed": 50,
+        "pass_rate": 1.0,
+        "issue_macro_f1": 1.0,
+        "action_accuracy": 1.0,
+        "risk_accuracy": 1.0,
+        "approval_gate_recall": 1.0,
+        "expired_policy_leak_rate": 0.0,
+        "evidence_support_rate": 1.0,
+        "adapter_failure_handling_rate": 1.0,
+        "tenant_isolation_rate": 1.0,
+        "duplicate_write_blocked_rate": 1.0,
+        "classification_accuracy": 1.0,
+        "policy_version_recall": 1.0,
+        "p95_latency_ms": 13207,
+        "avg_latency_ms": 7545.3,
+        "total_tokens": 183474,
+        "avg_tokens": 3669.5,
+        "currency": "CNY",
+        "input_tokens": 130785,
+        "output_tokens": 52689,
+        "cache_hit_tokens": 74541,
+        "model_calls": 245,
+        "total_cost_amount": 0.57127,
+        "avg_cost_amount": 0.011425,
+        "per_model": {
+          "deepseek-chat": {
+            "calls": 245,
+            "input_tokens": 130785,
+            "output_tokens": 52689,
+            "amount": 0.57127
+          }
+        },
+        "unpriced_models": [],
+        "per_group": {
+          "adapter_timeout": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "cross_shop": {
+            "count": 2,
+            "pass_rate": 1.0
+          },
+          "damaged": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "duplicate_decision": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "escalation_wording": {
+            "count": 2,
+            "pass_rate": 1.0
+          },
+          "fact_variant": {
+            "count": 2,
+            "pass_rate": 1.0
+          },
+          "low_confidence": {
+            "count": 2,
+            "pass_rate": 1.0
+          },
+          "missing_order": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "normal": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "order_not_found": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "promotion": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "refund": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "reship": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "risk_flag": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "sensitive": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "stalled": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "stalled_short": {
+            "count": 3,
+            "pass_rate": 1.0
+          },
+          "unauthorized": {
+            "count": 3,
+            "pass_rate": 1.0
+          }
+        },
+        "note": "内部生成回归集基线：数字用于回归对比，不得写成生产效果（需求书 §11）"
+      },
+      "details": [
+        {
+          "case_id": "tk-eval-001",
+          "group": "normal",
+          "subject": "常规-未发货-1",
+          "order_id": "TB202609241806",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "217ed9d7-1979-4588-b4a1-b7744e3aa73f",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 4857,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 388,
+                "output_tokens": 102,
+                "cache_hit_tokens": 254,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 458,
+                "output_tokens": 224,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 437,
+                "output_tokens": 152,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 503,
+                "output_tokens": 135,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 457,
+                "output_tokens": 251,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 746,
+                "output_tokens": 390,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 445,
+                "output_tokens": 169,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 13407,
+          "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-081",
+          "group": "refund",
+          "subject": "申请退款-89元",
+          "order_id": "TB202609241501",
+          "expect": {
+            "action_type": "refund",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "requires_approval": true,
+            "amount": "89.00"
+          },
+          "observed": {
+            "ticket_id": "1e317069-2afe-4691-a6ff-c27907b91d3a",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "refund",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "refund",
+            "amount": "89.00",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 4845,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 384,
+                "output_tokens": 46,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 456,
+                "output_tokens": 170,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 543,
+                "output_tokens": 328,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 612,
+                "output_tokens": 315,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 478,
+                "output_tokens": 192,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 729,
+                "output_tokens": 107,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 374,
+                "output_tokens": 111,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "amount_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 9881,
+          "notes": "退款一律 L3：金额引用实付金额，需主管审批",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-093",
+          "group": "risk_flag",
+          "subject": "批量退款申请",
+          "order_id": "TB202609241501",
+          "expect": {
+            "risk_tier": "L4",
+            "approval_requirement": "risk_control",
+            "requires_approval": true
+          },
+          "observed": {
+            "ticket_id": "0e528084-758b-42cb-ada7-73c9ba372e32",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "refund",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "refund",
+            "amount": "89.00",
+            "risk_tier": "L4",
+            "approval_requirement": "risk_control",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 5671,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 400,
+                "output_tokens": 133,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 472,
+                "output_tokens": 204,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 559,
+                "output_tokens": 326,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 628,
+                "output_tokens": 291,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 745,
+                "output_tokens": 572,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 494,
+                "output_tokens": 303,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 390,
+                "output_tokens": 154,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 13351,
+          "notes": "风控标记 ['batch_refund']：必须转风控",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-101",
+          "group": "sensitive",
+          "subject": "敏感客户要求退款",
+          "order_id": "TB202609241501",
+          "expect": {
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "requires_approval": true
+          },
+          "observed": {
+            "ticket_id": "70020d5a-97d5-4fe8-847f-293bc8486825",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "refund",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "refund",
+            "amount": "89.00",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 5268,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 397,
+                "output_tokens": 56,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 469,
+                "output_tokens": 156,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 556,
+                "output_tokens": 315,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 625,
+                "output_tokens": 217,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 491,
+                "output_tokens": 272,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 742,
+                "output_tokens": 465,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 387,
+                "output_tokens": 120,
+                "cache_hit_tokens": 253,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 10246,
+          "notes": "敏感客户（投诉倾向）：需主管审批",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-107",
+          "group": "promotion",
+          "subject": "满减未生效-解释口径",
+          "order_id": "TB202609240821",
+          "expect": {
+            "issue_type": "promotion_not_applied",
+            "action_type": "reply_only",
+            "max_risk_tier": "L1"
+          },
+          "observed": {
+            "ticket_id": "5b0e68b6-7809-4131-b147-49eb49746e39",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "promotion_not_applied",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reply_only",
+            "amount": null,
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 4,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 205,
+          "notes": "优惠类先解释口径，不涉及赔付",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-117",
+          "group": "damaged",
+          "subject": "破损-无凭证",
+          "order_id": "TB202609240992",
+          "expect": {
+            "issue_type": "damaged",
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "ee5e6ec6-7430-4448-a6da-dc86edbb19bb",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "damaged",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "商品破损照片"
+            ],
+            "agent_count": 7,
+            "tokens": 4994,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 383,
+                "output_tokens": 103,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 448,
+                "output_tokens": 183,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 545,
+                "output_tokens": 204,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 603,
+                "output_tokens": 159,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 480,
+                "output_tokens": 275,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 732,
+                "output_tokens": 387,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 373,
+                "output_tokens": 119,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 10558,
+          "notes": "破损优先补发；凭证缺失要写进 missing_information",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-127",
+          "group": "stalled",
+          "subject": "停滞-48h以上",
+          "order_id": "TB202609240655",
+          "expect": {
+            "issue_type": "logistics_stalled",
+            "action_type": "contact_logistics",
+            "policy_version_included": "v3.0",
+            "amount": "30.00"
+          },
+          "observed": {
+            "ticket_id": "70d69523-fb1e-4d00-b78d-29767c551f34",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": "30.00",
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 6538,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 389,
+                "output_tokens": 116,
+                "cache_hit_tokens": 255,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 459,
+                "output_tokens": 163,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1015,
+                "output_tokens": 671,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 966,
+                "output_tokens": 315,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 458,
+                "output_tokens": 191,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 724,
+                "output_tokens": 477,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 446,
+                "output_tokens": 148,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "amount_matches": true,
+            "policy_version_included": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 12981,
+          "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-139",
+          "group": "stalled_short",
+          "subject": "停滞-12小时",
+          "order_id": "TB202609241806",
+          "expect": {
+            "action_type": "contact_logistics",
+            "amount": "0"
+          },
+          "observed": {
+            "ticket_id": "69dc57f4-e4f8-4b48-8894-db2d422b7091",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": null,
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 6024,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 386,
+                "output_tokens": 92,
+                "cache_hit_tokens": 252,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 456,
+                "output_tokens": 177,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1012,
+                "output_tokens": 595,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 963,
+                "output_tokens": 232,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 455,
+                "output_tokens": 228,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 728,
+                "output_tokens": 111,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 443,
+                "output_tokens": 146,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "amount_matches": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 12556,
+          "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-145",
+          "group": "reship",
+          "subject": "少件-补发",
+          "order_id": "TB202609241742",
+          "expect": {
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "692360c1-c857-476f-a29f-366474889975",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "missing_item",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 4972,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 387,
+                "output_tokens": 52,
+                "cache_hit_tokens": 253,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 458,
+                "output_tokens": 225,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 548,
+                "output_tokens": 211,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 611,
+                "output_tokens": 144,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 480,
+                "output_tokens": 249,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 728,
+                "output_tokens": 376,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 377,
+                "output_tokens": 126,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 10033,
+          "notes": "补发不涉及赔付金额",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-157",
+          "group": "missing_order",
+          "subject": "忘记订单号",
+          "order_id": null,
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing": [
+              "订单号"
+            ]
+          },
+          "observed": {
+            "ticket_id": "cebb94bd-5eb3-46f6-9ea3-90e1d4888a43",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "订单号"
+            ],
+            "missing_fields": [
+              "订单号"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_fields_match": true
+          },
+          "passed": true,
+          "latency_ms": 8,
+          "notes": "没有订单号 → 不分析，等客户补充",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-165",
+          "group": "order_not_found",
+          "subject": "订单号查不到",
+          "order_id": "TB20260101NODATA",
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing_contains": "订单号"
+          },
+          "observed": {
+            "ticket_id": "b5f294c7-5514-4adf-b73a-454551504bb9",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "正确的订单号（按该单号查不到订单）"
+            ],
+            "missing_fields": [
+              "正确的订单号（按该单号查不到订单）"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_mentions_reason": true
+          },
+          "passed": true,
+          "latency_ms": 8,
+          "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-171",
+          "group": "adapter_timeout",
+          "subject": "接口超时-物流",
+          "order_id": "TB20260101TIMEOUT",
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing_contains": "事实来源暂不可用"
+          },
+          "observed": {
+            "ticket_id": "f59827f3-ef1f-4784-aa5d-17fcc5d21492",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "订单事实来源暂不可用，请客服人工核实后再继续"
+            ],
+            "missing_fields": [
+              "订单事实来源暂不可用，请客服人工核实后再继续"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_mentions_reason": true
+          },
+          "passed": true,
+          "latency_ms": 8,
+          "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-177",
+          "group": "unauthorized",
+          "subject": "越权访问知识库",
+          "order_id": null,
+          "expect": {
+            "analyze_status": 403,
+            "error_code": "permission_denied"
+          },
+          "observed": {
+            "requested_kbs": [
+              "engineering_kb"
+            ],
+            "error_code": "permission_denied"
+          },
+          "checks": {
+            "permission_denied": true,
+            "error_code_matches": true
+          },
+          "passed": true,
+          "latency_ms": 7,
+          "notes": "ops 访问 engineering_kb：必须被拒绝（知识库级权限）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-183",
+          "group": "duplicate_decision",
+          "subject": "重复审批-退款",
+          "order_id": "TB202609241501",
+          "expect": {
+            "idempotent_decision": true
+          },
+          "observed": {
+            "ticket_id": "8cfb7155-4eea-48ea-b279-aad68bb7d0cf",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "refund",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "refund",
+            "amount": "89.00",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 5080,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 49,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 457,
+                "output_tokens": 215,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 544,
+                "output_tokens": 296,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 613,
+                "output_tokens": 230,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 479,
+                "output_tokens": 180,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 730,
+                "output_tokens": 380,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 375,
+                "output_tokens": 147,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "no_expired_policy_cited": true,
+            "duplicate_decision_idempotent": true
+          },
+          "passed": true,
+          "latency_ms": 9907,
+          "notes": "同一幂等键重复审批：只允许一次状态迁移",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-189",
+          "group": "low_confidence",
+          "subject": "低置信度-信息不足",
+          "order_id": "TB202609241806",
+          "expect": {
+            "min_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "b79aab2b-399e-40e0-84cb-7b945a27ed62",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "other",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "问题类型（未识别）"
+            ],
+            "agent_count": 7,
+            "tokens": 4558,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 383,
+                "output_tokens": 102,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 382,
+                "output_tokens": 232,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 371,
+                "output_tokens": 157,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 467,
+                "output_tokens": 138,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 696,
+                "output_tokens": 490,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 452,
+                "output_tokens": 215,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 373,
+                "output_tokens": 100,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_at_least": true,
+            "no_expired_policy_cited": true,
+            "declares_missing_info": true
+          },
+          "passed": true,
+          "latency_ms": 10137,
+          "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-195",
+          "group": "cross_shop",
+          "subject": "跨店-少件（抖音店）",
+          "order_id": "TB202609241742",
+          "expect": {
+            "issue_type": "missing_item",
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "e9e33a73-8e80-44b8-8ee8-db91b0c931e2",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "missing_item",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 4770,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 398,
+                "output_tokens": 58,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 469,
+                "output_tokens": 159,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 559,
+                "output_tokens": 206,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 622,
+                "output_tokens": 137,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 739,
+                "output_tokens": 100,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 491,
+                "output_tokens": 296,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 388,
+                "output_tokens": 148,
+                "cache_hit_tokens": 254,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 10903,
+          "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-207",
+          "group": "fact_variant",
+          "subject": "事实差异-停滞补偿申请·事实 72h",
+          "order_id": "TB202609250004",
+          "expect": {
+            "issue_type": "logistics_stalled",
+            "action_type": "contact_logistics",
+            "max_risk_tier": "L2",
+            "policy_version_included": "v3.0",
+            "amount": "30.00"
+          },
+          "observed": {
+            "ticket_id": "ab3419b9-6460-47a4-a85f-972e23ce074d",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": "30.00",
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 6255,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 50,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 455,
+                "output_tokens": 197,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1011,
+                "output_tokens": 626,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 962,
+                "output_tokens": 193,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 454,
+                "output_tokens": 209,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 721,
+                "output_tokens": 432,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 442,
+                "output_tokens": 118,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "amount_matches": true,
+            "risk_within_limit": true,
+            "policy_version_included": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 11102,
+          "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-219",
+          "group": "escalation_wording",
+          "subject": "二次追问-少件",
+          "order_id": "TB202609241742",
+          "expect": {
+            "issue_type": "missing_item",
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "13aa9640-8c94-41bf-a47f-d7f0b431e171",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "missing_item",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 5423,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 390,
+                "output_tokens": 71,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 551,
+                "output_tokens": 472,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 461,
+                "output_tokens": 180,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 614,
+                "output_tokens": 267,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 483,
+                "output_tokens": 244,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 731,
+                "output_tokens": 455,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 380,
+                "output_tokens": 124,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 13207,
+          "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-002",
+          "group": "normal",
+          "subject": "常规-未发货-2",
+          "order_id": "TB202609250002",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "888f9a1a-6da2-4e89-882e-e5bd6d9bb73e",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 4706,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 389,
+                "output_tokens": 50,
+                "cache_hit_tokens": 255,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 459,
+                "output_tokens": 196,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 438,
+                "output_tokens": 144,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 504,
+                "output_tokens": 143,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 747,
+                "output_tokens": 391,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 458,
+                "output_tokens": 213,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 446,
+                "output_tokens": 128,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 9423,
+          "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-082",
+          "group": "refund",
+          "subject": "签收异常要求退款-268元",
+          "order_id": "TB202609241806",
+          "expect": {
+            "action_type": "refund",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "requires_approval": true,
+            "amount": "268.00"
+          },
+          "observed": {
+            "ticket_id": "1a59f096-7955-4743-8882-686c94f8f7ee",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "refund",
+            "amount": "268.00",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 6509,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 389,
+                "output_tokens": 72,
+                "cache_hit_tokens": 255,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 459,
+                "output_tokens": 210,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1015,
+                "output_tokens": 558,
+                "cache_hit_tokens": 768,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 966,
+                "output_tokens": 294,
+                "cache_hit_tokens": 768,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 733,
+                "output_tokens": 498,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 458,
+                "output_tokens": 246,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 446,
+                "output_tokens": 165,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "amount_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 12816,
+          "notes": "退款一律 L3：金额引用实付金额，需主管审批",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-094",
+          "group": "risk_flag",
+          "subject": "账号被限制要求解封",
+          "order_id": "TB202609241806",
+          "expect": {
+            "risk_tier": "L4",
+            "approval_requirement": "risk_control",
+            "requires_approval": true
+          },
+          "observed": {
+            "ticket_id": "48d925fc-64de-447f-8fea-fc55a2a253fb",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "other",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L4",
+            "approval_requirement": "risk_control",
+            "status": "pending_approval",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "问题类型（未识别）"
+            ],
+            "agent_count": 7,
+            "tokens": 4710,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 396,
+                "output_tokens": 129,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 395,
+                "output_tokens": 248,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 384,
+                "output_tokens": 169,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 480,
+                "output_tokens": 174,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 709,
+                "output_tokens": 380,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 465,
+                "output_tokens": 272,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 386,
+                "output_tokens": 123,
+                "cache_hit_tokens": 252,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 10112,
+          "notes": "风控标记 ['account_restriction']：必须转风控",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-102",
+          "group": "sensitive",
+          "subject": "敏感客户要求补发",
+          "order_id": "TB202609240992",
+          "expect": {
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "requires_approval": true
+          },
+          "observed": {
+            "ticket_id": "364b548e-56d9-4da4-ba93-55b4e07b29f4",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "other",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "问题类型（未识别）"
+            ],
+            "agent_count": 7,
+            "tokens": 4656,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 395,
+                "output_tokens": 88,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 394,
+                "output_tokens": 142,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 383,
+                "output_tokens": 184,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 479,
+                "output_tokens": 173,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 464,
+                "output_tokens": 243,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 708,
+                "output_tokens": 520,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 98,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 10421,
+          "notes": "敏感客户（投诉倾向）：需主管审批",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-108",
+          "group": "promotion",
+          "subject": "优惠券不能用",
+          "order_id": "TB202609240821",
+          "expect": {
+            "issue_type": "promotion_not_applied",
+            "action_type": "reply_only",
+            "max_risk_tier": "L1"
+          },
+          "observed": {
+            "ticket_id": "22745e1a-f517-402a-a79f-c49ebfad079d",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "promotion_not_applied",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reply_only",
+            "amount": null,
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 4,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 97,
+          "notes": "优惠类先解释口径，不涉及赔付",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-118",
+          "group": "damaged",
+          "subject": "破损-要补发",
+          "order_id": "TB202609240992",
+          "expect": {
+            "issue_type": "damaged",
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "b046b7bc-7466-4468-9c50-eb900a48ae52",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "damaged",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "商品破损照片"
+            ],
+            "agent_count": 7,
+            "tokens": 5000,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 391,
+                "output_tokens": 58,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 456,
+                "output_tokens": 171,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 553,
+                "output_tokens": 232,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 611,
+                "output_tokens": 172,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 740,
+                "output_tokens": 355,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 488,
+                "output_tokens": 281,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 381,
+                "output_tokens": 111,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 9318,
+          "notes": "破损优先补发；凭证缺失要写进 missing_information",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-128",
+          "group": "stalled",
+          "subject": "停滞-要催件",
+          "order_id": "TB202609240655",
+          "expect": {
+            "issue_type": "logistics_stalled",
+            "action_type": "contact_logistics",
+            "policy_version_included": "v3.0",
+            "amount": "30.00"
+          },
+          "observed": {
+            "ticket_id": "a44dbdde-eddc-4de4-b7c6-1ecb269df48b",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": "30.00",
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 6463,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 387,
+                "output_tokens": 53,
+                "cache_hit_tokens": 253,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 457,
+                "output_tokens": 196,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1013,
+                "output_tokens": 606,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 964,
+                "output_tokens": 323,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 722,
+                "output_tokens": 514,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 456,
+                "output_tokens": 196,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 444,
+                "output_tokens": 132,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "amount_matches": true,
+            "policy_version_included": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 12319,
+          "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-140",
+          "group": "stalled_short",
+          "subject": "停滞-未达门槛",
+          "order_id": "TB202609241742",
+          "expect": {
+            "action_type": "contact_logistics",
+            "amount": "0"
+          },
+          "observed": {
+            "ticket_id": "c2cf6703-7390-4f31-85c0-1905b67e8d8a",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": null,
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 5906,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 43,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 455,
+                "output_tokens": 165,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1011,
+                "output_tokens": 600,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 962,
+                "output_tokens": 227,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 727,
+                "output_tokens": 95,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 454,
+                "output_tokens": 189,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 442,
+                "output_tokens": 151,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "amount_matches": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 11571,
+          "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-146",
+          "group": "reship",
+          "subject": "漏发-补发",
+          "order_id": "TB202609241806",
+          "expect": {
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "52a48a29-3eb1-40d0-8f9c-5ebc863a8813",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "missing_item",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 4977,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 390,
+                "output_tokens": 52,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 461,
+                "output_tokens": 168,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 551,
+                "output_tokens": 204,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 614,
+                "output_tokens": 217,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 483,
+                "output_tokens": 221,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 731,
+                "output_tokens": 382,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 380,
+                "output_tokens": 123,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 10211,
+          "notes": "补发不涉及赔付金额",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-158",
+          "group": "missing_order",
+          "subject": "没有订单号咨询",
+          "order_id": null,
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing": [
+              "订单号"
+            ]
+          },
+          "observed": {
+            "ticket_id": "ce95ecf4-851d-4bca-867b-5ec5a6bac6c3",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "订单号"
+            ],
+            "missing_fields": [
+              "订单号"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_fields_match": true
+          },
+          "passed": true,
+          "latency_ms": 9,
+          "notes": "没有订单号 → 不分析，等客户补充",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-166",
+          "group": "order_not_found",
+          "subject": "订单不存在-退款",
+          "order_id": "TB20260101NODATA",
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing_contains": "订单号"
+          },
+          "observed": {
+            "ticket_id": "cc285ca0-94bc-4eeb-b481-9124830d4353",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "正确的订单号（按该单号查不到订单）"
+            ],
+            "missing_fields": [
+              "正确的订单号（按该单号查不到订单）"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_mentions_reason": true
+          },
+          "passed": true,
+          "latency_ms": 8,
+          "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-172",
+          "group": "adapter_timeout",
+          "subject": "接口超时-退款",
+          "order_id": "TB20260101TIMEOUT",
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing_contains": "事实来源暂不可用"
+          },
+          "observed": {
+            "ticket_id": "8d577d03-88a2-4edd-9f6d-bbc60a47a1e8",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "订单事实来源暂不可用，请客服人工核实后再继续"
+            ],
+            "missing_fields": [
+              "订单事实来源暂不可用，请客服人工核实后再继续"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_mentions_reason": true
+          },
+          "passed": true,
+          "latency_ms": 8,
+          "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-178",
+          "group": "unauthorized",
+          "subject": "越权访问知识库",
+          "order_id": null,
+          "expect": {
+            "analyze_status": 403,
+            "error_code": "permission_denied"
+          },
+          "observed": {
+            "requested_kbs": [
+              "feedback_kb"
+            ],
+            "error_code": "permission_denied"
+          },
+          "checks": {
+            "permission_denied": true,
+            "error_code_matches": true
+          },
+          "passed": true,
+          "latency_ms": 0,
+          "notes": "eng 访问 feedback_kb：必须被拒绝（知识库级权限）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-184",
+          "group": "duplicate_decision",
+          "subject": "重复审批-补发",
+          "order_id": "TB202609240992",
+          "expect": {
+            "idempotent_decision": true
+          },
+          "observed": {
+            "ticket_id": "9d79a459-5070-44bc-954f-0e51c3d74a13",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "damaged",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "商品破损照片"
+            ],
+            "agent_count": 7,
+            "tokens": 4991,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 384,
+                "output_tokens": 99,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 449,
+                "output_tokens": 166,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 546,
+                "output_tokens": 225,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 604,
+                "output_tokens": 142,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 733,
+                "output_tokens": 359,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 481,
+                "output_tokens": 268,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 374,
+                "output_tokens": 161,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "no_expired_policy_cited": true,
+            "duplicate_decision_idempotent": true
+          },
+          "passed": true,
+          "latency_ms": 10141,
+          "notes": "同一幂等键重复审批：只允许一次状态迁移",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-190",
+          "group": "low_confidence",
+          "subject": "低置信度-无凭证",
+          "order_id": "TB202609241742",
+          "expect": {
+            "min_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "6b4d29fe-a32d-4098-93e3-c556b3f71ca4",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "other",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "问题类型（未识别）"
+            ],
+            "agent_count": 7,
+            "tokens": 4268,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 42,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 384,
+                "output_tokens": 220,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 373,
+                "output_tokens": 228,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 469,
+                "output_tokens": 140,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 454,
+                "output_tokens": 218,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 698,
+                "output_tokens": 152,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 375,
+                "output_tokens": 130,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_at_least": true,
+            "no_expired_policy_cited": true,
+            "declares_missing_info": true
+          },
+          "passed": true,
+          "latency_ms": 8085,
+          "notes": "信息不足时不得停在「可自动」档位；要给出 missing_information",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-196",
+          "group": "cross_shop",
+          "subject": "跨店-破损（天猫店）",
+          "order_id": "TB202609240992",
+          "expect": {
+            "issue_type": "damaged",
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "9279e64b-4274-461e-b389-cf5d0663de95",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "damaged",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "商品破损照片"
+            ],
+            "agent_count": 7,
+            "tokens": 5148,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 395,
+                "output_tokens": 140,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 460,
+                "output_tokens": 186,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 557,
+                "output_tokens": 147,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 615,
+                "output_tokens": 190,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 492,
+                "output_tokens": 275,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 744,
+                "output_tokens": 407,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 155,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 10344,
+          "notes": "跨店/跨平台属性进入查询文本，但动作与风险口径不变；政策仍只引用 v3.0",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-208",
+          "group": "fact_variant",
+          "subject": "事实差异-停滞补偿申请·事实 0h",
+          "order_id": "TB202609250002",
+          "expect": {
+            "issue_type": "logistics_stalled",
+            "action_type": "contact_logistics",
+            "amount": "0"
+          },
+          "observed": {
+            "ticket_id": "29ddb20a-6f68-4afe-a20f-b1e0acc34ab9",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": null,
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 6047,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 51,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 455,
+                "output_tokens": 151,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1011,
+                "output_tokens": 679,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 962,
+                "output_tokens": 218,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 727,
+                "output_tokens": 114,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 454,
+                "output_tokens": 271,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 442,
+                "output_tokens": 127,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "amount_matches": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 11773,
+          "notes": "同一句客户原话：判定跟随订单事实（停滞小时数/实付金额/签收状态），不跟随口述",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-220",
+          "group": "escalation_wording",
+          "subject": "二次追问-破损",
+          "order_id": "TB202609240992",
+          "expect": {
+            "issue_type": "damaged",
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "1e06b005-272c-49a8-9084-503a87b33064",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "damaged",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "商品破损照片"
+            ],
+            "agent_count": 7,
+            "tokens": 5058,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 389,
+                "output_tokens": 55,
+                "cache_hit_tokens": 255,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 454,
+                "output_tokens": 136,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 551,
+                "output_tokens": 210,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 609,
+                "output_tokens": 233,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 486,
+                "output_tokens": 266,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 738,
+                "output_tokens": 439,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 379,
+                "output_tokens": 113,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 9934,
+          "notes": "催办次数与情绪只影响 urgency/情绪，不得改变分类、动作与风险口径",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-003",
+          "group": "normal",
+          "subject": "常规-未发货-3",
+          "order_id": "TB202609240992",
+          "expect": {
+            "issue_type": "not_shipped",
+            "action_type": "ask_customer",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor"
+          },
+          "observed": {
+            "ticket_id": "ae1e3a4c-3797-4c2b-9e5a-87cf58a8019d",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "not_shipped",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "实际履约情况（客户描述未发货，但订单状态为已签收）"
+            ],
+            "agent_count": 7,
+            "tokens": 4784,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 388,
+                "output_tokens": 56,
+                "cache_hit_tokens": 254,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 458,
+                "output_tokens": 209,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 437,
+                "output_tokens": 153,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 503,
+                "output_tokens": 141,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 457,
+                "output_tokens": 228,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 746,
+                "output_tokens": 426,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 445,
+                "output_tokens": 137,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 8807,
+          "notes": "客户称未发货，但 mock 订单事实已进入履约；必须先核实冲突，不得重复补发",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-083",
+          "group": "refund",
+          "subject": "破损要求退款-329元",
+          "order_id": "TB202609240992",
+          "expect": {
+            "action_type": "refund",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "requires_approval": true,
+            "amount": "329.00"
+          },
+          "observed": {
+            "ticket_id": "3aff8e4f-f22b-46d8-b2bd-b9d7f6c8d6a8",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "damaged",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "refund",
+            "amount": "329.00",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 4853,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 384,
+                "output_tokens": 56,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 449,
+                "output_tokens": 144,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 546,
+                "output_tokens": 240,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 604,
+                "output_tokens": 157,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 481,
+                "output_tokens": 254,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 724,
+                "output_tokens": 343,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 374,
+                "output_tokens": 97,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "amount_matches": true,
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 10010,
+          "notes": "退款一律 L3：金额引用实付金额，需主管审批",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-095",
+          "group": "risk_flag",
+          "subject": "疑似欺诈投诉",
+          "order_id": "TB202609240992",
+          "expect": {
+            "risk_tier": "L4",
+            "approval_requirement": "risk_control",
+            "requires_approval": true
+          },
+          "observed": {
+            "ticket_id": "ecb2e177-ae45-417c-8f78-cece8dc727fc",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "other",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L4",
+            "approval_requirement": "risk_control",
+            "status": "pending_approval",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "问题类型（未识别）"
+            ],
+            "agent_count": 7,
+            "tokens": 4961,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 403,
+                "output_tokens": 77,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 402,
+                "output_tokens": 192,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 391,
+                "output_tokens": 237,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 487,
+                "output_tokens": 258,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 716,
+                "output_tokens": 537,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 472,
+                "output_tokens": 260,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 393,
+                "output_tokens": 136,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 11386,
+          "notes": "风控标记 ['suspected_fraud']：必须转风控",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-103",
+          "group": "sensitive",
+          "subject": "敏感客户要求补偿",
+          "order_id": "TB202609250002",
+          "expect": {
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "requires_approval": true
+          },
+          "observed": {
+            "ticket_id": "c621a74f-f26c-4efb-bca3-29fef6ca6a39",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "other",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "ask_customer",
+            "amount": null,
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [
+              "问题类型（未识别）"
+            ],
+            "agent_count": 7,
+            "tokens": 4526,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 397,
+                "output_tokens": 48,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 396,
+                "output_tokens": 163,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 149,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 481,
+                "output_tokens": 163,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 710,
+                "output_tokens": 349,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 466,
+                "output_tokens": 278,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 387,
+                "output_tokens": 154,
+                "cache_hit_tokens": 253,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "risk_tier_matches": true,
+            "approval_requirement_matches": true,
+            "gate_requires_approval": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 10239,
+          "notes": "敏感客户（投诉倾向）：需主管审批",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-109",
+          "group": "promotion",
+          "subject": "活动门槛咨询",
+          "order_id": "TB202609240821",
+          "expect": {
+            "issue_type": "promotion_not_applied",
+            "action_type": "reply_only",
+            "max_risk_tier": "L1"
+          },
+          "observed": {
+            "ticket_id": "76726004-49e7-4f52-9ba7-dff23275b89b",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "promotion_not_applied",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reply_only",
+            "amount": null,
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 4,
+            "tokens": 0,
+            "usage_records": [
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              },
+              {
+                "model": "deterministic",
+                "input_tokens": 0,
+                "output_tokens": 0,
+                "cache_hit_tokens": 0,
+                "model_used": false
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 101,
+          "notes": "优惠类先解释口径，不涉及赔付",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-119",
+          "group": "damaged",
+          "subject": "破损-已拍照",
+          "order_id": "TB202609240992",
+          "expect": {
+            "issue_type": "damaged",
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "6304a88a-f593-4acd-8dac-905ea925dbc4",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "damaged",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [
+              "商品破损照片"
+            ],
+            "agent_count": 7,
+            "tokens": 5021,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 390,
+                "output_tokens": 130,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 455,
+                "output_tokens": 142,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 552,
+                "output_tokens": 224,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 610,
+                "output_tokens": 209,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 487,
+                "output_tokens": 273,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 739,
+                "output_tokens": 304,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 380,
+                "output_tokens": 126,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 10959,
+          "notes": "破损优先补发；凭证缺失要写进 missing_information",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-129",
+          "group": "stalled",
+          "subject": "停滞-询问补偿标准",
+          "order_id": "TB202609240655",
+          "expect": {
+            "issue_type": "logistics_stalled",
+            "action_type": "contact_logistics",
+            "policy_version_included": "v3.0",
+            "amount": "30.00"
+          },
+          "observed": {
+            "ticket_id": "54dc1cb9-1976-488d-8f3a-f27ec053aebd",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": "30.00",
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 6501,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 387,
+                "output_tokens": 104,
+                "cache_hit_tokens": 253,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 457,
+                "output_tokens": 135,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1013,
+                "output_tokens": 663,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 964,
+                "output_tokens": 317,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 456,
+                "output_tokens": 265,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 722,
+                "output_tokens": 438,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 444,
+                "output_tokens": 136,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "issue_type_matches": true,
+            "action_type_matches": true,
+            "amount_matches": true,
+            "policy_version_included": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 12494,
+          "notes": "停滞超 48 小时：引用 v3.0 政策，补偿金额取自政策条款（不计算）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-141",
+          "group": "stalled_short",
+          "subject": "停滞-24小时",
+          "order_id": "TB202609250001",
+          "expect": {
+            "action_type": "contact_logistics",
+            "amount": "0"
+          },
+          "observed": {
+            "ticket_id": "cdd18950-a5c1-4e0e-b786-ddefc5beced7",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "logistics_stalled",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "contact_logistics",
+            "amount": null,
+            "risk_tier": "L1",
+            "approval_requirement": "none",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 5760,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 60,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 455,
+                "output_tokens": 155,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 1011,
+                "output_tokens": 486,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 962,
+                "output_tokens": 178,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 454,
+                "output_tokens": 215,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 718,
+                "output_tokens": 93,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 442,
+                "output_tokens": 146,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "amount_matches": true,
+            "no_expired_policy_cited": true
+          },
+          "passed": true,
+          "latency_ms": 10237,
+          "notes": "未达 48 小时门槛：只催件不补偿（既不看客户口述，也不给钱）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-147",
+          "group": "reship",
+          "subject": "错发-换货",
+          "order_id": "TB202609241742",
+          "expect": {
+            "action_type": "reship",
+            "max_risk_tier": "L2"
+          },
+          "observed": {
+            "ticket_id": "42ce1a91-ae11-4094-b6d5-838b53d4e09a",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "ready_to_reply",
+            "issue_type": "wrong_item",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "reship",
+            "amount": null,
+            "risk_tier": "L2",
+            "approval_requirement": "staff_confirm",
+            "status": "draft",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 4516,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 385,
+                "output_tokens": 58,
+                "cache_hit_tokens": 251,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 456,
+                "output_tokens": 164,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 546,
+                "output_tokens": 174,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 609,
+                "output_tokens": 131,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 478,
+                "output_tokens": 189,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 726,
+                "output_tokens": 106,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 375,
+                "output_tokens": 119,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "action_type_matches": true,
+            "risk_within_limit": true,
+            "no_expired_policy_cited": true,
+            "policy_required": true,
+            "has_policy_evidence": true
+          },
+          "passed": true,
+          "latency_ms": 9017,
+          "notes": "补发不涉及赔付金额",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-159",
+          "group": "missing_order",
+          "subject": "订单号缺失-退款",
+          "order_id": null,
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing": [
+              "订单号"
+            ]
+          },
+          "observed": {
+            "ticket_id": "2143eb85-241f-44c1-9bd1-7c1f1744c73d",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "订单号"
+            ],
+            "missing_fields": [
+              "订单号"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_fields_match": true
+          },
+          "passed": true,
+          "latency_ms": 9,
+          "notes": "没有订单号 → 不分析，等客户补充",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-167",
+          "group": "order_not_found",
+          "subject": "订单不存在-补发",
+          "order_id": "TB20260101NODATA",
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing_contains": "订单号"
+          },
+          "observed": {
+            "ticket_id": "8b345f9c-2046-4e69-bc65-3c18876f42c8",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "正确的订单号（按该单号查不到订单）"
+            ],
+            "missing_fields": [
+              "正确的订单号（按该单号查不到订单）"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_mentions_reason": true
+          },
+          "passed": true,
+          "latency_ms": 8,
+          "notes": "订单号查不到 → 事实查询失败 → 进人工/等客户补充",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-173",
+          "group": "adapter_timeout",
+          "subject": "接口超时-补偿",
+          "order_id": "TB20260101TIMEOUT",
+          "expect": {
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "missing_contains": "事实来源暂不可用"
+          },
+          "observed": {
+            "ticket_id": "bc035e39-198a-405f-9ab8-9ee3735288ea",
+            "waited_for_completion": false,
+            "analyze_status": 409,
+            "ticket_status": "need_customer_info",
+            "issue_type": null,
+            "missing": [
+              "订单事实来源暂不可用，请客服人工核实后再继续"
+            ],
+            "missing_fields": [
+              "订单事实来源暂不可用，请客服人工核实后再继续"
+            ],
+            "action_type": null,
+            "amount": null,
+            "risk_tier": null,
+            "approval_requirement": null,
+            "status": null,
+            "policy_versions": [],
+            "has_evidence": false,
+            "has_policy": false,
+            "missing_information": [],
+            "agent_count": 0,
+            "tokens": 0,
+            "usage_records": []
+          },
+          "checks": {
+            "analyze_status_matches": true,
+            "ticket_status_matches": true,
+            "missing_mentions_reason": true
+          },
+          "passed": true,
+          "latency_ms": 8,
+          "notes": "接口超时必须落成结构化事实并进人工，不能让工单 500",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-179",
+          "group": "unauthorized",
+          "subject": "越权访问知识库",
+          "order_id": null,
+          "expect": {
+            "analyze_status": 403,
+            "error_code": "permission_denied"
+          },
+          "observed": {
+            "requested_kbs": [
+              "product_kb"
+            ],
+            "error_code": "permission_denied"
+          },
+          "checks": {
+            "permission_denied": true,
+            "error_code_matches": true
+          },
+          "passed": true,
+          "latency_ms": 0,
+          "notes": "ops 访问 product_kb：必须被拒绝（知识库级权限）",
+          "error": null
+        },
+        {
+          "case_id": "tk-eval-185",
+          "group": "duplicate_decision",
+          "subject": "重复审批-退款第二次",
+          "order_id": "TB202609250002",
+          "expect": {
+            "idempotent_decision": true
+          },
+          "observed": {
+            "ticket_id": "f29e5415-b207-4bc7-a707-2ecbf28605d2",
+            "waited_for_completion": true,
+            "analyze_status": 202,
+            "ticket_status": "waiting_review",
+            "issue_type": "refund",
+            "missing": [],
+            "missing_fields": [],
+            "action_type": "refund",
+            "amount": "484.00",
+            "risk_tier": "L3",
+            "approval_requirement": "supervisor",
+            "status": "pending_approval",
+            "policy_versions": [
+              "v3.0"
+            ],
+            "has_evidence": true,
+            "has_policy": true,
+            "missing_information": [],
+            "agent_count": 7,
+            "tokens": 4858,
+            "usage_records": [
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 384,
+                "output_tokens": 50,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 456,
+                "output_tokens": 228,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 543,
+                "output_tokens": 284,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 612,
+                "output_tokens": 235,
+                "cache_hit_tokens": 384,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 729,
+                "output_tokens": 102,
+                "cache_hit_tokens": 512,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 478,
+                "output_tokens": 276,
+                "cache_hit_tokens": 256,
+                "model_used": true
+              },
+              {
+                "model": "deepseek-chat",
+                "input_tokens": 374,
+                "output_tokens": 107,
+                "cache_hit_tokens": 128,
+                "model_used": true
+              }
+            ]
+          },
+          "checks": {
+            "no_expired_policy_cited": true,
+            "duplicate_decision_idempotent": true
+          },
+          "passed": true,
+          "latency_ms": 8894,
+          "notes": "同一幂等键重复审批：只允许一次状态迁移",
+          "error": null
+        }
+      ]
+    }
+  ]
+}

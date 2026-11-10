@@ -1,0 +1,29 @@
+# Local TLS/authenticated Registry rehearsal. It is not an enterprise registry.
+services:
+  registry:
+    image: registry:2@sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${SECURE_REGISTRY_PORT:-15443}:5000"
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/registry.key
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: pic-secure-registry
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+    volumes:
+      - registry_data:/var/lib/registry
+      - ${SECURE_REGISTRY_CONFIG_DIR:?set SECURE_REGISTRY_CONFIG_DIR}/certs:/certs:ro
+      - ${SECURE_REGISTRY_CONFIG_DIR:?set SECURE_REGISTRY_CONFIG_DIR}/auth:/auth:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1770
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    cpus: ${SECURE_REGISTRY_CPUS:-1.0}
+    mem_limit: ${SECURE_REGISTRY_MEMORY_LIMIT:-512m}
+    pids_limit: ${SECURE_REGISTRY_PIDS_LIMIT:-128}
+
+volumes:
+  registry_data:

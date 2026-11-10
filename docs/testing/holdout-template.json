@@ -1,0 +1,57 @@
+{
+  "schema_version": "ticket-eval-v1",
+  "dataset_version": "merchant-a-holdout-2026-11-08-template",
+  "provenance": {
+    "source_name": "merchant-a-quality-team (template)",
+    "exported_at": "2026-11-08T10:00:00+08:00",
+    "annotation_method": "double_human_review",
+    "independent_from_system": true,
+    "deidentified": true,
+    "split": "holdout"
+  },
+  "cases": [
+    {
+      "case_id": "HOLDOUT-EXAMPLE-001",
+      "group": "damaged",
+      "subject": "商品有划痕，申请退货退款",
+      "content": "收到的杯子外壁有一道明显划痕，还没有使用，想退货退款。",
+      "user": "ops",
+      "order_id": "TEST-ORDER-HO-001",
+      "expect": {
+        "issue_type": "damaged",
+        "action_type": "return_goods",
+        "risk_tier": "L3",
+        "requires_approval": true,
+        "policy_version_included": "v3.0"
+      }
+    },
+    {
+      "case_id": "HOLDOUT-EXAMPLE-002",
+      "group": "stalled",
+      "subject": "物流五天没有更新",
+      "content": "快递在中转站停了五天，一直没有更新，请帮我核实并说明补偿标准。",
+      "user": "ops",
+      "order_id": "TEST-ORDER-HO-002",
+      "expect": {
+        "issue_type": "logistics_stalled",
+        "action_type": "contact_logistics",
+        "max_risk_tier": "L2",
+        "policy_version_included": "v3.0"
+      }
+    },
+    {
+      "case_id": "HOLDOUT-EXAMPLE-003",
+      "group": "promotion",
+      "subject": "满减没有生效",
+      "content": "活动页写着满 199 减 30，我结算时没有减，请解释一下规则。",
+      "user": "ops",
+      "order_id": "TEST-ORDER-HO-003",
+      "expect": {
+        "issue_type": "promotion_not_applied",
+        "action_type": "reply_only",
+        "max_risk_tier": "L1",
+        "policy_version_included": "v3.0"
+      }
+    }
+  ]
+}

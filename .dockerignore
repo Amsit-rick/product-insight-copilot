@@ -1,0 +1,17 @@
+.git
+.github
+.venv
+.workbuddy
+**/__pycache__
+**/.pytest_cache
+**/.mypy_cache
+**/.tmp
+**/node_modules
+frontend/dist
+backend/data/*.db
+backend/data/*.db-*
+docs/*
+!docs/integrations/
+docs/integrations/*
+!docs/integrations/fact-probe-plan.example.json
+*.md

@@ -1,0 +1,4 @@
+metric_name,platform,app_version,channel,device,stat_date,value,sample_size,source_version
+next_day_retention,Android,3.2.0,channel_a,high_end,2026-13-05,0.271,31840,metric_snapshot_20260831
+next_day_retention,Android,3.2.0,channel_b,low_end,2026-08-22,N/A,22870,metric_snapshot_20260831
+next_day_retention,iOS,3.2.0,channel_a,high_end,2026-08-23,1.87,64120,metric_snapshot_20260831

@@ -1,0 +1,14 @@
+{
+  "schema_version": "self-hosted-runner-recovery-v1",
+  "generated_at": "2026-11-10T10:07:18.193575+00:00",
+  "executed": true,
+  "passed": true,
+  "mode": "apply",
+  "project": "pic-p3-26-recovery",
+  "lock_was_present": true,
+  "lock_age_seconds": 1794305236,
+  "compose_cleanup_planned": true,
+  "compose_cleanup_executed": true,
+  "global_docker_cleanup_used": false,
+  "production_ready": false
+}

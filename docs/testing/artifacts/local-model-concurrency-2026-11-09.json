@@ -1,0 +1,256 @@
+{
+  "schema_version": "local-model-concurrency-benchmark-v1",
+  "generated_at": "2026-11-09T12:02:52.481240+00:00",
+  "scope": "local_real_onnx_model_service",
+  "production_ready": false,
+  "quality_claim_allowed": false,
+  "passed": true,
+  "execution_passed": true,
+  "acceptance_evaluated": false,
+  "acceptance_passed": null,
+  "models": {
+    "embedding": "BAAI/bge-small-zh-v1.5",
+    "reranker": "BAAI/bge-reranker-v2-m3-int8",
+    "device": "cpu-onnx",
+    "model_threads": 4,
+    "inference_policy": "shared_serial"
+  },
+  "configuration": {
+    "requests_per_case": 12,
+    "concurrencies": [
+      1,
+      2,
+      4
+    ],
+    "embedding_batch_sizes": [
+      1,
+      8
+    ],
+    "rerank_document_count": 8
+  },
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "logical_cpu_count": 16
+  },
+  "results": [
+    {
+      "operation": "embedding",
+      "workload_size": 1,
+      "concurrency": 1,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 5.94,
+      "p95_ms": 6.01,
+      "max_ms": 6.53,
+      "qps": 166.157,
+      "elapsed_seconds": 0.072
+    },
+    {
+      "operation": "embedding",
+      "workload_size": 1,
+      "concurrency": 2,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 6.92,
+      "p95_ms": 7.4,
+      "max_ms": 10.09,
+      "qps": 265.728,
+      "elapsed_seconds": 0.045
+    },
+    {
+      "operation": "embedding",
+      "workload_size": 1,
+      "concurrency": 4,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 13.49,
+      "p95_ms": 14.14,
+      "max_ms": 16.35,
+      "qps": 264.681,
+      "elapsed_seconds": 0.045
+    },
+    {
+      "operation": "embedding",
+      "workload_size": 8,
+      "concurrency": 1,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 29.97,
+      "p95_ms": 30.6,
+      "max_ms": 30.98,
+      "qps": 35.414,
+      "elapsed_seconds": 0.339
+    },
+    {
+      "operation": "embedding",
+      "workload_size": 8,
+      "concurrency": 2,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 44.8,
+      "p95_ms": 55.3,
+      "max_ms": 56.36,
+      "qps": 42.6,
+      "elapsed_seconds": 0.282
+    },
+    {
+      "operation": "embedding",
+      "workload_size": 8,
+      "concurrency": 4,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 88.84,
+      "p95_ms": 96.16,
+      "max_ms": 109.09,
+      "qps": 41.237,
+      "elapsed_seconds": 0.291
+    },
+    {
+      "operation": "reranker",
+      "workload_size": 8,
+      "concurrency": 1,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 344.8,
+      "p95_ms": 360.37,
+      "max_ms": 368.4,
+      "qps": 2.958,
+      "elapsed_seconds": 4.056
+    },
+    {
+      "operation": "reranker",
+      "workload_size": 8,
+      "concurrency": 2,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 665.97,
+      "p95_ms": 721.59,
+      "max_ms": 727.42,
+      "qps": 3.04,
+      "elapsed_seconds": 3.947
+    },
+    {
+      "operation": "reranker",
+      "workload_size": 8,
+      "concurrency": 4,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 1211.63,
+      "p95_ms": 1426.13,
+      "max_ms": 1458.1,
+      "qps": 3.071,
+      "elapsed_seconds": 3.908
+    },
+    {
+      "operation": "mixed",
+      "workload_size": 8,
+      "concurrency": 1,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 158.88,
+      "p95_ms": 371.41,
+      "max_ms": 376.78,
+      "qps": 5.475,
+      "elapsed_seconds": 2.192,
+      "components": {
+        "embedding": {
+          "completed": 6,
+          "p50_ms": 6.18,
+          "p95_ms": 6.88,
+          "max_ms": 6.88
+        },
+        "reranker": {
+          "completed": 6,
+          "p50_ms": 366.59,
+          "p95_ms": 376.78,
+          "max_ms": 376.78
+        }
+      }
+    },
+    {
+      "operation": "mixed",
+      "workload_size": 8,
+      "concurrency": 2,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 315.56,
+      "p95_ms": 365.52,
+      "max_ms": 365.56,
+      "qps": 6.328,
+      "elapsed_seconds": 1.896,
+      "components": {
+        "embedding": {
+          "completed": 6,
+          "p50_ms": 315.51,
+          "p95_ms": 365.56,
+          "max_ms": 365.56
+        },
+        "reranker": {
+          "completed": 6,
+          "p50_ms": 315.56,
+          "p95_ms": 365.52,
+          "max_ms": 365.52
+        }
+      }
+    },
+    {
+      "operation": "mixed",
+      "workload_size": 8,
+      "concurrency": 4,
+      "requested": 12,
+      "completed": 12,
+      "error_count": 0,
+      "errors": [],
+      "p50_ms": 700.8,
+      "p95_ms": 752.24,
+      "max_ms": 1059.78,
+      "qps": 5.545,
+      "elapsed_seconds": 2.164,
+      "components": {
+        "embedding": {
+          "completed": 6,
+          "p50_ms": 674.6,
+          "p95_ms": 748.85,
+          "max_ms": 748.85
+        },
+        "reranker": {
+          "completed": 6,
+          "p50_ms": 731.08,
+          "p95_ms": 1059.78,
+          "max_ms": 1059.78
+        }
+      }
+    }
+  ],
+  "error_count": 0,
+  "limitations": [
+    "single local FastAPI process on CPU ONNX runtime",
+    "no business latency or throughput threshold was supplied",
+    "direct model endpoints exclude vector search, database, and agent orchestration",
+    "fixed synthetic requests do not measure retrieval quality",
+    "target deployment hardware and multi-instance scaling remain unverified"
+  ]
+}

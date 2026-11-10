@@ -1,0 +1,35 @@
+{
+  "schema_version": "webhook-integration-probe-v1",
+  "generated_at": "2026-11-08T17:12:47.333295+00:00",
+  "configuration": {
+    "passed": false,
+    "checks": {
+      "enabled": false,
+      "url_configured": false,
+      "https": false,
+      "host_present": false,
+      "credentials_absent": true,
+      "fragment_absent": true,
+      "hmac_secret_configured": false
+    }
+  },
+  "local_contract": {
+    "executed": true,
+    "passed": true,
+    "transport": "loopback_http",
+    "external_network_used": false,
+    "checks": {
+      "hmac_signature": true,
+      "success_2xx": true,
+      "retry_503_then_2xx": true,
+      "dead_letter_400": true,
+      "replay_then_2xx": true
+    }
+  },
+  "external_delivery": {
+    "executed": false,
+    "passed": false,
+    "reason": "real_call_not_authorized"
+  },
+  "production_ready": false
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "fact-integration-probe-v1",
+  "plan_version": "local-reference-v1",
+  "scenarios": [
+    {
+      "scenario_id": "success",
+      "order_id_env": "FACT_PROBE_SUCCESS_ORDER_ID",
+      "customer_id_env": "FACT_PROBE_SUCCESS_CUSTOMER_ID",
+      "expect": {
+        "order": {
+          "outcome": "ok",
+          "required_fields": ["order_status", "order_amount", "order_items"]
+        },
+        "payment": {
+          "outcome": "ok",
+          "required_fields": ["paid_amount", "refundable_amount"]
+        },
+        "logistics": {
+          "outcome": "ok",
+          "required_fields": ["carrier", "latest_track"]
+        },
+        "aftersale": {
+          "outcome": "ok",
+          "required_fields": ["aftersale_history"]
+        }
+      }
+    },
+    {
+      "scenario_id": "not-found",
+      "order_id_env": "FACT_PROBE_NOT_FOUND_ORDER_ID",
+      "expect": {
+        "order": {"outcome": "order_not_found"},
+        "payment": {"outcome": "order_not_found"},
+        "logistics": {"outcome": "order_not_found"},
+        "aftersale": {"outcome": "order_not_found"}
+      }
+    },
+    {
+      "scenario_id": "logistics-timeout",
+      "order_id_env": "FACT_PROBE_LOGISTICS_TIMEOUT_ORDER_ID",
+      "expect": {
+        "order": {"outcome": "ok", "required_fields": ["order_status"]},
+        "payment": {"outcome": "ok", "required_fields": ["paid_amount"]},
+        "logistics": {"outcome": "adapter_timeout"},
+        "aftersale": {"outcome": "ok", "required_fields": ["aftersale_history"]}
+      }
+    },
+    {
+      "scenario_id": "auth-failure",
+      "order_id_env": "FACT_PROBE_AUTH_ORDER_ID",
+      "expect": {
+        "order": {"outcome": "adapter_auth_error"},
+        "payment": {"outcome": "adapter_auth_error"},
+        "logistics": {"outcome": "adapter_auth_error"},
+        "aftersale": {"outcome": "adapter_auth_error"}
+      }
+    },
+    {
+      "scenario_id": "invalid-response",
+      "order_id_env": "FACT_PROBE_BADJSON_ORDER_ID",
+      "expect": {
+        "order": {"outcome": "adapter_invalid_response"},
+        "payment": {"outcome": "adapter_invalid_response"},
+        "logistics": {"outcome": "adapter_invalid_response"},
+        "aftersale": {"outcome": "adapter_invalid_response"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "status": "valid",
+  "schema_version": "fact-integration-probe-v1",
+  "plan_version": "vendor-sandbox-v1",
+  "plan_sha256": "b3a0b7316cb6d3b19d0023c03b88482eddd34ea8b4e8aba82400a10d1bc5999f",
+  "scenario_count": 3,
+  "scenario_ids": [
+    "success",
+    "not-found",
+    "logistics-timeout"
+  ]
+}

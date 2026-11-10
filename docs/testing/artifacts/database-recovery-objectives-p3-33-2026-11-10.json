@@ -1,0 +1,40 @@
+{
+  "schema_version": "database-recovery-objectives-verification-v1",
+  "generated_at": "2026-11-10T15:08:37.175085+00:00",
+  "executed": true,
+  "passed": true,
+  "checks": {
+    "execution_verified": true,
+    "evidence_fresh": true,
+    "release_sha_verified": true,
+    "snapshot_integrity_verified": true,
+    "recovery_timeline_verified": true,
+    "rpo_measurement_verified": true,
+    "rto_measurement_verified": true,
+    "restore_guarantees_verified": true,
+    "rpo_objective_met": true,
+    "rto_objective_met": true,
+    "self_claims_safe": true
+  },
+  "blockers": [],
+  "current_source_git_sha": "eec6aa7a4102d68f23e7929824e2f4ecdb74e80c",
+  "rollback_source_git_sha": "d6bff1e08451cbb9384450ad8db6f637864d4598",
+  "snapshot_sha256": "a0b4fe2514c5512c8c7c45b6462c57a799d01fff694a001fd43894abca003eb9",
+  "snapshot_size_bytes": 112882,
+  "objectives": {
+    "rpo_target_seconds": 300.0,
+    "rto_target_seconds": 900.0,
+    "observed_rpo_seconds": 2.762,
+    "observed_rto_seconds": 1.005
+  },
+  "local_recovery_objectives_verified": true,
+  "enterprise_backup_governance_verified": false,
+  "enterprise_controls": {
+    "backup_encrypted": false,
+    "key_management_verified": false,
+    "offsite_copy_verified": false,
+    "retention_policy_enforced": false,
+    "restore_access_audited": false
+  },
+  "production_ready": false
+}

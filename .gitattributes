@@ -1,0 +1,19 @@
+# 统一换行符：仓库里存 LF，Windows 检出也能正常工作
+# 为什么需要它：本项目在 Windows 开发、CI 跑在 Linux，若各自按本地习惯提交，
+# 会出现"整个文件都变了"的伪 diff（Git 的 LF/CRLF 警告就是在提示这件事）。
+* text=auto eol=lf
+
+# 二进制/压缩资产不参与换行符转换
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.db binary
+
+# 批处理脚本必须用 CRLF，否则部分 Windows 环境解析异常
+*.bat text eol=crlf
+*.cmd text eol=crlf

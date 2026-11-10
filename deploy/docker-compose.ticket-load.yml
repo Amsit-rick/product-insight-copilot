@@ -1,0 +1,64 @@
+# 一次性工单生产形态负载验证覆盖文件。
+# 只启动 postgres / redis / api / worker；模型与向量均使用离线 stub，不产生真实模型费用。
+services:
+  postgres:
+    ports: !override
+      - "${LOAD_POSTGRES_PORT:-15432}:5432"
+
+  redis:
+    ports: !override
+      - "${LOAD_REDIS_PORT:-16379}:6379"
+
+  api:
+    depends_on: !override
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    ports: !override
+      - "${LOAD_API_PORT:-18200}:8000"
+    environment:
+      APP_ENV: test
+      DEBUG: "false"
+      LLM_PROVIDER: stub
+      EMBEDDING_PROVIDER: stub
+      VECTOR_BACKEND: pgvector
+      QDRANT_URL: ""
+      STORAGE_BACKEND: local
+      TICKET_USE_MOCK_ADAPTERS: "true"
+      AUTO_INIT_DB: "true"
+      AUTO_SEED: "true"
+      TASK_EXECUTION_BACKEND: queue
+      TASK_SUBMIT_RATE_LIMIT_PER_MINUTE: "5"
+      WORKER_EMBEDDED: "false"
+      WORKER_LEASE_SECONDS: "20"
+      CACHE_BACKEND: redis
+      CHECKPOINTER_BACKEND: postgres
+
+  worker:
+    depends_on: !override
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: test
+      DEBUG: "false"
+      LLM_PROVIDER: stub
+      EMBEDDING_PROVIDER: stub
+      VECTOR_BACKEND: pgvector
+      QDRANT_URL: ""
+      STORAGE_BACKEND: local
+      TICKET_USE_MOCK_ADAPTERS: "true"
+      AUTO_INIT_DB: "true"
+      AUTO_SEED: "true"
+      TASK_EXECUTION_BACKEND: queue
+      TASK_SUBMIT_RATE_LIMIT_PER_MINUTE: "5"
+      WORKER_EMBEDDED: "false"
+      WORKER_LEASE_SECONDS: "20"
+      CACHE_BACKEND: redis
+      CHECKPOINTER_BACKEND: postgres

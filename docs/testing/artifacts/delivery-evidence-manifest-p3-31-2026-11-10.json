@@ -1,0 +1,16 @@
+{
+  "schema_version": "delivery-evidence-manifest-v1",
+  "generated_at": "2026-11-10T13:27:29.915601+00:00",
+  "release_sha": "d6bff1e08451cbb9384450ad8db6f637864d4598",
+  "bundle_id": "433b97886016a995f8e72a7bd62de173e8375181fec2b4fa97c054e3127cee68",
+  "files": {
+    "after-sales-release-readiness.json": {
+      "sha256": "09a05c4bece6debb59e364d55a2167228b34ad7693a15534173a56500e5660e3",
+      "generated_at": "2026-11-10T13:26:47.136166+00:00"
+    },
+    "after-sales-delivery-check.json": {
+      "sha256": "e5e415eb22c5dd654503bed92e73e426522b5b12c32325253586e2507aa8148e",
+      "generated_at": "2026-11-10T13:26:57.546131+00:00"
+    }
+  }
+}

@@ -1,0 +1,298 @@
+{
+  "schema_version": "after-sales-release-readiness-v5",
+  "generated_at": "2026-11-10T13:26:47.136166+00:00",
+  "environment": {
+    "app_env": "local",
+    "adapter_mode": "mock"
+  },
+  "local_evidence": {
+    "preflight": {
+      "normal": {
+        "total": 25,
+        "pass": 10,
+        "warn": 15,
+        "fail": 0,
+        "failed_checks": []
+      },
+      "strict": {
+        "total": 25,
+        "pass": 10,
+        "warn": 4,
+        "fail": 11,
+        "failed_checks": [
+          "Embedding",
+          "Reranker",
+          "事实适配器",
+          "指标事实源",
+          "外部告警",
+          "JWT 密钥",
+          "CORS",
+          "登录限流",
+          "演示数据播种",
+          "对象存储",
+          "任务执行"
+        ]
+      }
+    },
+    "fact_probe_plan": {
+      "status": "pass",
+      "schema_version": "fact-integration-probe-v1",
+      "plan_version": "vendor-sandbox-v1",
+      "plan_sha256": "b3a0b7316cb6d3b19d0023c03b88482eddd34ea8b4e8aba82400a10d1bc5999f",
+      "scenario_count": 3,
+      "scenario_ids": [
+        "success",
+        "not-found",
+        "logistics-timeout"
+      ]
+    },
+    "demo_tickets": {
+      "status": "pass",
+      "required_count": 3,
+      "present_count": 3,
+      "missing": []
+    },
+    "production_shape": {
+      "status": "verified",
+      "evidence_path": "docs\\testing\\artifacts\\ticket-production-load-20261106.json",
+      "run_id": "20261106225825-3201437c",
+      "checks": {
+        "postgres_database": true,
+        "redis_cache_healthy": true,
+        "pgvector_backend": true,
+        "queue_backend": true,
+        "independent_workers": true,
+        "shared_postgres_checkpointer": true,
+        "load_completed_without_errors": true,
+        "queue_drained": true,
+        "acceptance_passed": true
+      },
+      "local_production_shape_verified": true,
+      "cross_host_or_target_environment_verified": false,
+      "limitations": [
+        "single_host_compose",
+        "stub_model",
+        "mock_fact_adapter",
+        "local_object_storage"
+      ]
+    },
+    "policy_retrieval_benchmark": {
+      "status": "not_verified",
+      "gate_status": "blocked_local",
+      "evidence_path": "docs\\testing\\artifacts\\policy-retrieval-benchmark.json",
+      "fresh": false,
+      "policy_retrieval_verified": false,
+      "top_k": 5,
+      "case_count": 8,
+      "recall_at_k": 1.0,
+      "mrr": 0.9375,
+      "minimum_recall": 0.8
+    },
+    "scheduler_failover": {
+      "status": "not_verified",
+      "gate_status": "informational_local",
+      "evidence_path": "docs\\testing\\artifacts\\scheduler-failover-local-check.json",
+      "fresh": false,
+      "local_postgres_failover_verified": false,
+      "cross_host_failover_verified": false,
+      "lease_seconds": 3,
+      "takeover_wait_seconds": 3.0
+    },
+    "usability_test": {
+      "record_path": "docs\\product-redesign\\客服可用性测试记录.json",
+      "template_valid": true,
+      "real_observations_present": false,
+      "independent_completion_rate": null,
+      "issue_counts": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "conclusion_provided": false,
+      "remediation_retest_present": false,
+      "gate_status": "blocked_external",
+      "status": "template_valid_unfilled",
+      "observed_task_count": 0,
+      "participant_count": 5,
+      "task_count": 18,
+      "unresolved_issue_counts": {
+        "P0": 0,
+        "P1": 0,
+        "P2": 0
+      },
+      "all_tasks_fully_observed": false,
+      "non_developer_confirmed_count": 0,
+      "participant_scope_confirmed": false,
+      "test_metadata_complete": false,
+      "retest_requirement_met": true
+    },
+    "source_control": {
+      "repository_detected": true,
+      "commit_sha": "d6bff1e08451cbb9384450ad8db6f637864d4598",
+      "branch": "main",
+      "upstream": "origin/main",
+      "clean": false,
+      "unstaged_changes": false,
+      "staged_changes": false,
+      "untracked_file_count": 14,
+      "ahead": 3,
+      "behind": 0,
+      "upstream_synced": false,
+      "traceable": false,
+      "blockers": [
+        "working_tree_dirty",
+        "upstream_not_synced"
+      ]
+    },
+    "target_release_admission": {
+      "status": "not_verified",
+      "gate_status": "blocked_machine",
+      "evidence_path": "docs\\testing\\artifacts\\target-release-admission.json",
+      "fresh": true,
+      "machine_admission_ready": false,
+      "commit_matches": true,
+      "blockers": [
+        "enterprise_registry_verified",
+        "cross_host_verified"
+      ],
+      "admission_bundle_id": "f40a46bf899b7dfa9c833e49c33e5e7c3f341c39daabd4e40583f60af15d6052"
+    },
+    "local_ready_for_production_config": false
+  },
+  "infrastructure_verification": {
+    "local_production_shape_verified": true,
+    "local_scheduler_failover_verified": false,
+    "scheduler_failover": {
+      "status": "not_verified",
+      "gate_status": "informational_local",
+      "evidence_path": "docs\\testing\\artifacts\\scheduler-failover-local-check.json",
+      "fresh": false,
+      "local_postgres_failover_verified": false,
+      "cross_host_failover_verified": false,
+      "lease_seconds": 3,
+      "takeover_wait_seconds": 3.0
+    },
+    "cross_host_or_target_environment_verified": false,
+    "target_environment": {
+      "status": "missing",
+      "gate_status": "blocked_external",
+      "evidence_path": "docs\\testing\\artifacts\\target-environment-result.json",
+      "fresh": false,
+      "target_environment_ready": false,
+      "cross_host_or_target_environment_verified": false
+    }
+  },
+  "external_integration_verification": {
+    "fact_platform_sandbox": {
+      "status": "missing",
+      "gate_status": "blocked_external",
+      "evidence_path": "docs\\testing\\artifacts\\fact-integration-result.json",
+      "fresh": false
+    },
+    "metric_source": {
+      "status": "missing",
+      "gate_status": "blocked_external",
+      "evidence_path": "docs\\testing\\artifacts\\metric-source-result.json",
+      "fresh": false
+    },
+    "message_channel": {
+      "status": "missing",
+      "gate_status": "blocked_external",
+      "evidence_path": "docs\\testing\\artifacts\\webhook-integration-result.json",
+      "fresh": false
+    },
+    "real_model_holdout": {
+      "status": "missing",
+      "gate_status": "blocked_external",
+      "evidence_path": "docs\\testing\\artifacts\\real-model-holdout-result.json",
+      "fresh": false
+    }
+  },
+  "external_gates": [
+    {
+      "key": "fact_platform_sandbox",
+      "status": "blocked_external",
+      "required": "OMS/支付/物流/售后 sandbox、匿名测试订单、只读授权和真实端点"
+    },
+    {
+      "key": "metric_source",
+      "status": "blocked_external",
+      "required": "生产 HTTPS 指标 API、服务端鉴权、隔离测试租户和至少 3 次连续只读 SLA 验证"
+    },
+    {
+      "key": "message_channel",
+      "status": "blocked_external",
+      "required": "企业微信/飞书/短信或实际客户消息发送渠道与回滚开关"
+    },
+    {
+      "key": "production_infrastructure",
+      "status": "blocked_external",
+      "required": "跨主机或目标部署环境中的多副本 API/Worker、托管依赖、故障切换和容量验收；本机 Docker 形态单独记录，不冒充目标环境验收"
+    },
+    {
+      "key": "real_model_holdout",
+      "status": "blocked_external",
+      "required": "真实模型密钥/价格和至少 200 条独立人工标注脱敏 holdout"
+    },
+    {
+      "key": "usability_test",
+      "status": "blocked_external",
+      "required": "至少 5 名非研发客服/主管的无指导测试记录和 P0/P1 整改回测"
+    }
+  ],
+  "release_evidence": {
+    "schema_version": "after-sales-release-evidence-v2",
+    "commit_sha": "d6bff1e08451cbb9384450ad8db6f637864d4598",
+    "strict_preflight": {
+      "fail": 11,
+      "failed_checks": [
+        "Embedding",
+        "Reranker",
+        "事实适配器",
+        "指标事实源",
+        "外部告警",
+        "JWT 密钥",
+        "CORS",
+        "登录限流",
+        "演示数据播种",
+        "对象存储",
+        "任务执行"
+      ]
+    },
+    "source_control_traceable": false,
+    "adapter_mode": "mock",
+    "local_production_shape_verified": true,
+    "policy_retrieval_verified": false,
+    "cross_host_or_target_environment_verified": false,
+    "target_release_admission_verified": false,
+    "external_gate_statuses": {
+      "fact_platform_sandbox": "blocked_external",
+      "metric_source": "blocked_external",
+      "message_channel": "blocked_external",
+      "production_infrastructure": "blocked_external",
+      "real_model_holdout": "blocked_external",
+      "usability_test": "blocked_external"
+    },
+    "evidence_file_sha256": {
+      "fact_platform_sandbox": null,
+      "message_channel": null,
+      "production_infrastructure": null,
+      "real_model_holdout": null,
+      "metric_source": null,
+      "usability_test": "e95e050a9c8006ec6576668796214aa9976281cf5912394e0f14d9296e1e044d",
+      "local_production_shape": "6e0474dddd7d1fec542c8eeb519df078d5ef797e87c9aa5b02ff705e6700c7b9",
+      "policy_retrieval_benchmark": "6f8326c624601bdf905e4e12f4c2e57da470bbdcc83857d5ba23ad80ec040383",
+      "target_release_admission": "c1890f1e5388bbd04d862c9240f713644223cff7ee96c0dbc49775511276afb1"
+    },
+    "machine_gates_ready": false,
+    "sha256": "38e428fe7b66e973c53486683a5feac609c05d428f06b29ea6016e8bc188e2f0"
+  },
+  "release_decision": {
+    "status": "missing",
+    "gate_status": "blocked_human",
+    "evidence_path": "docs\\testing\\artifacts\\release-decision.json",
+    "fresh": false
+  },
+  "production_ready": false,
+  "decision": "not_ready_machine_gates"
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "registry-rollout-rollback-evidence-v1",
+  "generated_at": "2026-11-10T13:25:45.8356116+00:00",
+  "executed": true,
+  "passed": true,
+  "registry_scope": "local_loopback",
+  "registry_endpoint_fingerprint": "d7b0a5e4b295eae2",
+  "current": {
+    "source_git_sha": "d6bff1e08451cbb9384450ad8db6f637864d4598",
+    "digest": "sha256:e3604c318bb2a0a2a12fc1696e152cdcbcf904d7c72b7b5a316ad69082dd89cd",
+    "digest_reference": "127.0.0.1:15014/pic-api@sha256:e3604c318bb2a0a2a12fc1696e152cdcbcf904d7c72b7b5a316ad69082dd89cd",
+    "registry_published": true,
+    "registry_pull_verified": true,
+    "deployment_verified": true,
+    "queue_verified": true
+  },
+  "rollback": {
+    "source_git_sha": "852d4d7629a7bd43cdc0d95fa564e44acb15177b",
+    "digest": "sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+    "digest_reference": "127.0.0.1:15014/pic-api@sha256:e8c82baf4bd0ed1794cfa9d364d57b66c2457e5a5d063701d1ceed6ec97de138",
+    "registry_published": true,
+    "registry_pull_verified": true,
+    "deployment_verified": true,
+    "queue_verified": true
+  },
+  "database_migration_change_detected": false,
+  "database_migration_rollback_required": false,
+  "database_migration_rollback_exercised": false,
+  "database_release_safety_verified": true,
+  "database_release_basis": "migration_inventory_identical",
+  "database_migration_inventory": {
+    "current_count": 15,
+    "previous_count": 15,
+    "current_sha256": "8ad2dbf54bded40bef1d001ccbf09d49e7674f839e29a7cb84779ce4c489ae68",
+    "previous_sha256": "8ad2dbf54bded40bef1d001ccbf09d49e7674f839e29a7cb84779ce4c489ae68",
+    "identical": true
+  },
+  "current_restored_for_target_probe": true,
+  "enterprise_registry_verified": false,
+  "cross_host_verified": false,
+  "production_ready": false,
+  "limitations": [
+    "loopback_registry_without_tls_or_auth",
+    "single_docker_daemon",
+    "stub_model",
+    "mock_fact_adapters",
+    "database_migration_rollback_not_required_for_identical_inventory"
+  ]
+}
