@@ -142,6 +142,8 @@ jobs:
       - name: 售后活体 API 校验
         env:
           API_BASE: http://127.0.0.1:8199
+          PYTHONPATH: ${{ github.workspace }}/backend
+          DATABASE_URL: sqlite:///${{ github.workspace }}/backend/.tmp/ci_e2e.db
         run: |
           python backend/scripts/verify_tickets.py --base-url http://127.0.0.1:8199
           python backend/scripts/verify_ticket_l2_send.py
@@ -321,8 +323,8 @@ jobs:
           mkdir -p docs/testing/artifacts
           docker exec "$COMPOSE_PROJECT_NAME-api-1" python scripts/verify_object_storage.py \
             --allow-real-storage-calls --action full --probe-id remote-ci-storage \
-            --json-out /tmp/remote-ci-object-storage.json
-          docker cp "$COMPOSE_PROJECT_NAME-api-1:/tmp/remote-ci-object-storage.json" \
+            --json-out /app/data/objects/remote-ci-object-storage.json
+          docker cp "$COMPOSE_PROJECT_NAME-api-1:/app/data/objects/remote-ci-object-storage.json" \
             docs/testing/artifacts/remote-ci-object-storage.json
       - name: 校验不可变应用镜像与无源码发布编排
         run: |
