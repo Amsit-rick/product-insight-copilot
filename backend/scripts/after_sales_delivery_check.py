@@ -10,6 +10,16 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 REPORT = ROOT / "docs" / "testing" / "artifacts" / "after-sales-release-readiness.json"
+PUBLIC_DEMO_EXTERNAL_GATES = frozenset(
+    {
+        "fact_platform_sandbox",
+        "metric_source",
+        "message_channel",
+        "production_infrastructure",
+        "real_model_holdout",
+        "usability_test",
+    }
+)
 
 
 def _check(name: str, passed: bool, detail: str) -> dict[str, Any]:
@@ -217,6 +227,57 @@ def build_delivery_check(report_path: Path = REPORT, max_age_hours: int = 24) ->
     }
 
 
+def public_demo_contract_errors(result: dict[str, Any]) -> list[str]:
+    """Validate an honest public-demo evidence bundle without granting release approval."""
+
+    errors: list[str] = []
+    if result.get("schema_version") != "after-sales-delivery-check-v5":
+        errors.append("delivery_check_schema_invalid")
+    if result.get("mock_mode") is not True or result.get("adapter_mode") != "mock":
+        errors.append("public_demo_must_use_mock_adapters")
+    if result.get("candidate_ready") is not False:
+        errors.append("public_demo_must_not_be_candidate_ready")
+    if result.get("production_ready") is not False:
+        errors.append("public_demo_must_not_be_production_ready")
+    if result.get("local_production_shape_verified") is not True:
+        errors.append("local_production_shape_evidence_missing")
+    if result.get("cross_host_or_target_environment_verified") is not False:
+        errors.append("public_demo_must_not_claim_target_environment")
+    if result.get("machine_gates_ready") is not False:
+        errors.append("public_demo_must_not_claim_machine_gates")
+    if result.get("target_release_admission_verified") is not False:
+        errors.append("public_demo_must_not_claim_target_release_admission")
+    if result.get("release_decision_status") not in {None, "missing"}:
+        errors.append("public_demo_must_not_include_release_approval")
+
+    blocked = set(result.get("external_blocked_gates") or [])
+    if blocked != PUBLIC_DEMO_EXTERNAL_GATES:
+        errors.append("public_demo_external_gate_set_invalid")
+    blockers = set(result.get("candidate_blockers") or [])
+    required_blockers = PUBLIC_DEMO_EXTERNAL_GATES | {
+        "target_environment",
+        "mock_fact_adapters",
+        "machine_gates",
+        "target_release_admission",
+        "release_approval",
+    }
+    if not required_blockers.issubset(blockers):
+        errors.append("public_demo_candidate_blockers_incomplete")
+
+    checks = {item.get("name"): item.get("status") for item in result.get("checks") or []}
+    for name in ("报告可读取", "报告契约", "报告新鲜度"):
+        if checks.get(name) != "PASS":
+            errors.append(f"public_demo_{name}_failed")
+    release_checks = {
+        item.get("name"): item.get("status") for item in result.get("release_checks") or []
+    }
+    if release_checks.get("版本可追溯") != "PASS":
+        errors.append("public_demo_version_not_traceable")
+    if release_checks.get("本机生产形态") != "PASS":
+        errors.append("public_demo_local_production_shape_failed")
+    return errors
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="检查售后本地候选版本交付证据")
     parser.add_argument("--report", default=str(REPORT))
@@ -224,6 +285,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json-out")
     parser.add_argument("--fail-if-not-candidate", action="store_true")
     parser.add_argument("--fail-if-not-local-demo", action="store_true")
+    parser.add_argument("--fail-if-public-demo-contract-invalid", action="store_true")
     args = parser.parse_args(argv)
     result = build_delivery_check(Path(args.report).resolve(), args.max_age_hours)
     encoded = json.dumps(result, ensure_ascii=False, indent=2)
@@ -237,6 +299,11 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     if args.fail_if_not_local_demo and not result["local_demo_ready"]:
         return 1
+    if args.fail_if_public_demo_contract_invalid:
+        errors = public_demo_contract_errors(result)
+        if errors:
+            print("公开演示边界校验失败：" + "、".join(errors))
+            return 1
     return 0
 
 

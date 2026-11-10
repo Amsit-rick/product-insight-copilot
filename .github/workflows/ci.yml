@@ -245,7 +245,7 @@ jobs:
           python backend/scripts/after_sales_delivery_check.py \
             --report "$evidence_dir/after-sales-release-readiness.json" \
             --json-out "$evidence_dir/after-sales-delivery-check.json" \
-            --fail-if-not-local-demo
+            --fail-if-public-demo-contract-invalid
           python backend/scripts/package_delivery_evidence.py \
             --evidence-dir "$evidence_dir" \
             --attachment remote-ci-object-storage.json \

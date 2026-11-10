@@ -15,6 +15,7 @@ def test_github_actions_builds_verifies_and_uploads_release_bound_evidence_bundl
     assert "after_sales_release_report.py" in workflow
     assert '--expected-release-sha "$GITHUB_SHA"' in workflow
     assert "after_sales_delivery_check.py" in workflow
+    assert "--fail-if-public-demo-contract-invalid" in workflow
     assert "package_delivery_evidence.py" in workflow
     assert "--attachment remote-ci-object-storage.json" in workflow
     assert "--attachment remote-ci-production-shape.json" in workflow
@@ -50,6 +51,7 @@ def test_remote_evidence_job_never_generates_human_release_approval():
     assert "release-decision.json" not in job
     assert "--decision-template-out" not in job
     assert "approve" not in job.lower()
+    assert "--fail-if-not-local-demo" not in job
 
 
 def test_release_report_coverage_gate_runs_locally_and_in_github_ci():

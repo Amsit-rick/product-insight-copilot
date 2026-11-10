@@ -72,6 +72,41 @@ def test_mock_report_is_local_demo_ready_but_not_release_candidate(tmp_path):
     assert result["cross_host_or_target_environment_verified"] is False
 
 
+def test_public_demo_contract_requires_honest_external_blockers(tmp_path):
+    path = tmp_path / "report.json"
+    report = _report(
+        external_gates=[
+            {"key": key, "status": "blocked_external"}
+            for key in sorted(module.PUBLIC_DEMO_EXTERNAL_GATES)
+        ],
+        release_decision={"status": "missing"},
+    )
+    path.write_text(json.dumps(report, ensure_ascii=False), encoding="utf-8")
+
+    result = module.build_delivery_check(path)
+
+    assert module.public_demo_contract_errors(result) == []
+
+
+def test_public_demo_contract_rejects_missing_gate_or_production_claim(tmp_path):
+    path = tmp_path / "report.json"
+    report = _report(
+        external_gates=[
+            {"key": "usability_test", "status": "blocked_external"}
+        ],
+        release_decision={"status": "approved"},
+    )
+    path.write_text(json.dumps(report, ensure_ascii=False), encoding="utf-8")
+    result = module.build_delivery_check(path)
+    result["production_ready"] = True
+
+    errors = module.public_demo_contract_errors(result)
+
+    assert "public_demo_must_not_be_production_ready" in errors
+    assert "public_demo_external_gate_set_invalid" in errors
+    assert "public_demo_must_not_include_release_approval" in errors
+
+
 def test_real_production_report_can_be_release_candidate(tmp_path):
     """非 mock 且生产与外部门禁均通过时，candidate_ready 必须有可达的正向路径。"""
     path = tmp_path / "report.json"
