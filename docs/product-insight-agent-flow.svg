@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 900" role="img" aria-labelledby="title desc">
+  <title id="title">Product Insight Copilot 多 Agent 工作链路</title>
+  <desc id="desc">从售后工单输入、权限与分类，到订单事实和政策知识并行取证、确定性动作决策、回复生成、独立反思、补检索或修订、人工审批、交付和任务回放的完整链路。</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0f172a" flood-opacity=".10"/>
+    </filter>
+    <linearGradient id="agentFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e0f2fe"/>
+      <stop offset="1" stop-color="#ede9fe"/>
+    </linearGradient>
+    <linearGradient id="outputFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dcfce7"/>
+      <stop offset="1" stop-color="#ecfccb"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" class="arrow-head"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" class="arrow-muted"/>
+    </marker>
+  </defs>
+
+  <style>
+    .canvas { fill: #f8fafc; }
+    .frame { fill: none; stroke: #dbe3ef; stroke-width: 1.5; }
+    .lane { fill: #fff; stroke: #e2e8f0; stroke-width: 1.2; }
+    .lane-title { fill: #64748b; font: 700 12px Inter, "Segoe UI", "Microsoft YaHei", sans-serif; letter-spacing: 1.5px; }
+    .node { fill: #fff; stroke: #94a3b8; stroke-width: 1.4; }
+    .node-agent { fill: url(#agentFill); stroke: #2563eb; stroke-width: 1.9; }
+    .node-rule { fill: #fff7ed; stroke: #f59e0b; stroke-width: 1.8; }
+    .node-review { fill: #fef2f2; stroke: #ef4444; stroke-width: 1.8; }
+    .node-output { fill: url(#outputFill); stroke: #22c55e; stroke-width: 1.9; }
+    .node-durable { fill: #f1f5f9; stroke: #64748b; stroke-width: 1.5; }
+    .node-title { fill: #0f172a; font: 700 15px Inter, "Segoe UI", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .node-sub { fill: #475569; font: 500 11px Inter, "Segoe UI", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .badge { fill: #fff; stroke: #cbd5e1; stroke-width: 1; }
+    .badge-text { fill: #475569; font: 600 10px Inter, "Segoe UI", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .edge { fill: none; stroke: #64748b; stroke-width: 2.1; marker-end: url(#arrow); }
+    .edge-muted { fill: none; stroke: #94a3b8; stroke-width: 1.7; stroke-dasharray: 5 5; marker-end: url(#arrowMuted); }
+    .flow { fill: none; stroke: #4f46e5; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 7 15; animation: flow 1.35s linear infinite; pointer-events: none; }
+    .flow-cyan { stroke: #0891b2; }
+    .flow-green { stroke: #16a34a; }
+    .flow-amber { stroke: #d97706; }
+    .flow-red { stroke: #dc2626; }
+    .arrow-head { fill: #475569; }
+    .arrow-muted { fill: #94a3b8; }
+    .label-bg { fill: #f8fafc; fill-opacity: .94; }
+    .edge-label { fill: #475569; font: 600 10px Inter, "Segoe UI", "Microsoft YaHei", sans-serif; text-anchor: middle; }
+    .status-dot { fill: #22c55e; animation: pulse 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes flow { to { stroke-dashoffset: -44; } }
+    @keyframes pulse { 0%,100% { opacity:.45; transform:scale(.8); } 50% { opacity:1; transform:scale(1.25); } }
+    @media (prefers-color-scheme: dark) {
+      .canvas { fill: #0b1220; }
+      .frame { stroke: #263449; }
+      .lane { fill: #101827; stroke: #263449; }
+      .lane-title { fill: #94a3b8; }
+      .node { fill: #111c2d; stroke: #64748b; }
+      .node-agent { fill: #172554; stroke: #60a5fa; }
+      .node-rule { fill: #3b260c; stroke: #f59e0b; }
+      .node-review { fill: #3f1d25; stroke: #fb7185; }
+      .node-output { fill: #12351f; stroke: #4ade80; }
+      .node-durable { fill: #172033; stroke: #64748b; }
+      .node-title { fill: #f8fafc; }
+      .node-sub, .badge-text, .edge-label { fill: #cbd5e1; }
+      .badge, .label-bg { fill: #0f172a; stroke: #334155; }
+      .edge { stroke: #94a3b8; }
+      .arrow-head { fill: #94a3b8; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .flow, .status-dot { animation: none; }
+    }
+  </style>
+
+  <rect class="canvas" width="1500" height="900" rx="24"/>
+  <rect class="frame" x="18" y="18" width="1464" height="864" rx="20"/>
+  <text x="52" y="58" class="node-title" style="font-size:24px;text-anchor:start">Product Insight Copilot · 多 Agent 决策链路</text>
+  <text x="52" y="84" class="node-sub" style="font-size:13px;text-anchor:start">Agent 负责取证与表达；规则、反思和人工审批共同决定结果是否可以交付。</text>
+  <circle cx="1425" cy="56" r="5" class="status-dot"/>
+  <text x="1408" y="61" class="badge-text" style="text-anchor:end">DURABLE</text>
+
+  <rect class="lane" x="42" y="108" width="1416" height="178" rx="18"/>
+  <rect class="lane" x="42" y="306" width="1416" height="286" rx="18"/>
+  <rect class="lane" x="42" y="612" width="1416" height="222" rx="18"/>
+  <text x="66" y="137" class="lane-title">INTAKE &amp; ROUTE · 输入与路由</text>
+  <text x="66" y="335" class="lane-title">EVIDENCE &amp; DECISION · 取证与决策</text>
+  <text x="66" y="641" class="lane-title">REFLECT, GOVERN &amp; DELIVER · 反思、治理与交付</text>
+
+  <g filter="url(#shadow)">
+    <rect class="node" x="84" y="170" width="180" height="82" rx="12"/>
+    <text class="node-title" x="174" y="201">工单 / 产品问题</text>
+    <text class="node-sub" x="174" y="226">用户描述 · 角色 · 租户</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-rule" x="326" y="158" width="202" height="106" rx="12"/>
+    <text class="node-title" x="427" y="192">权限与上下文装载</text>
+    <text class="node-sub" x="427" y="217">RBAC · 参数校验 · 事实快照</text>
+    <text class="node-sub" x="427" y="238">缺失信息失败关闭</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-agent" x="590" y="158" width="202" height="106" rx="14"/>
+    <text class="node-title" x="691" y="192">Triage Agent</text>
+    <text class="node-sub" x="691" y="217">问题类型 · 情绪 · 紧急度</text>
+    <rect class="badge" x="640" y="231" width="102" height="21" rx="10"/>
+    <text class="badge-text" x="691" y="245">决定后续路由</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-durable" x="860" y="158" width="514" height="106" rx="14"/>
+    <text class="node-title" x="1117" y="192">LangGraph Orchestrator</text>
+    <text class="node-sub" x="1117" y="217">条件分支 · 并行执行 · 超时重试 · 断点恢复</text>
+    <text class="node-sub" x="1117" y="239">每个节点写入 task / agent_run / event / checkpoint</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="node-agent" x="100" y="386" width="212" height="112" rx="14"/>
+    <text class="node-title" x="206" y="420">Order Fact Agent</text>
+    <text class="node-sub" x="206" y="445">订单 · 支付 · 物流 · 售后</text>
+    <rect class="badge" x="153" y="461" width="106" height="21" rx="10"/>
+    <text class="badge-text" x="206" y="475">只读事实适配器</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-agent" x="378" y="386" width="212" height="112" rx="14"/>
+    <text class="node-title" x="484" y="420">Policy RAG Agent</text>
+    <text class="node-sub" x="484" y="445">现行政策 · 适用范围 · 引用</text>
+    <rect class="badge" x="431" y="461" width="106" height="21" rx="10"/>
+    <text class="badge-text" x="484" y="475">混合召回与重排</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-rule" x="666" y="374" width="220" height="136" rx="14"/>
+    <text class="node-title" x="776" y="409">确定性动作决策</text>
+    <text class="node-sub" x="776" y="435">问题类型 · 动作 · 金额</text>
+    <text class="node-sub" x="776" y="456">风险等级 · 审批要求</text>
+    <rect class="badge" x="710" y="473" width="132" height="23" rx="11"/>
+    <text class="badge-text" x="776" y="488">模型不得覆盖这些字段</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-agent" x="958" y="386" width="212" height="112" rx="14"/>
+    <text class="node-title" x="1064" y="420">Resolution Agent</text>
+    <text class="node-sub" x="1064" y="445">基于事实与政策形成方案</text>
+    <text class="node-sub" x="1064" y="467">解释依据，不改写规则字段</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-agent" x="1236" y="386" width="174" height="112" rx="14"/>
+    <text class="node-title" x="1323" y="420">Response Agent</text>
+    <text class="node-sub" x="1323" y="445">客服回复草稿</text>
+    <text class="node-sub" x="1323" y="467">明确下一步与边界</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect class="node-review" x="88" y="688" width="206" height="104" rx="14"/>
+    <text class="node-title" x="191" y="721">Review Agent</text>
+    <text class="node-sub" x="191" y="746">独立质检 · 发现问题</text>
+    <text class="node-sub" x="191" y="767">不复用生成者结论</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-review" x="354" y="674" width="228" height="132" rx="14"/>
+    <text class="node-title" x="468" y="708">Reflection Gate</text>
+    <text class="node-sub" x="468" y="733">通过 / 补检索 / 修订</text>
+    <text class="node-sub" x="468" y="754">转人工 / 拒绝</text>
+    <rect class="badge" x="407" y="769" width="122" height="22" rx="11"/>
+    <text class="badge-text" x="468" y="784">有界循环，禁止无限重试</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-agent" x="642" y="688" width="190" height="104" rx="14"/>
+    <text class="node-title" x="737" y="721">Revision Agent</text>
+    <text class="node-sub" x="737" y="746">只修质检指出的问题</text>
+    <text class="node-sub" x="737" y="767">版本化保留修改记录</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-rule" x="892" y="674" width="224" height="132" rx="14"/>
+    <text class="node-title" x="1004" y="708">审批与执行门禁</text>
+    <text class="node-sub" x="1004" y="733">L1/L2 客服处理</text>
+    <text class="node-sub" x="1004" y="754">L3 主管 · L4 风控</text>
+    <rect class="badge" x="947" y="769" width="114" height="22" rx="11"/>
+    <text class="badge-text" x="1004" y="784">服务端强制校验</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect class="node-output" x="1180" y="674" width="226" height="132" rx="14"/>
+    <text class="node-title" x="1293" y="708">交付与跟进</text>
+    <text class="node-sub" x="1293" y="733">回复草稿 · 审批结果</text>
+    <text class="node-sub" x="1293" y="754">Follow-up 计划 · 通知</text>
+    <text class="node-sub" x="1293" y="775">审计、回放与成本记录</text>
+  </g>
+
+  <path class="edge" d="M264 211 H314"/>
+  <path class="edge" d="M528 211 H578"/>
+  <path class="edge" d="M792 211 H848"/>
+  <path class="edge" d="M1010 264 C870 320 418 314 206 374"/>
+  <path class="edge" d="M1116 264 C930 332 650 330 484 374"/>
+  <path class="edge" d="M206 498 V548 H624 C648 548 648 442 654 442"/>
+  <path class="edge" d="M590 442 H654"/>
+  <path class="edge" d="M886 442 H946"/>
+  <path class="edge" d="M1170 442 H1224"/>
+  <path class="edge" d="M1323 498 C1323 610 320 600 191 676"/>
+  <path class="edge" d="M294 740 H342"/>
+  <path class="edge" d="M582 740 H630"/>
+  <path class="edge" d="M582 704 C680 648 820 648 892 704"/>
+  <path class="edge" d="M1116 740 H1168"/>
+  <path class="edge-muted" d="M468 674 C468 624 484 570 484 510"/>
+  <path class="edge-muted" d="M737 688 C737 620 260 620 191 676"/>
+
+  <path class="flow" d="M264 211 H314 M528 211 H578 M792 211 H848"/>
+  <path class="flow flow-cyan" d="M1010 264 C870 320 418 314 206 374"/>
+  <path class="flow flow-cyan" d="M1116 264 C930 332 650 330 484 374" style="animation-delay:-.45s"/>
+  <path class="flow flow-amber" d="M206 498 V548 H624 C648 548 648 442 654 442 M590 442 H654 M886 442 H946"/>
+  <path class="flow" d="M1170 442 H1224 M1323 498 C1323 610 320 600 191 676"/>
+  <path class="flow flow-red" d="M294 740 H342 M582 740 H630"/>
+  <path class="flow flow-amber" d="M582 704 C680 648 820 648 892 704"/>
+  <path class="flow flow-green" d="M1116 740 H1168"/>
+  <path class="flow flow-cyan" d="M468 674 C468 624 484 570 484 510" style="stroke-width:2.4"/>
+  <path class="flow flow-red" d="M737 688 C737 620 260 620 191 676" style="stroke-width:2.4;animation-delay:-.6s"/>
+
+  <g>
+    <rect class="label-bg" x="368" y="526" width="102" height="22" rx="5"/>
+    <text class="edge-label" x="419" y="541">补检索后重跑</text>
+    <rect class="label-bg" x="455" y="606" width="94" height="22" rx="5"/>
+    <text class="edge-label" x="502" y="621">修订后再质检</text>
+    <rect class="label-bg" x="716" y="646" width="58" height="22" rx="5"/>
+    <text class="edge-label" x="745" y="661">通过</text>
+    <rect class="label-bg" x="1046" y="722" width="70" height="22" rx="5"/>
+    <text class="edge-label" x="1081" y="737">approved</text>
+  </g>
+
+  <rect class="node-durable" x="84" y="844" width="1326" height="24" rx="12"/>
+  <text class="node-sub" x="747" y="861">Task · Agent Run · Event · Checkpoint · Evidence · Reflection · Approval · Cost · Audit Trace</text>
+</svg>
