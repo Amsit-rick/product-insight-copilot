@@ -146,29 +146,23 @@ async function pressKey(key, code, windowsVirtualKeyCode) {
     if (await evaluate('document.hasFocus()')) break
     await sleep(50)
   }
-  const text = key === 'Enter' ? '\r' : key === ' ' ? ' ' : ''
-  const keyDownParams = {
+  // `keyDown` 携带 text 在 Windows Chrome 可以触发 DOM keydown，但 Ubuntu
+  // headless Chrome 会把它按文本输入路径处理，页面收不到键盘事件。按钮激活只
+  // 需要真实的 rawKeyDown/keyUp；不发送平台相关 nativeVirtualKeyCode。
+  const keyParams = {
     key,
     code,
     windowsVirtualKeyCode,
     modifiers: 0,
     location: 0,
   }
-  if (text) {
-    keyDownParams.text = text
-    keyDownParams.unmodifiedText = text
-  }
   await send('Input.dispatchKeyEvent', {
-    type: text ? 'keyDown' : 'rawKeyDown',
-    ...keyDownParams,
+    type: 'rawKeyDown',
+    ...keyParams,
   })
   await send('Input.dispatchKeyEvent', {
     type: 'keyUp',
-    key,
-    code,
-    windowsVirtualKeyCode,
-    modifiers: 0,
-    location: 0,
+    ...keyParams,
   })
 }
 
