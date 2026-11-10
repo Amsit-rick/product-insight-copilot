@@ -18,6 +18,7 @@ const EXPECT_REFLECTION_UI = process.env.EXPECT_REFLECTION_UI === '1'
 const results = []
 let socket
 let sequence = 0
+let targetId = ''
 
 function record(name, ok, detail = '') {
   results.push({ name, ok })
@@ -31,7 +32,10 @@ async function targetUrl() {
     const created = await fetch(`${CDP_URL}/json/new?${encodeURIComponent(APP_URL)}`, { method: 'PUT' })
     if (created.ok) {
       const target = await created.json()
-      if (target?.webSocketDebuggerUrl) return target.webSocketDebuggerUrl
+      if (target?.webSocketDebuggerUrl) {
+        targetId = target.id || ''
+        return target.webSocketDebuggerUrl
+      }
     }
   } catch {
     // Older Chromium builds may not expose /json/new; reuse the app page below.
@@ -39,6 +43,7 @@ async function targetUrl() {
   const pages = await (await fetch(`${CDP_URL}/json/list`)).json()
   const target = pages.find((item) => item.type === 'page' && item.url.startsWith(APP_URL.replace(/\/$/, '')))
   if (!target) throw new Error(`没有找到 ${APP_URL} 对应的浏览器标签`)
+  targetId = target.id || ''
   return target.webSocketDebuggerUrl
 }
 
@@ -124,7 +129,23 @@ async function pageText() {
 }
 
 async function pressKey(key, code, windowsVirtualKeyCode) {
+  if (targetId) {
+    try {
+      await send('Target.activateTarget', { targetId })
+    } catch {
+      // 目标级 WebSocket 不一定开放 Target 域，继续尝试调试 HTTP 激活端点。
+    }
+    try {
+      await fetch(`${CDP_URL}/json/activate/${encodeURIComponent(targetId)}`)
+    } catch {
+      // 某些 Chromium 构建不暴露激活端点，继续使用 Page.bringToFront。
+    }
+  }
   await send('Page.bringToFront')
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    if (await evaluate('document.hasFocus()')) break
+    await sleep(50)
+  }
   const text = key === 'Enter' ? '\r' : key === ' ' ? ' ' : ''
   const keyDownParams = {
     key,
@@ -218,6 +239,7 @@ async function main() {
       disabled: card.disabled,
       tagName: card.tagName,
       type: card.getAttribute('type'),
+      documentHasFocus: document.hasFocus(),
       visible: rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none',
     }
   })()`)
@@ -231,6 +253,7 @@ async function main() {
     const status = document.querySelector('.queue-filter[role="status"][aria-live="polite"][aria-atomic="true"]')
     return {
       ariaPressed: card?.getAttribute('aria-pressed') || null,
+      documentHasFocus: document.hasFocus(),
       keyEvents: window.__e2eAttentionKeyEvents || [],
       statusFound: Boolean(status),
       statusText: status?.innerText || '',
