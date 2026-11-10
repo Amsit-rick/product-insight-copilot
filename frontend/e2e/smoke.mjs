@@ -836,7 +836,8 @@ async function main() {
       /交付验收详情/.test(deliveryText)
         && /正式交付证据/.test(deliveryText)
         && /证据快照|证据未绑定当前发布版本|证据已过期|证据有效/.test(deliveryText)
-        && /证据包一致|证据包未校验/.test(deliveryText)
+        // 新环境允许明确显示“尚未生成”，但不能隐藏证据状态或外部门禁。
+        && /证据包一致|证据包未校验|尚未生成/.test(deliveryText)
         && /订单、支付、物流与售后事实接口/.test(deliveryText)
         && /真实业务指标源/.test(deliveryText)
     )
