@@ -201,26 +201,50 @@ async function main() {
   record('客服账号可登录', await loginAs('ops', 'ops123'))
   const opsText = await pageText()
   record('客服首页使用“我的待办”', /我的待办/.test(opsText) && /点选上方队列可按处理时限筛选/.test(opsText))
-  const attentionCardFocused = await evaluate(`(() => {
+  const attentionCardState = await evaluate(`(() => {
     const card = Array.prototype.slice.call(document.querySelectorAll('button'))
       .find((item) => item.innerText.includes('等待我回复'))
-    if (!card) return false
+    if (!card) return { found: false, focused: false }
     card.focus()
-    return document.activeElement === card
+    window.__e2eAttentionKeyEvents = []
+    card.addEventListener('keydown', (event) => {
+      window.__e2eAttentionKeyEvents.push({ key: event.key, code: event.code, keyCode: event.keyCode })
+    }, { once: true })
+    const rect = card.getBoundingClientRect()
+    const style = getComputedStyle(card)
+    return {
+      found: true,
+      focused: document.activeElement === card,
+      disabled: card.disabled,
+      tagName: card.tagName,
+      type: card.getAttribute('type'),
+      visible: rect.width > 0 && rect.height > 0 && style.visibility !== 'hidden' && style.display !== 'none',
+    }
   })()`)
+  const attentionCardFocused = Boolean(attentionCardState.focused)
   if (attentionCardFocused) await pressKey('Enter', 'Enter', 13)
   await sleep(400)
   const attentionQueueText = await pageText()
-  const queueStatusIsAnnounced = await evaluate(`Boolean(
-    document.querySelector('.queue-filter[role="status"][aria-live="polite"][aria-atomic="true"]')
-  )`)
+  const attentionStateAfterPress = await evaluate(`(() => {
+    const card = Array.prototype.slice.call(document.querySelectorAll('button'))
+      .find((item) => item.innerText.includes('等待我回复'))
+    const status = document.querySelector('.queue-filter[role="status"][aria-live="polite"][aria-atomic="true"]')
+    return {
+      ariaPressed: card?.getAttribute('aria-pressed') || null,
+      keyEvents: window.__e2eAttentionKeyEvents || [],
+      statusFound: Boolean(status),
+      statusText: status?.innerText || '',
+    }
+  })()`)
+  const queueStatusIsAnnounced = Boolean(attentionStateAfterPress.statusFound)
   if (attentionCardFocused) await pressKey('Enter', 'Enter', 13)
   record(
     '客服首页业务处理卡可用键盘打开队列',
     /即将超时/.test(opsText) && /等待我回复/.test(opsText) && /待主管审批/.test(opsText)
       && attentionCardFocused && /当前队列：\s*等待回复/.test(attentionQueueText),
+    JSON.stringify({ before: attentionCardState, after: attentionStateAfterPress }),
   )
-  record('当前行动队列会向读屏软件播报', queueStatusIsAnnounced)
+  record('当前行动队列会向读屏软件播报', queueStatusIsAnnounced, JSON.stringify(attentionStateAfterPress))
   record('客服侧栏隐藏研发入口', !/诊断工作台|新建诊断|指标查询|系统状态/.test(opsText))
   record('客服侧栏隐藏质检抽查入口', !/质检抽查/.test(opsText))
   record('客服列表显示下一步和处理人', /下一步做什么/.test(opsText) && /处理人/.test(opsText))

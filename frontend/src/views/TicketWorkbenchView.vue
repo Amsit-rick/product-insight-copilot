@@ -493,6 +493,12 @@ function selectAttention(queue: AttentionQueue): void {
   void loadTickets()
 }
 
+function handleAttentionKeydown(event: KeyboardEvent, queue: AttentionQueue): void {
+  if (event.key !== 'Enter' && event.key !== ' ') return
+  event.preventDefault()
+  selectAttention(queue)
+}
+
 async function openTicket(ticket: TicketOut): Promise<void> {
   drawerOpen.value = true
   detailLoading.value = true
@@ -978,27 +984,27 @@ onUnmounted(() => {
     </div>
 
     <div class="tk__stats" role="group" aria-label="工单行动队列">
-      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'at_risk' }]" :aria-pressed="attentionQueue === 'at_risk'" @click="selectAttention('at_risk')">
+      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'at_risk' }]" :aria-pressed="attentionQueue === 'at_risk'" @click="selectAttention('at_risk')" @keydown="handleAttentionKeydown($event, 'at_risk')">
         <span class="stat__label">即将超时</span>
         <strong class="stat__value stat__value--risk">{{ stats?.at_risk ?? 0 }}</strong>
         <span class="stat__hint stat__hint--risk">请优先处理</span>
       </button>
-      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_reply' }]" :aria-pressed="attentionQueue === 'waiting_reply'" @click="selectAttention('waiting_reply')">
+      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_reply' }]" :aria-pressed="attentionQueue === 'waiting_reply'" @click="selectAttention('waiting_reply')" @keydown="handleAttentionKeydown($event, 'waiting_reply')">
         <span class="stat__label">等待我回复</span>
         <strong class="stat__value">{{ stats?.waiting_reply ?? 0 }}</strong>
         <span class="stat__hint">事实已经齐全</span>
       </button>
-      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_customer' }]" :aria-pressed="attentionQueue === 'waiting_customer'" @click="selectAttention('waiting_customer')">
+      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_customer' }]" :aria-pressed="attentionQueue === 'waiting_customer'" @click="selectAttention('waiting_customer')" @keydown="handleAttentionKeydown($event, 'waiting_customer')">
         <span class="stat__label">等待客户补充</span>
         <strong class="stat__value">{{ stats?.waiting_customer ?? 0 }}</strong>
         <span class="stat__hint">无需反复查看</span>
       </button>
-      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_review' }]" :aria-pressed="attentionQueue === 'waiting_review'" @click="selectAttention('waiting_review')">
+      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_review' }]" :aria-pressed="attentionQueue === 'waiting_review'" @click="selectAttention('waiting_review')" @keydown="handleAttentionKeydown($event, 'waiting_review')">
         <span class="stat__label">待主管审批</span>
         <strong class="stat__value">{{ stats?.waiting_review ?? 0 }}</strong>
         <span class="stat__hint">审批后自动提醒</span>
       </button>
-      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'resolved_today' }]" :aria-pressed="attentionQueue === 'resolved_today'" @click="selectAttention('resolved_today')">
+      <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'resolved_today' }]" :aria-pressed="attentionQueue === 'resolved_today'" @click="selectAttention('resolved_today')" @keydown="handleAttentionKeydown($event, 'resolved_today')">
         <span class="stat__label">今日已完成</span>
         <strong class="stat__value">{{ stats?.resolved_today ?? 0 }}</strong>
         <span class="stat__hint">已发送或已关闭</span>
