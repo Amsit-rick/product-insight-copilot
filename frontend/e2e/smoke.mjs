@@ -828,6 +828,8 @@ async function main() {
     })()`)
     record('交付验收详情由管理员主动打开', deliveryOpened === true)
     await waitForText('正式交付证据', 20000)
+    // 标题是抽屉的静态内容，接口数据可能仍在加载；等待首条门禁数据后再断言完整看板。
+    await waitForText('订单、支付、物流与售后事实接口', 20000)
     const deliveryText = await pageText()
     record(
       '主动打开后提供正式交付证据只读看板（admin）',
