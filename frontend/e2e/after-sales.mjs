@@ -126,16 +126,29 @@ async function pageText() {
 async function pressKey(key, code, windowsVirtualKeyCode) {
   await send('Page.bringToFront')
   const text = key === 'Enter' ? '\r' : key === ' ' ? ' ' : ''
-  const params = {
+  const keyDownParams = {
     key,
     code,
-    text,
-    unmodifiedText: text,
     windowsVirtualKeyCode,
-    nativeVirtualKeyCode: windowsVirtualKeyCode,
+    modifiers: 0,
+    location: 0,
   }
-  await send('Input.dispatchKeyEvent', { type: 'keyDown', ...params })
-  await send('Input.dispatchKeyEvent', { type: 'keyUp', ...params })
+  if (text) {
+    keyDownParams.text = text
+    keyDownParams.unmodifiedText = text
+  }
+  await send('Input.dispatchKeyEvent', {
+    type: text ? 'keyDown' : 'rawKeyDown',
+    ...keyDownParams,
+  })
+  await send('Input.dispatchKeyEvent', {
+    type: 'keyUp',
+    key,
+    code,
+    windowsVirtualKeyCode,
+    modifiers: 0,
+    location: 0,
+  })
 }
 
 async function accessibleButtonNames() {
