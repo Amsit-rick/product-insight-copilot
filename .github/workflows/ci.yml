@@ -81,7 +81,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - name: 安装依赖
@@ -106,7 +106,7 @@ jobs:
           cache-dependency-path: backend/requirements-dev.lock
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - name: 安装依赖
@@ -341,16 +341,16 @@ jobs:
           docker exec "$COMPOSE_PROJECT_NAME-api-1" python scripts/verify_target_environment.py \
             --node github-runner=http://127.0.0.1:8000 \
             --expected-env test --allow-insecure-http --allow-real-target-calls \
-            --json-out /tmp/remote-ci-production-shape.json
-          docker cp "$COMPOSE_PROJECT_NAME-api-1:/tmp/remote-ci-production-shape.json" \
+            --json-out /app/data/objects/remote-ci-production-shape.json
+          docker cp "$COMPOSE_PROJECT_NAME-api-1:/app/data/objects/remote-ci-production-shape.json" \
             docs/testing/artifacts/remote-ci-production-shape.json
       - name: 主动调度器 PostgreSQL 崩溃接管演练
         run: |
           docker exec "$COMPOSE_PROJECT_NAME-api-1" sh -lc \
             'SCHEDULER_REHEARSAL_DATABASE_URL="$DATABASE_URL" python scripts/verify_scheduler_failover.py \
             --allow-real-database-call --lease-seconds 3 \
-            --json-out /tmp/remote-ci-scheduler-failover.json'
-          docker cp "$COMPOSE_PROJECT_NAME-api-1:/tmp/remote-ci-scheduler-failover.json" \
+            --json-out /app/data/objects/remote-ci-scheduler-failover.json'
+          docker cp "$COMPOSE_PROJECT_NAME-api-1:/app/data/objects/remote-ci-scheduler-failover.json" \
             docs/testing/artifacts/remote-ci-scheduler-failover.json
       - name: 收集失败日志
         if: failure()
