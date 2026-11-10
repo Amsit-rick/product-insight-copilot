@@ -63,9 +63,13 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}/backend
           LLM_PROVIDER: stub
+          DATABASE_URL: sqlite:///${{ github.workspace }}/backend/.tmp/preflight.db
         # 常规档：CI 里没有真实密钥与 Redis，按生产标准会误报；
         # 发布流程里改用 --strict 作为门禁（见 RELEASE_CHECKLIST.md）
-        run: python scripts/preflight_check.py
+        run: |
+          mkdir -p .tmp
+          python -c "from app.db.seed import init_db; init_db()"
+          python scripts/preflight_check.py
 
   frontend:
     name: 前端类型检查与构建
