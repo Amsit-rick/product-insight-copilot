@@ -19,6 +19,7 @@ const results = []
 let socket
 let sequence = 0
 let targetId = ''
+let targetSessionId = ''
 
 function record(name, ok, detail = '') {
   results.push({ name, ok })
@@ -27,24 +28,31 @@ function record(name, ok, detail = '') {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-async function targetUrl() {
+async function targetConnection() {
+  let target
   try {
     const created = await fetch(`${CDP_URL}/json/new?${encodeURIComponent(APP_URL)}`, { method: 'PUT' })
     if (created.ok) {
-      const target = await created.json()
-      if (target?.webSocketDebuggerUrl) {
-        targetId = target.id || ''
-        return target.webSocketDebuggerUrl
-      }
+      target = await created.json()
     }
   } catch {
     // Older Chromium builds may not expose /json/new; reuse the app page below.
   }
-  const pages = await (await fetch(`${CDP_URL}/json/list`)).json()
-  const target = pages.find((item) => item.type === 'page' && item.url.startsWith(APP_URL.replace(/\/$/, '')))
+  if (!target?.webSocketDebuggerUrl) {
+    const pages = await (await fetch(`${CDP_URL}/json/list`)).json()
+    target = pages.find((item) => item.type === 'page' && item.url.startsWith(APP_URL.replace(/\/$/, '')))
+  }
   if (!target) throw new Error(`没有找到 ${APP_URL} 对应的浏览器标签`)
   targetId = target.id || ''
-  return target.webSocketDebuggerUrl
+  try {
+    const version = await (await fetch(`${CDP_URL}/json/version`)).json()
+    if (targetId && version?.webSocketDebuggerUrl) {
+      return { socketUrl: version.webSocketDebuggerUrl, attachToTarget: true }
+    }
+  } catch {
+    // 旧版浏览器没有 browser target 时，继续使用页面级 WebSocket。
+  }
+  return { socketUrl: target.webSocketDebuggerUrl, attachToTarget: false }
 }
 
 function connect(url) {
@@ -55,7 +63,7 @@ function connect(url) {
   })
 }
 
-function send(method, params = {}) {
+function send(method, params = {}, browserCommand = false) {
   const id = ++sequence
   return new Promise((resolve, reject) => {
     const handler = (event) => {
@@ -65,7 +73,9 @@ function send(method, params = {}) {
       payload.error ? reject(new Error(`${method}: ${JSON.stringify(payload.error)}`)) : resolve(payload.result)
     }
     socket.addEventListener('message', handler)
-    socket.send(JSON.stringify({ id, method, params }))
+    const message = { id, method, params }
+    if (targetSessionId && !browserCommand) message.sessionId = targetSessionId
+    socket.send(JSON.stringify(message))
   })
 }
 
@@ -131,7 +141,7 @@ async function pageText() {
 async function pressKey(key, code, windowsVirtualKeyCode) {
   if (targetId) {
     try {
-      await send('Target.activateTarget', { targetId })
+      await send('Target.activateTarget', { targetId }, true)
     } catch {
       // 目标级 WebSocket 不一定开放 Target 域，继续尝试调试 HTTP 激活端点。
     }
@@ -206,7 +216,13 @@ async function logout() {
 }
 
 async function main() {
-  socket = await connect(await targetUrl())
+  const connection = await targetConnection()
+  socket = await connect(connection.socketUrl)
+  if (connection.attachToTarget) {
+    const attached = await send('Target.attachToTarget', { targetId, flatten: true }, true)
+    targetSessionId = attached.sessionId || ''
+    if (!targetSessionId) throw new Error('浏览器级 CDP 未返回目标页 sessionId')
+  }
   await send('Page.enable')
   await send('Runtime.enable')
   await send('Accessibility.enable')
