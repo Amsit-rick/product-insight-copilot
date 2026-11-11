@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1110" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1110" viewBox="0 0 1400 1110" role="img" aria-labelledby="title desc">
   <title id="title">Product Insight Copilot 售后工单业务流程</title>
   <desc id="desc">客户提交售后问题后，系统识别问题和风险，核验订单事实与适用政策，由规则确定动作金额和审批要求，生成回复并独立质检。普通问题直接交付，高风险进入人工审批，证据或回复有问题时补查或修订后重新质检。</desc>
   <defs>
