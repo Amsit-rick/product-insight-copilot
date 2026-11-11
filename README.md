@@ -36,16 +36,31 @@ Product Insight Copilot 将这些环节拆成受控工作流，并把每个 Agen
 ## 核心业务流程
 
 <p align="center">
-  <img src="docs/product-insight-agent-flow.svg" alt="Product Insight Copilot 售后工单业务流程：从客户问题、事实与政策核验，到规则决策、回复质检、按风险审批和最终交付" width="100%" />
+  <img src="docs/product-insight-agent-flow.webp" alt="Product Insight Copilot 动态售后工单业务流程：从客户问题、事实与政策核验，到规则决策、回复质检、按风险审批和最终交付" width="100%" />
 </p>
 
-主图用于快速理解业务。需要核对全部返回路径和审批分支时，可查看 [Archify 详细版 SVG](docs/product-insight-agent-flow-archify.svg)；仓库同时保留 [Archify JSON 规格](docs/diagrams/after-sales-business-flow.archify.json) 和 [可交互 HTML](docs/product-insight-agent-flow.html)（下载后本地打开）。
+主图用于快速理解业务，箭头颜色和流动方向表示当前处理链路。可查看 [可编辑动画 SVG](docs/product-insight-agent-flow.svg)、[Archify 详细版 SVG](docs/product-insight-agent-flow-archify.svg)、[Archify JSON 规格](docs/diagrams/after-sales-business-flow.archify.json) 和 [可交互 HTML](docs/product-insight-agent-flow.html)（下载后本地打开）。
 
 这张图只展示客服和审核人员能够理解的业务主线，不把 LangGraph、数据库或内部代码节点画成业务步骤：
 
 1. **取证方式由风险决定。** 高风险工单并行核验订单事实和政策，普通场景可以按顺序执行。
 2. **模型没有最终执行权。** 动作、金额、风险等级和审批要求由代码规则确定。
 3. **质量问题必须闭环。** 证据不足会补查，回复问题会修订，之后重新进入独立复核。
+
+## 多 Agent 协作流程
+
+<p align="center">
+  <img src="docs/product-insight-multi-agent-flow.webp" alt="Product Insight Copilot 动态多 Agent 协作流程：编排、并行取证、规则决策、回复生成、独立复核、有限修订、人工审核、跟进和持久化" width="100%" />
+</p>
+
+这张图专门回答“多 Agent 到底体现在哪里”，不再与客服业务步骤混画：
+
+1. **编排器不是业务 Agent。** LangGraph 只负责恢复状态、选择下一节点和控制分支。
+2. **Agent 有明确分工。** Triage 负责分流，Order Fact 与 Policy RAG 负责取证，Resolution 与 Response 负责方案和表达，Review 独立复核，Revision 只做有限修订，Follow-up 负责后续跟进。
+3. **规则门禁拥有最终控制权。** Agent 不能自行修改退款动作、金额、风险等级或审批要求；高风险结果必须交给人工。
+4. **反思不是重复生成。** Review 只能给出通过、补查、修订或转人工四类结果，补查和修订后必须重新复核。
+
+可查看 [可编辑动画 SVG](docs/product-insight-multi-agent-flow.svg)、[Archify JSON 规格](docs/diagrams/after-sales-multi-agent-flow.archify.json) 和 [可交互 Archify HTML](docs/product-insight-multi-agent-flow.html)（下载后本地打开）。
 4. **只有高风险动作需要审批。** 普通问题通过质检后可以直接交付，高风险退款或补偿必须由主管或风控确认。
 
 产品诊断是另一条独立工作流：产品知识、用户反馈、版本研发和指标数据并行分析后，再进行证据合并、报告反思和人工审核，不与售后工单流程混画。

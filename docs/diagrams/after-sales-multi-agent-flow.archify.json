@@ -1,0 +1,191 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "多 Agent 协作流程：一张工单由谁接力处理",
+    "locale": "zh-CN",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden"
+    }
+  },
+  "lanes": [
+    { "id": "orchestration", "label": "编排与路由" },
+    { "id": "facts", "label": "订单事实取证" },
+    { "id": "policy", "label": "政策知识取证" },
+    { "id": "decision", "label": "决策与回复" },
+    { "id": "reflection", "label": "独立复核与反思", "variant": "exception" },
+    { "id": "approval", "label": "人工审核", "variant": "exception" },
+    { "id": "delivery", "label": "交付与跟进" },
+    { "id": "support", "label": "状态与审计支撑" }
+  ],
+  "phases": [
+    { "id": "route_phase", "label": "受理与路由", "fromCol": 0, "toCol": 1 },
+    { "id": "evidence_phase", "label": "事实与政策", "fromCol": 2, "toCol": 2, "variant": "emphasis" },
+    { "id": "decision_phase", "label": "受控决策", "fromCol": 3, "toCol": 4, "variant": "security" },
+    { "id": "review_phase", "label": "复核与交付", "fromCol": 5, "toCol": 5 }
+  ],
+  "mainPath": [
+    "orchestrator",
+    "triage_agent",
+    "order_fact_agent",
+    "decision_gate",
+    "resolution_agent",
+    "response_agent",
+    "review_agent",
+    "followup_agent",
+    "persist_trace"
+  ],
+  "semanticChecks": {
+    "allowedRoots": ["orchestrator"],
+    "allowedTerminals": ["persist_trace"],
+    "requiredPaths": [
+      { "from": "triage_agent", "to": "order_fact_agent" },
+      { "from": "triage_agent", "to": "policy_rag_agent" },
+      { "from": "review_agent", "to": "retrieve_more" },
+      { "from": "review_agent", "to": "revision_agent" },
+      { "from": "review_agent", "to": "human_review" },
+      { "from": "review_agent", "to": "followup_agent" }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "orchestrator",
+      "lane": "orchestration",
+      "col": 0,
+      "type": "messagebus",
+      "label": "LangGraph Orchestrator",
+      "sublabel": "恢复状态并决定下一节点",
+      "width": 150
+    },
+    {
+      "id": "triage_agent",
+      "lane": "orchestration",
+      "col": 1,
+      "type": "backend",
+      "label": "Triage Agent",
+      "sublabel": "识别问题类型、风险与缺失信息",
+      "width": 138
+    },
+    {
+      "id": "order_fact_agent",
+      "lane": "facts",
+      "col": 2,
+      "type": "database",
+      "label": "Order Fact Agent",
+      "sublabel": "查询订单、支付、物流和历史售后",
+      "width": 148
+    },
+    {
+      "id": "policy_rag_agent",
+      "lane": "policy",
+      "col": 2,
+      "type": "cloud",
+      "label": "Policy RAG Agent",
+      "sublabel": "检索生效政策、条件和引用来源",
+      "width": 148
+    },
+    {
+      "id": "decision_gate",
+      "lane": "decision",
+      "col": 3,
+      "type": "security",
+      "label": "确定性规则门禁",
+      "sublabel": "代码决定动作、金额、风险和审批",
+      "tag": "模型无最终执行权",
+      "width": 150
+    },
+    {
+      "id": "resolution_agent",
+      "lane": "decision",
+      "col": 4,
+      "type": "backend",
+      "label": "Resolution Agent",
+      "sublabel": "把证据整理为可执行处理方案",
+      "width": 146
+    },
+    {
+      "id": "response_agent",
+      "lane": "decision",
+      "col": 5,
+      "type": "frontend",
+      "label": "Response Agent",
+      "sublabel": "生成面向客户的回复草稿",
+      "width": 138
+    },
+    {
+      "id": "review_agent",
+      "lane": "reflection",
+      "col": 5,
+      "type": "security",
+      "label": "Review Agent",
+      "sublabel": "检查证据、承诺与审批",
+      "width": 142
+    },
+    {
+      "id": "retrieve_more",
+      "lane": "reflection",
+      "col": 2,
+      "type": "cloud",
+      "label": "补查证据",
+      "sublabel": "证据不足时回到政策检索",
+      "width": 130
+    },
+    {
+      "id": "revision_agent",
+      "lane": "reflection",
+      "col": 4,
+      "type": "backend",
+      "label": "Revision Agent",
+      "sublabel": "只修订复核指出的问题",
+      "width": 138
+    },
+    {
+      "id": "human_review",
+      "lane": "approval",
+      "col": 5,
+      "type": "external",
+      "label": "人工审核",
+      "sublabel": "高风险结论或敏感动作由人确认",
+      "width": 138
+    },
+    {
+      "id": "followup_agent",
+      "lane": "delivery",
+      "col": 5,
+      "type": "backend",
+      "label": "Follow-up Agent",
+      "sublabel": "安排回复后的跟进计划",
+      "width": 136
+    },
+    {
+      "id": "persist_trace",
+      "lane": "support",
+      "col": 5,
+      "type": "database",
+      "label": "持久化与全链路追踪",
+      "sublabel": "状态、证据与成本留痕",
+      "width": 154
+    }
+  ],
+  "edges": [
+    { "from": "orchestrator", "to": "triage_agent", "label": "加载工单上下文", "role": "main" },
+    { "from": "triage_agent", "to": "order_fact_agent", "label": "所有场景", "role": "main" },
+    { "from": "triage_agent", "to": "policy_rag_agent", "label": "高风险并行", "role": "async" },
+    { "from": "order_fact_agent", "to": "policy_rag_agent", "label": "普通场景顺序执行", "role": "branch" },
+    { "from": "order_fact_agent", "to": "decision_gate", "label": "高风险事实汇合", "role": "branch" },
+    { "from": "policy_rag_agent", "to": "decision_gate", "role": "main" },
+    { "from": "decision_gate", "to": "resolution_agent", "label": "受控处理边界", "role": "main" },
+    { "from": "resolution_agent", "to": "response_agent", "label": "处理方案", "role": "main" },
+    { "from": "response_agent", "to": "review_agent", "label": "先生成再复核", "role": "main" },
+    { "from": "review_agent", "to": "followup_agent", "label": "通过", "role": "main" },
+    { "from": "review_agent", "to": "retrieve_more", "label": "证据不足", "role": "error", "variant": "security" },
+    { "from": "retrieve_more", "to": "policy_rag_agent", "label": "补查后重审", "role": "return" },
+    { "from": "review_agent", "to": "revision_agent", "label": "需要修订", "role": "error", "variant": "security" },
+    { "from": "revision_agent", "to": "review_agent", "label": "有限修订后重审", "role": "return" },
+    { "from": "review_agent", "to": "human_review", "label": "高风险 / 无法确认", "role": "branch", "variant": "security" },
+    { "from": "human_review", "to": "followup_agent", "label": "人工确认", "role": "main" },
+    { "from": "followup_agent", "to": "persist_trace", "label": "交付并留痕", "role": "main" }
+  ]
+}
