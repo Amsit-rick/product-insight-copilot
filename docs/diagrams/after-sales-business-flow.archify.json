@@ -1,0 +1,167 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "一张售后工单如何被安全处理",
+    "locale": "zh-CN",
+    "animation": "none",
+    "quality_profile": "showcase",
+    "viewBox": [1060, 786],
+    "legend": {
+      "mode": "hidden"
+    }
+  },
+  "lanes": [
+    { "id": "service", "label": "客户与客服" },
+    { "id": "facts", "label": "订单事实核验" },
+    { "id": "policy", "label": "政策知识核验" },
+    { "id": "control", "label": "规则与质量门禁" },
+    { "id": "exceptions", "label": "补查、修订与人工审批", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "intake_phase", "label": "受理", "fromCol": 0, "toCol": 1 },
+    { "id": "evidence_phase", "label": "取证", "fromCol": 2, "toCol": 2, "variant": "emphasis" },
+    { "id": "decision_phase", "label": "决策与表达", "fromCol": 3, "toCol": 4 },
+    { "id": "delivery_phase", "label": "复核与交付", "fromCol": 5, "toCol": 5, "variant": "security" }
+  ],
+  "mainPath": [
+    "customer_issue",
+    "triage",
+    "order_facts",
+    "policy_check",
+    "rule_decision",
+    "reply_draft",
+    "quality_review",
+    "deliver_reply"
+  ],
+  "semanticChecks": {
+    "allowedRoots": ["customer_issue"],
+    "allowedTerminals": ["deliver_reply"],
+    "requiredPaths": [
+      { "from": "customer_issue", "to": "deliver_reply" },
+      { "from": "quality_review", "to": "retrieve_more" },
+      { "from": "quality_review", "to": "revise_reply" },
+      { "from": "quality_review", "to": "human_approval" }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "customer_issue",
+      "lane": "service",
+      "col": 0,
+      "type": "external",
+      "label": "客户提交售后问题",
+      "sublabel": "问题描述、订单号与补充材料",
+      "width": 140
+    },
+    {
+      "id": "triage",
+      "lane": "service",
+      "col": 1,
+      "type": "backend",
+      "label": "识别问题与风险",
+      "sublabel": "问题类型、紧急度、缺失信息",
+      "tag": "Triage Agent",
+      "width": 124
+    },
+    {
+      "id": "order_facts",
+      "lane": "facts",
+      "col": 2,
+      "type": "database",
+      "label": "核验订单事实",
+      "sublabel": "订单、支付、物流、历史售后",
+      "width": 124
+    },
+    {
+      "id": "policy_check",
+      "lane": "policy",
+      "col": 2,
+      "type": "database",
+      "label": "核验适用政策",
+      "sublabel": "生效版本、适用条件、引用来源",
+      "width": 132
+    },
+    {
+      "id": "rule_decision",
+      "lane": "control",
+      "col": 3,
+      "type": "security",
+      "label": "规则确定处理边界",
+      "sublabel": "动作、金额、风险、审批要求",
+      "tag": "代码规则",
+      "width": 140
+    },
+    {
+      "id": "reply_draft",
+      "lane": "control",
+      "col": 4,
+      "type": "backend",
+      "label": "生成客服回复草稿",
+      "sublabel": "事实、方案与客户下一步",
+      "width": 140
+    },
+    {
+      "id": "quality_review",
+      "lane": "control",
+      "col": 5,
+      "type": "security",
+      "label": "独立质量复核",
+      "sublabel": "证据、金额、承诺、引用、审批",
+      "tag": "Review Agent",
+      "width": 132
+    },
+    {
+      "id": "retrieve_more",
+      "lane": "exceptions",
+      "col": 2,
+      "type": "cloud",
+      "label": "补查证据",
+      "sublabel": "证据不足时追加事实或政策检索",
+      "width": 132
+    },
+    {
+      "id": "revise_reply",
+      "lane": "exceptions",
+      "col": 4,
+      "type": "backend",
+      "label": "修订回复",
+      "sublabel": "只修改质检指出的问题"
+    },
+    {
+      "id": "human_approval",
+      "lane": "exceptions",
+      "col": 5,
+      "type": "external",
+      "label": "主管或风控审批",
+      "sublabel": "仅退款、补偿等高风险动作需要",
+      "width": 132
+    },
+    {
+      "id": "deliver_reply",
+      "lane": "service",
+      "col": 5,
+      "type": "frontend",
+      "label": "回复交付与跟进",
+      "sublabel": "客户回复、跟进计划、审计留痕",
+      "width": 132
+    }
+  ],
+  "edges": [
+    { "from": "customer_issue", "to": "triage", "role": "main" },
+    { "from": "triage", "to": "order_facts", "label": "所有场景", "role": "main" },
+    { "from": "triage", "to": "policy_check", "label": "高风险并行", "role": "branch" },
+    { "from": "order_facts", "to": "policy_check", "label": "普通场景顺序核验", "role": "main" },
+    { "from": "order_facts", "to": "rule_decision", "label": "高风险事实汇合", "role": "branch" },
+    { "from": "policy_check", "to": "rule_decision", "role": "main" },
+    { "from": "rule_decision", "to": "reply_draft", "role": "main" },
+    { "from": "reply_draft", "to": "quality_review", "role": "main" },
+    { "from": "quality_review", "to": "deliver_reply", "label": "通过 / 低风险", "role": "main" },
+    { "from": "quality_review", "to": "retrieve_more", "label": "证据不足", "role": "error", "variant": "security" },
+    { "from": "retrieve_more", "to": "policy_check", "label": "补查后重新判断", "role": "return" },
+    { "from": "quality_review", "to": "revise_reply", "label": "回复需修订", "role": "error", "variant": "security" },
+    { "from": "revise_reply", "to": "quality_review", "label": "修订后再质检", "role": "return" },
+    { "from": "quality_review", "to": "human_approval", "label": "高风险", "role": "branch", "variant": "security" },
+    { "from": "human_approval", "to": "deliver_reply", "label": "批准后交付", "role": "main" }
+  ]
+}

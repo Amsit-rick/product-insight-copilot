@@ -39,6 +39,8 @@ Product Insight Copilot 将这些环节拆成受控工作流，并把每个 Agen
   <img src="docs/product-insight-agent-flow.svg" alt="Product Insight Copilot 售后工单业务流程：从客户问题、事实与政策核验，到规则决策、回复质检、按风险审批和最终交付" width="100%" />
 </p>
 
+主图用于快速理解业务。需要核对全部返回路径和审批分支时，可查看 [Archify 详细版 SVG](docs/product-insight-agent-flow-archify.svg)；仓库同时保留 [Archify JSON 规格](docs/diagrams/after-sales-business-flow.archify.json) 和 [可交互 HTML](docs/product-insight-agent-flow.html)（下载后本地打开）。
+
 这张图只展示客服和审核人员能够理解的业务主线，不把 LangGraph、数据库或内部代码节点画成业务步骤：
 
 1. **取证方式由风险决定。** 高风险工单并行核验订单事实和政策，普通场景可以按顺序执行。

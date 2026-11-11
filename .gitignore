@@ -29,6 +29,7 @@ pytest-cache-files-*/
 
 # ---- 本地工作簿与临时日志（非交付物）----
 .workbuddy/
+docs/product-insight-agent-flow.visual-check.*
 
 # ---- 环境与密钥（绝不入库）----
 .env
