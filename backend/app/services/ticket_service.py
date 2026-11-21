@@ -638,6 +638,7 @@ class TicketService:
                 payload=item.get("payload") or {},
                 observed_at=item.get("observed_at") or utcnow(),
                 request_id=item.get("request_id"),
+                source_version=item.get("source_version"),
                 is_mock=bool(item.get("is_mock", True)),
                 adapter=item.get("adapter"),
                 error=item.get("error"),

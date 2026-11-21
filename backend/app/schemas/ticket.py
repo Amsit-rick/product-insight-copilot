@@ -176,6 +176,7 @@ class FactOut(BaseModel):
     payload: dict
     observed_at: datetime | None = None
     request_id: str | None = None
+    source_version: str | None = None
     is_mock: bool
     adapter: str | None = None
     stale: bool = False

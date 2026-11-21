@@ -1,0 +1,23 @@
+{
+  "schema_version": "saleor-cold-start-acceptance-v1",
+  "performed_at": null,
+  "operator": {
+    "role": "",
+    "independent_from_implementation": false
+  },
+  "environment": {
+    "fresh_checkout": false,
+    "preexisting_commerce_volumes": true
+  },
+  "steps": {
+    "start_completed": false,
+    "health_checked": false,
+    "main_workflow_completed": false,
+    "stop_or_cleanup_documented": false
+  },
+  "observed": {
+    "fact_provider_status": "",
+    "scenario_manifest_status": ""
+  },
+  "artifact_sha256": ""
+}

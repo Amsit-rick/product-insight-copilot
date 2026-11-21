@@ -1,0 +1,212 @@
+name: product-insight-commerce
+
+x-commerce-profile: &commerce-profile
+  profiles: ["commerce-sandbox"]
+
+x-saleor-environment: &saleor-environment
+  DATABASE_URL: postgres://saleor:saleor@commerce-db:5432/saleor
+  CACHE_URL: redis://commerce-cache:6379/0
+  CELERY_BROKER_URL: redis://commerce-cache:6379/1
+  SECRET_KEY: ${SALEOR_SECRET_KEY:?Run scripts\\commerce_sandbox.ps1 start first}
+  ALLOWED_HOSTS: localhost,127.0.0.1,commerce-api
+  DEFAULT_CHANNEL_SLUG: default-channel
+  DEFAULT_FROM_EMAIL: noreply@example.invalid
+  DASHBOARD_URL: http://127.0.0.1:19000/
+  HTTP_IP_FILTER_ALLOW_LOOPBACK_IPS: "True"
+  HTTP_IP_FILTER_ENABLED: "True"
+  OTEL_TRACES_EXPORTER: none
+  CELERY_TASK_ALWAYS_EAGER: "True"
+
+services:
+  commerce-db:
+    <<: *commerce-profile
+    image: postgres:15-alpine@sha256:fc41cfa8a90c09e84dd723ee764be4b2f59ba6c98b1e5b3fca540adddf68a5ba
+    environment:
+      POSTGRES_DB: saleor
+      POSTGRES_USER: saleor
+      POSTGRES_PASSWORD: saleor
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saleor -d saleor"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - commerce-db-data:/var/lib/postgresql/data
+    networks:
+      - commerce-backend
+
+  commerce-cache:
+    <<: *commerce-profile
+    image: valkey/valkey:8.1-alpine
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    volumes:
+      - commerce-cache-data:/data
+    networks:
+      - commerce-backend
+
+  commerce-migrate:
+    <<: *commerce-profile
+    image: ghcr.io/saleor/saleor:3.23.49@sha256:bb59cbf1efd764d9010390a4f08d681f17f771528b5e0688c641158e9c16680b
+    command: ["python", "manage.py", "migrate", "--noinput"]
+    environment: *saleor-environment
+    depends_on:
+      commerce-db:
+        condition: service_healthy
+      commerce-cache:
+        condition: service_healthy
+    networks:
+      - commerce-backend
+
+  commerce-seed:
+    <<: *commerce-profile
+    image: ghcr.io/saleor/saleor:3.23.49@sha256:bb59cbf1efd764d9010390a4f08d681f17f771528b5e0688c641158e9c16680b
+    command:
+      [
+        "sh",
+        "-c",
+        "if [ -f /run/commerce-seed-state/seeded ]; then echo 'Saleor demo data already seeded'; else python manage.py populatedb && python manage.py createsuperuser --noinput && touch /run/commerce-seed-state/seeded; fi",
+      ]
+    environment:
+      <<: *saleor-environment
+      DJANGO_SUPERUSER_EMAIL: ${SALEOR_SEED_ADMIN_EMAIL:-admin@example.com}
+      DJANGO_SUPERUSER_PASSWORD: ${SALEOR_SEED_ADMIN_PASSWORD:?Run scripts\\commerce_sandbox.ps1 start first}
+    depends_on:
+      commerce-migrate:
+        condition: service_completed_successfully
+    volumes:
+      - commerce-seed-state:/run/commerce-seed-state
+    networks:
+      - commerce-backend
+
+  commerce-api:
+    <<: *commerce-profile
+    image: ghcr.io/saleor/saleor:3.23.49@sha256:bb59cbf1efd764d9010390a4f08d681f17f771528b5e0688c641158e9c16680b
+    environment: *saleor-environment
+    depends_on:
+      commerce-seed:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          python -c "import urllib.request;
+          urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:8000/graphql/',
+          data=b'{\"query\":\"query { shop { name } }\"}',
+          headers={'Content-Type':'application/json'}), timeout=4)"
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 15s
+    volumes:
+      - commerce-media-data:/app/media
+    networks:
+      - commerce-backend
+
+  commerce-credentials-init:
+    <<: *commerce-profile
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    user: "0:0"
+    command:
+      [
+        "sh",
+        "-c",
+        "chown 10001:10001 /run/commerce-credentials /run/commerce-scenarios && chmod 700 /run/commerce-credentials /run/commerce-scenarios",
+      ]
+    volumes:
+      - commerce-runtime-credentials:/run/commerce-credentials
+      - commerce-scenario-manifest:/run/commerce-scenarios
+    network_mode: none
+
+  commerce-bootstrap:
+    <<: *commerce-profile
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: ["python", "scripts/bootstrap_saleor_runtime_identity.py"]
+    environment:
+      SALEOR_GRAPHQL_URL: http://commerce-api:8000/graphql/
+      SALEOR_SEED_ADMIN_EMAIL: ${SALEOR_SEED_ADMIN_EMAIL:-admin@example.com}
+      SALEOR_SEED_ADMIN_PASSWORD: ${SALEOR_SEED_ADMIN_PASSWORD:?Run scripts\\commerce_sandbox.ps1 start first}
+      SALEOR_APP_TOKEN_FILE: /run/commerce-credentials/app-token
+    depends_on:
+      commerce-api:
+        condition: service_healthy
+      commerce-credentials-init:
+        condition: service_completed_successfully
+    volumes:
+      - commerce-runtime-credentials:/run/commerce-credentials
+    networks:
+      - commerce-backend
+
+  commerce-scenarios:
+    <<: *commerce-profile
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command: ["python", "scripts/build_saleor_scenarios.py"]
+    environment:
+      SALEOR_GRAPHQL_URL: http://commerce-api:8000/graphql/
+      SALEOR_APP_TOKEN_FILE: /run/commerce-credentials/app-token
+      SANDBOX_SCENARIO_MANIFEST_FILE: /run/commerce-scenarios/manifest.json
+    depends_on:
+      commerce-bootstrap:
+        condition: service_completed_successfully
+    volumes:
+      - commerce-runtime-credentials:/run/commerce-credentials:ro
+      - commerce-scenario-manifest:/run/commerce-scenarios
+    networks:
+      - commerce-backend
+
+  commerce-integration-sandbox:
+    <<: *commerce-profile
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    command:
+      ["python", "scripts/reference_integration_api.py", "--host", "0.0.0.0", "--port", "8091"]
+    environment:
+      SANDBOX_API_KEY: ${SANDBOX_API_KEY:-local-sandbox-key}
+      SANDBOX_WEBHOOK_SECRET: ${SANDBOX_WEBHOOK_SECRET:-local-webhook-secret}
+      SANDBOX_FACT_PROVIDER: saleor
+      SANDBOX_SCENARIO_MANIFEST_FILE: /run/commerce-scenarios/manifest.json
+      SALEOR_GRAPHQL_URL: http://commerce-api:8000/graphql/
+      SALEOR_APP_TOKEN_FILE: /run/commerce-credentials/app-token
+    depends_on:
+      commerce-scenarios:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${COMMERCE_SANDBOX_PORT:-8092}:8091"
+    healthcheck:
+      test:
+        ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8091/health', timeout=4)"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    volumes:
+      - commerce-runtime-credentials:/run/commerce-credentials:ro
+      - commerce-scenario-manifest:/run/commerce-scenarios:ro
+    networks:
+      - commerce-backend
+      - commerce-edge
+
+volumes:
+  commerce-db-data:
+  commerce-cache-data:
+  commerce-media-data:
+  commerce-seed-state:
+  commerce-runtime-credentials:
+  commerce-scenario-manifest:
+
+networks:
+  commerce-backend:
+    driver: bridge
+    internal: true
+  commerce-edge:
+    driver: bridge

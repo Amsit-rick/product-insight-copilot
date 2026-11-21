@@ -79,6 +79,8 @@ COPY backend/scripts/verify_scheduler_failover.py ./scripts/verify_scheduler_fai
 COPY backend/scripts/verify_metric_source.py ./scripts/verify_metric_source.py
 COPY backend/scripts/reference_integration_api.py ./scripts/reference_integration_api.py
 COPY backend/scripts/verify_reference_integration_sandbox.py ./scripts/verify_reference_integration_sandbox.py
+COPY backend/scripts/bootstrap_saleor_runtime_identity.py ./scripts/bootstrap_saleor_runtime_identity.py
+COPY backend/scripts/build_saleor_scenarios.py ./scripts/build_saleor_scenarios.py
 COPY docs/integrations/fact-probe-plan.example.json ./docs/integrations/fact-probe-plan.example.json
 COPY --from=frontend-build /build/frontend/dist ./frontend/dist/
 

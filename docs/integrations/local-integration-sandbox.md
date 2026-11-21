@@ -1,7 +1,7 @@
 # 本地统一集成 Sandbox
 
 日期：2026-11-09  
-适用对象：后端开发、联调工程师、测试人员、演示验收人员
+适用对象：后端开发、联调工程师、测试人员、演示评审人员
 
 ## 1. 它解决什么问题
 
@@ -86,11 +86,138 @@ docker compose -f deploy\docker-compose.yml --profile sandbox rm -f integration-
 
 该服务没有 `depends_on`，不会启动 Postgres、Redis、API 或 Worker。
 
+### 4.1 Saleor 高保真业务模式（可选）
+
+该模式用 Saleor 本地合成数据驱动四类事实接口，不属于默认全栈。首次启动会执行
+数据库迁移和播种，通常需要数分钟；后续启动不会重复生成订单。
+
+启动（Windows CMD）：
+
+```cmd
+cd /d D:\path\to\product-insight-copilot
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 start
+```
+
+状态、日志和停止：
+
+```cmd
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 status
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 logs
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 stop
+```
+
+仅重置该高保真 Sandbox 的容器、网络和数据卷：
+
+```cmd
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 reset
+```
+
+接口地址为 `http://127.0.0.1:8092`，健康结果必须包含：
+
+```json
+{
+  "fact_provider": "saleor",
+  "fact_provider_status": "saleor_ready",
+  "scenario_manifest_status": "ready"
+}
+```
+
+场景清单使用 `X-Api-Key` 访问 `GET /scenarios`。它只返回场景 ID、中文名称、用途、
+数据来源类型和是否应用本地覆盖层，不返回 Saleor 订单映射、覆盖内容或凭据。当前固定场景为：
+
+- `SCN-NORMAL-DELIVERED`
+- `SCN-UNPAID-CANCELED`
+- `SCN-PAID-UNSHIPPED-REFUND`
+- `SCN-PARTIAL-FULFILLMENT`
+- `SCN-LOGISTICS-STALLED`
+- `SCN-DELIVERED-RETURN`
+- `SCN-PARTIAL-REFUND`
+- `SCN-DUPLICATE-REFUND`
+- `SCN-MISSING-ITEM`
+- `SCN-CROSS-SOURCE-CONFLICT`
+
+自动验证十类场景的四类事实：
+
+```cmd
+cd /d D:\path\to\product-insight-copilot\backend
+set SANDBOX_API_KEY=local-sandbox-key
+..\.venv\Scripts\python.exe scripts\verify_saleor_scenarios.py --base-url http://127.0.0.1:8092 --json-out ..\docs\testing\artifacts\saleor-commerce-sandbox-slice3-local.json
+```
+
+故障场景目录使用同一 API Key 访问 `GET /fault-scenarios`，当前固定覆盖物流超时、支付关键字段
+缺失、非法观测时间、支付限流、Saleor 上游 5xx 和售后非法 JSON。接口只返回场景 ID、名称、
+目标来源和预期错误码。
+
+验证主系统完整售后链路（十类业务场景 + 六类故障场景）：
+
+```cmd
+cd /d D:\path\to\product-insight-copilot\backend
+..\.venv\Scripts\python.exe scripts\verify_saleor_main_workflow.py --sandbox-port 8092 --json-out ..\docs\testing\artifacts\saleor-commerce-sandbox-slice5-local.json
+```
+
+该验收器强制使用临时隔离 SQLite、`LLM_PROVIDER=stub` 和 Inline 执行；事实仍通过真实 HTTP
+读取 8092 Sandbox。预期最后一行为：
+
+```text
+business=10/10 faults=6/6 production_ready=false
+```
+
+场景别名首先读取真实 Saleor 本地订单，再合并清单中显式声明的 local overlay。overlay
+仅用于补齐官方示例数据缺失的物流、售后和冲突事实，不是 Saleor 原生数据，也不能作为企业证据。
+
+宿主机运行主应用时，事实端点使用 `127.0.0.1:8092`；主应用在 Docker 容器中
+时使用 `host.docker.internal:8092`。主应用仍只能访问四个标准 GET，不直接访问
+Saleor GraphQL。
+
+本地环境文件 `deploy\.commerce-sandbox.env` 由控制脚本首次生成且被 Git 忽略。
+不要将它、Docker 凭据卷或容器日志中的身份信息复制进仓库。该模式仍是
+`environment=local_high_fidelity_sandbox`、`production_ready=false`。
+
+2026-11-16 本机样本结果：总成功率 100%，业务 10/10，故障 6/6；主流程 P50/P95
+为 338/947 ms，`order_fact_agent` 查询 P50/P95 为 107/138 ms。报告同时按安全枚举汇总
+上游错误类型和人工接管原因，不保存事实 payload、订单映射、客户信息、Token 或 GraphQL 正文。
+延迟仅代表当次本机 Stub + Inline 样本，不能作为企业 SLA。
+
+### 4.2 三类证据不可混用
+
+| 类型 | 数据与运行方式 | 适用范围 | 当前状态 |
+|---|---|---|---|
+| 静态 Sandbox | 固定合成响应，轻量启动 | 契约、鉴权、超时和坏响应回归 | 已验证 |
+| Saleor 高保真 Sandbox | 本地 Saleor 合成订单 + local overlay | 连续状态、十类业务场景、六类故障、主系统联调 | 已验证 |
+| 企业真实接口 | 企业隔离测试租户和真实只读端点 | 企业鉴权、口径、网络、限流和恢复 | 未验证 |
+
+任何本地证据都不得写成“已接入真实企业 OMS/支付/物流”。
+
+### 4.3 独立冷启动验收记录
+
+未参与实现的验收人员在全新 checkout、没有既有 commerce 数据卷的环境完成本节流程后，使用模板
+记录结果。模板默认全部为 `false`，不会因为文件存在就被误判为通过。
+
+```cmd
+cd /d D:\path\to\product-insight-copilot
+copy /Y docs\testing\templates\saleor-cold-start-acceptance.template.json docs\testing\artifacts\saleor-cold-start-acceptance.json
+certutil -hashfile docs\testing\artifacts\saleor-commerce-sandbox-slice5-local.json SHA256
+notepad docs\testing\artifacts\saleor-cold-start-acceptance.json
+```
+
+验收人员应填写带时区的 `performed_at`、岗位角色、独立性声明、全新环境声明、四个执行步骤、
+两个健康状态，并将 `certutil` 输出的 SHA-256 写入 `artifact_sha256`。随后执行：
+
+```cmd
+.\.venv\Scripts\python.exe backend\scripts\validate_saleor_cold_start_record.py --record docs\testing\artifacts\saleor-cold-start-acceptance.json --artifact docs\testing\artifacts\saleor-commerce-sandbox-slice5-local.json --json-out docs\testing\artifacts\saleor-cold-start-validation.json
+```
+
+只有输出 `status=verified_independent` 才表示记录结构、独立声明、步骤、机器证据哈希和本地证据
+边界一致。验证器不能证明填表人的真实身份，组织仍需由负责人确认其确实未参与实现；验证通过也
+继续保持 `production_ready=false`。
+
 ## 5. 接口清单
 
 | 方法 | 路径 | 用途 |
 |---|---|---|
 | `GET` | `/health` | 健康检查，无鉴权 |
+| `GET` | `/scenarios` | 本地业务场景安全元数据 |
+| `GET` | `/fault-scenarios` | 本地故障场景安全元数据 |
 | `GET` | `/orders/{order_id}` | 订单事实 |
 | `GET` | `/payments/{order_id}` | 支付事实 |
 | `GET` | `/logistics/{order_id}` | 物流事实 |

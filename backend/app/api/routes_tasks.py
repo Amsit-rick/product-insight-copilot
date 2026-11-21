@@ -22,6 +22,7 @@ from app.api.deps import Pagination, Principal, get_current_principal, get_pagin
 from app.config import get_settings
 from app.db.session import get_db
 from app.models.enums import TaskStatus
+from app.models.ticket import OrderFact
 from app.models.workflow import ToolCall
 from app.schemas.common import ListResponse, PageMeta
 from app.schemas.task import (
@@ -348,6 +349,28 @@ def task_trace(
         .order_by(ToolCall.created_at.asc())
         .all()
     )
+    fact_sources: list[dict] = []
+    ticket_id = str((task.filters or {}).get("ticket_id") or "").strip()
+    if ticket_id:
+        facts = (
+            session.query(OrderFact)
+            .filter(OrderFact.ticket_id == ticket_id)
+            .order_by(OrderFact.created_at.asc())
+            .all()
+        )
+        latest_by_source = {fact.source: fact for fact in facts}
+        fact_sources = [
+            {
+                "source": source,
+                "adapter": fact.adapter,
+                "source_version": fact.source_version,
+                "observed_at": fact.observed_at.isoformat() if fact.observed_at else None,
+                "request_id": fact.request_id,
+                "is_mock": bool(fact.is_mock),
+                "error_code": (fact.error or {}).get("code"),
+            }
+            for source, fact in sorted(latest_by_source.items())
+        ]
     return {
         "task_id": task_id,
         "status": task.status,
@@ -393,6 +416,7 @@ def task_trace(
             }
             for call in tool_calls
         ],
+        "fact_sources": fact_sources,
         "totals": {
             "tokens": sum(run.total_tokens or 0 for run in runs),
             "latency_ms": sum(run.latency_ms or 0 for run in runs),

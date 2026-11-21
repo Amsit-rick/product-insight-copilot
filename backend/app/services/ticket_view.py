@@ -283,6 +283,7 @@ def build_fact_rows(
                 "is_mock": fact.is_mock,
                 "adapter": fact.adapter,
                 "request_id": fact.request_id,
+                "source_version": fact.source_version,
                 "stale": bool(
                     fact.observed_at and (now - fact.observed_at).total_seconds() > ttl_seconds
                 ),

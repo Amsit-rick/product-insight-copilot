@@ -74,6 +74,15 @@ ALLOWED_FIELDS: dict[str, frozenset[str]] = {
     ),
 }
 
+# 每个来源至少要有一个能证明该来源确实完成映射的核心字段。否则 ``data={}``
+# 会被误当成成功事实，退款规则可能在缺少支付金额时继续运行。
+REQUIRED_FIELDS: dict[str, frozenset[str]] = {
+    "order": frozenset({"order_status"}),
+    "payment": frozenset({"paid_amount"}),
+    "logistics": frozenset({"latest_track"}),
+    "aftersale": frozenset({"aftersale_history"}),
+}
+
 
 def endpoint_templates(settings) -> dict[str, str]:
     return {source: str(getattr(settings, field, "") or "").strip() for source, field in SETTING_FIELDS.items()}
@@ -227,6 +236,17 @@ class HttpFactAdapter:
                 if not isinstance(body, dict) or not isinstance(body.get("data"), dict):
                     raise ValueError("data must be an object")
                 observed_at = self._observed_at(body.get("observed_at"))
+                source_version = body.get("source_version")
+                if source_version is not None and (
+                    not isinstance(source_version, str)
+                    or not source_version.strip()
+                    or len(source_version) > 64
+                    or any(ord(char) < 32 for char in source_version)
+                ):
+                    raise ValueError("source_version must be a safe short string")
+                payload = self._safe_payload(source, body["data"])
+                if not REQUIRED_FIELDS[source].issubset(payload):
+                    raise ValueError("data is missing required source fields")
             except (ValueError, TypeError):
                 return self._failure(
                     source, trace_id, "adapter_invalid_response", f"{source} 接口响应不符合标准契约"
@@ -236,9 +256,10 @@ class HttpFactAdapter:
             return AdapterResult(
                 source=source,
                 fact_type="snapshot",
-                payload=self._safe_payload(source, body["data"]),
+                payload=payload,
                 observed_at=observed_at,
                 request_id=str(upstream_request_id),
+                source_version=source_version.strip() if source_version else None,
                 is_mock=False,
                 adapter=self.name,
             )
@@ -275,6 +296,7 @@ class HttpFactAdapter:
 __all__ = [
     "ALLOWED_FIELDS",
     "ENV_FIELDS",
+    "REQUIRED_FIELDS",
     "HttpFactAdapter",
     "endpoint_templates",
     "validate_endpoint_templates",

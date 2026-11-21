@@ -1,0 +1,35 @@
+{
+  "schema_version": "saleor-commerce-sandbox-local-v1",
+  "generated_at": "2026-11-15T09:58:52Z",
+  "status": "verified_local",
+  "environment": "local_high_fidelity_sandbox",
+  "saleor_version": "3.23.49",
+  "provider_mode": "saleor",
+  "provider_status": "saleor_ready",
+  "compose_project": "product-insight-commerce",
+  "sandbox_endpoint": "http://127.0.0.1:8092",
+  "checks": {
+    "fresh_start_completed": true,
+    "database_migration_completed": true,
+    "seed_completed": true,
+    "runtime_app_identity_created": true,
+    "order_endpoint_verified": true,
+    "payment_endpoint_verified": true,
+    "logistics_endpoint_verified": true,
+    "aftersale_endpoint_verified": true,
+    "request_id_preserved": true,
+    "repeat_start_order_count_before": 20,
+    "repeat_start_order_count_after": 20,
+    "seed_idempotent": true,
+    "seed_password_exposed_in_logs": false,
+    "app_token_exposed_in_logs": false,
+    "targeted_tests_passed": 25,
+    "targeted_tests_failed": 0
+  },
+  "evidence_boundaries": {
+    "enterprise_endpoint_verified": false,
+    "real_payment_verified": false,
+    "real_carrier_verified": false,
+    "production_ready": false
+  }
+}

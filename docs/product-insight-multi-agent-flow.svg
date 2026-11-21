@@ -1,56 +1,197 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1420" viewBox="0 0 1500 1420" role="img" aria-labelledby="title desc">
-  <title id="title">Product Insight Copilot 多 Agent 协作流程</title>
-  <desc id="desc">LangGraph 编排器加载工单上下文，Triage Agent 分流，Order Fact Agent 与 Policy RAG Agent 按风险并行或顺序取证，代码规则门禁决定动作金额风险和审批，Resolution、Response、Review、Revision 与 Follow-up Agent 接力完成回复、反思、人工审核、跟进和审计留痕。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1620" viewBox="0 0 1500 1620" role="img" aria-labelledby="title desc">
+  <title id="title">Product Insight Copilot 多 Agent 售后证据闭环</title>
+  <desc id="desc">LangGraph 编排器接收工单，Triage Agent 分流，Order Fact Agent 与 Policy RAG Agent 并行取证并汇总为 Evidence Bundle。确定性规则门禁决定动作、金额、风险和审批边界，Resolution、Response、Review、Revision 与 Follow-up Agent 完成方案、回复、独立复核、有限修订与跟进。审核结果分别进入补证据、修订、人工审核或回复交付。</desc>
   <defs>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#0f172a" flood-opacity=".09"/></filter>
-    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2563eb"/></marker>
-    <marker id="arrowCyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0891b2"/></marker>
-    <marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#f59e0b"/></marker>
-    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e11d48"/></marker>
-    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#16a34a"/></marker>
-    <marker id="arrowBlueStrong" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1d4ed8"/></marker>
-    <marker id="arrowCyanStrong" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0e7490"/></marker>
-    <marker id="arrowRedStrong" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#be123c"/></marker>
-    <marker id="arrowGreenStrong" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#15803d"/></marker>
-    <filter id="glowBlue" filterUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1420"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#3b82f6" flood-opacity=".45"/></filter>
-    <filter id="glowCyan" filterUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1420"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#06b6d4" flood-opacity=".45"/></filter>
-    <filter id="glowRed" filterUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1420"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#f43f5e" flood-opacity=".4"/></filter>
-    <filter id="glowGreen" filterUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1420"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#22c55e" flood-opacity=".4"/></filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#0f172a" flood-opacity=".09"/>
+    </filter>
+    <filter id="glow" filterUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1620">
+      <feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#3b82f6" flood-opacity=".42"/>
+    </filter>
+    <filter id="glowGreen" filterUnits="userSpaceOnUse" x="0" y="0" width="1500" height="1620">
+      <feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#22c55e" flood-opacity=".4"/>
+    </filter>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1d4ed8"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0e7490"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#d97706"/>
+    </marker>
+    <marker id="arrowRose" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#e11d48"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#15803d"/>
+    </marker>
+    <path id="p-orchestrator-triage" d="M750 206 V236"/>
+    <path id="p-triage-order" d="M700 316 V348 H430 V404"/>
+    <path id="p-triage-policy" d="M800 316 V348 H1070 V404"/>
+    <path id="p-order-bundle" d="M430 494 V528 H650 V544"/>
+    <path id="p-policy-bundle" d="M1070 494 V528 H850 V544"/>
+    <path id="p-gate-resolution" d="M750 772 V814"/>
+    <path id="p-resolution-response" d="M750 894 V932"/>
+    <path id="p-response-review" d="M750 1012 V1050"/>
+    <path id="p-review-outcome" d="M750 1130 V1150"/>
+    <path id="p-revision-review" d="M560 1340 V1104 H488"/>
+    <path id="p-delivery-followup" d="M1200 1430 V1460 H750 V1476"/>
   </defs>
   <style>
-    .canvas{fill:#f7f9fc}.frame{fill:#fff;stroke:#dbe3ee;stroke-width:1.5}.title{fill:#10213a;font:700 30px Inter,"Segoe UI","Microsoft YaHei",sans-serif}.subtitle{fill:#526174;font:500 15px Inter,"Segoe UI","Microsoft YaHei",sans-serif}.node{fill:#eff6ff;stroke:#3b82f6;stroke-width:2}.orchestrator{fill:#f5f3ff;stroke:#8b5cf6;stroke-width:2}.evidence-group{fill:#ecfeff;stroke:#0891b2;stroke-width:2}.evidence{fill:#fff;stroke:#67c5d3;stroke-width:1.6}.gate{fill:#fff7ed;stroke:#f59e0b;stroke-width:2}.review{fill:#fff1f2;stroke:#f43f5e;stroke-width:2}.human{fill:#f8fafc;stroke:#64748b;stroke-width:1.8}.output{fill:#f0fdf4;stroke:#22c55e;stroke-width:2}.support{fill:#eef2f7;stroke:#94a3b8;stroke-width:1.4}.node-title{fill:#142033;font:700 19px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}.node-sub{fill:#526174;font:500 13px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}.group-title{fill:#0f5266;font:700 19px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}.group-sub{fill:#526174;font:500 13px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}.label{fill:#475569;font:600 12px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}.label-bg{fill:#f7f9fc}.edge{fill:none;stroke:#2563eb;stroke-width:3;stroke-linecap:round;marker-end:url(#arrowBlue)}.parallel{stroke:#0891b2;marker-end:url(#arrowCyan)}.decision{stroke:#f59e0b;marker-end:url(#arrowOrange)}.reflection{stroke:#e11d48;marker-end:url(#arrowRed)}.delivery{stroke:#16a34a;marker-end:url(#arrowGreen)}.secondary{stroke-dasharray:7 8}.agent-link{stroke:#1d4ed8;stroke-width:5.5;marker-end:url(#arrowBlueStrong);filter:url(#glowBlue)}.agent-link.parallel{stroke:#0e7490;marker-end:url(#arrowCyanStrong);filter:url(#glowCyan)}.agent-link.reflection{stroke:#be123c;marker-end:url(#arrowRedStrong);filter:url(#glowRed)}.agent-link.delivery{stroke:#15803d;marker-end:url(#arrowGreenStrong);filter:url(#glowGreen)}
-    @keyframes flow{to{stroke-dashoffset:-64}}
-    @media (prefers-reduced-motion:no-preference){.edge{stroke-dasharray:10 16;animation:flow 1.45s linear infinite}.agent-link{stroke-dasharray:18 8;animation-duration:1.15s}.secondary{animation-duration:1.85s}}
+    .canvas{fill:#f6f8fc}.frame{fill:#fff;stroke:#dbe3ee;stroke-width:1.5}
+    .title{fill:#10213a;font:700 30px Inter,"Segoe UI","Microsoft YaHei",sans-serif}
+    .subtitle{fill:#526174;font:500 15px Inter,"Segoe UI","Microsoft YaHei",sans-serif}
+    .section{fill:#334155;font:700 14px Inter,"Segoe UI","Microsoft YaHei",sans-serif;letter-spacing:.4px}
+    .agent{fill:#eff6ff;stroke:#3b82f6;stroke-width:2}.orchestrator{fill:#f5f3ff;stroke:#8b5cf6;stroke-width:2}
+    .evidence-zone{fill:#ecfeff;stroke:#0891b2;stroke-width:2}.evidence{fill:#fff;stroke:#67c5d3;stroke-width:1.8}
+    .bundle{fill:#cffafe;stroke:#0e7490;stroke-width:2.2}.gate{fill:#fff7ed;stroke:#f59e0b;stroke-width:2.2}
+    .review{fill:#fff1f2;stroke:#f43f5e;stroke-width:2}.decision{fill:#fff7ed;stroke:#ea580c;stroke-width:2.2}
+    .human{fill:#f8fafc;stroke:#64748b;stroke-width:1.8}.output{fill:#f0fdf4;stroke:#22c55e;stroke-width:2}
+    .external{fill:#f8fafc;stroke:#94a3b8;stroke-width:1.6;stroke-dasharray:7 7}.support{fill:#eef2f7;stroke:#94a3b8;stroke-width:1.4}
+    .node-title{fill:#142033;font:700 19px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}
+    .node-sub{fill:#526174;font:500 13px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}
+    .small{fill:#64748b;font:500 12px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}
+    .label{fill:#475569;font:600 12px Inter,"Segoe UI","Microsoft YaHei",sans-serif;text-anchor:middle}
+    .label-bg{fill:#fff;stroke:#e2e8f0;stroke-width:.8}
+    .edge{fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .main-base{stroke:#1d4ed8;stroke-width:5.5;marker-end:url(#arrowBlue);filter:url(#glow)}
+    .main-pulse{stroke:#bfdbfe;stroke-width:2.4;stroke-dasharray:14 20;pointer-events:none}
+    .evidence-base{stroke:#0e7490;stroke-width:5.5;marker-end:url(#arrowCyan);filter:url(#glow)}
+    .evidence-pulse{stroke:#a5f3fc;stroke-width:2.4;stroke-dasharray:14 20;pointer-events:none}
+    .control{stroke:#d97706;stroke-width:3.4;marker-end:url(#arrowAmber)}
+    .return{stroke:#e11d48;stroke-width:3.2;stroke-dasharray:8 9;marker-end:url(#arrowRose)}
+    .approval{stroke:#64748b;stroke-width:3;marker-end:url(#arrowAmber)}
+    .delivery-base{stroke:#15803d;stroke-width:5.5;marker-end:url(#arrowGreen);filter:url(#glowGreen)}
+    .delivery-pulse{stroke:#bbf7d0;stroke-width:2.4;stroke-dasharray:14 20;pointer-events:none}
+    .governance{stroke:#94a3b8;stroke-width:2;stroke-dasharray:6 7;marker-end:url(#arrowAmber)}
+    @keyframes flow{to{stroke-dashoffset:-68}}
+    @media (prefers-reduced-motion:no-preference){.main-pulse,.evidence-pulse,.delivery-pulse{animation:flow 1.25s linear infinite}.return{animation:flow 1.85s linear infinite}}
   </style>
-  <rect class="canvas" width="1500" height="1420" rx="24"/><rect class="frame" x="24" y="24" width="1452" height="1372" rx="22"/>
-  <text class="title" x="72" y="72">多 Agent 协作流程：一张工单由谁接力处理</text>
-  <text class="subtitle" x="72" y="104">粗线高亮表示 Agent 任务交接；细线表示规则、审批或持久化控制。模型不能越过代码门禁直接执行高风险动作。</text>
-  <g filter="url(#shadow)"><rect class="orchestrator" x="500" y="140" width="500" height="84" rx="16"/><text class="node-title" x="750" y="174">LangGraph Orchestrator</text><text class="node-sub" x="750" y="200">加载工单状态 · 路由下一节点 · 失败后从 Checkpoint 恢复</text></g>
-  <path class="edge agent-link" d="M750 224 V254"/>
-  <g filter="url(#shadow)"><rect class="node" x="500" y="266" width="500" height="84" rx="16"/><text class="node-title" x="750" y="300">Triage Agent</text><text class="node-sub" x="750" y="326">识别问题类型、风险等级和缺失信息</text></g>
-  <g filter="url(#shadow)"><rect class="evidence-group" x="300" y="410" width="900" height="180" rx="18"/><text class="group-title" x="750" y="444">事实与政策取证</text><text class="group-sub" x="750" y="468">高风险场景并行执行；普通场景先查订单事实，再检索适用政策</text><rect class="evidence" x="350" y="492" width="330" height="70" rx="13"/><text class="node-title" x="515" y="521">Order Fact Agent</text><text class="node-sub" x="515" y="545">订单 · 支付 · 物流 · 历史售后</text><rect class="evidence" x="820" y="492" width="330" height="70" rx="13"/><text class="node-title" x="985" y="521">Policy RAG Agent</text><text class="node-sub" x="985" y="545">现行政策 · 适用条件 · 引用来源</text></g>
-  <path class="edge parallel agent-link" d="M720 350 V382 H515 V480"/><rect class="label-bg" x="555" y="370" width="72" height="22" rx="5"/><text class="label" x="591" y="385">所有场景</text>
-  <path class="edge parallel secondary agent-link" d="M780 350 V382 H985 V480"/><rect class="label-bg" x="874" y="370" width="82" height="22" rx="5"/><text class="label" x="915" y="385">高风险并行</text>
-  <path class="edge parallel secondary agent-link" d="M680 527 H808"/><rect class="label-bg" x="708" y="496" width="72" height="22" rx="5"/><text class="label" x="744" y="511">普通顺序</text>
-  <path class="edge decision" d="M515 562 V620 H700"/><path class="edge decision" d="M985 562 V620 H800"/>
-  <g filter="url(#shadow)"><rect class="gate" x="500" y="632" width="500" height="100" rx="16"/><text class="node-title" x="750" y="667">确定性规则门禁</text><text class="node-sub" x="750" y="693">代码决定动作、金额、风险等级和审批要求</text><text class="node-sub" x="750" y="714">模型只能整理和表达，不能覆盖最终执行边界</text></g>
-  <path class="edge decision" d="M750 732 V762 H425 V782"/>
-  <g filter="url(#shadow)"><rect class="node" x="250" y="794" width="350" height="86" rx="16"/><text class="node-title" x="425" y="829">Resolution Agent</text><text class="node-sub" x="425" y="855">把已核实证据整理为可执行处理方案</text></g>
-  <path class="edge agent-link" d="M600 837 H788"/><rect class="label-bg" x="654" y="806" width="80" height="22" rx="5"/><text class="label" x="694" y="821">处理方案</text>
-  <g filter="url(#shadow)"><rect class="node" x="800" y="794" width="350" height="86" rx="16"/><text class="node-title" x="975" y="829">Response Agent</text><text class="node-sub" x="975" y="855">生成面向客户的回复草稿</text></g>
-  <path class="edge reflection agent-link" d="M975 880 V910"/><rect class="label-bg" x="990" y="887" width="80" height="22" rx="5"/><text class="label" x="1030" y="902">先答后审</text>
-  <g filter="url(#shadow)"><rect class="review" x="500" y="922" width="500" height="88" rx="16"/><text class="node-title" x="750" y="957">Review Agent</text><text class="node-sub" x="750" y="983">独立检查证据、金额、承诺、引用和审批状态</text></g>
-  <text class="subtitle" x="72" y="1064">复核后的四种处理结果</text>
-  <path class="edge reflection secondary" d="M650 1010 V1082 H200 V1100"/><path class="edge reflection secondary agent-link" d="M715 1010 V1082 H530 V1100"/><path class="edge reflection" d="M785 1010 V1082 H860 V1100"/><path class="edge delivery agent-link" d="M850 1010 V1082 H1190 V1100"/>
-  <rect class="label-bg" x="300" y="1070" width="72" height="22" rx="5"/><text class="label" x="336" y="1085">证据不足</text><rect class="label-bg" x="560" y="1070" width="72" height="22" rx="5"/><text class="label" x="596" y="1085">需要修订</text><rect class="label-bg" x="820" y="1070" width="58" height="22" rx="5"/><text class="label" x="849" y="1085">高风险</text><rect class="label-bg" x="1050" y="1070" width="42" height="22" rx="5"/><text class="label" x="1071" y="1085">通过</text>
-  <g filter="url(#shadow)"><rect class="evidence" x="60" y="1112" width="280" height="88" rx="15"/><text class="node-title" x="200" y="1147">补查证据</text><text class="node-sub" x="200" y="1173">回到 Policy RAG 后重新复核</text></g>
-  <g filter="url(#shadow)"><rect class="review" x="390" y="1112" width="280" height="88" rx="15"/><text class="node-title" x="530" y="1147">Revision Agent</text><text class="node-sub" x="530" y="1173">只修订复核明确指出的问题</text></g>
-  <g filter="url(#shadow)"><rect class="human" x="720" y="1112" width="280" height="88" rx="15"/><text class="node-title" x="860" y="1147">人工审核</text><text class="node-sub" x="860" y="1173">高风险或无法确认时由人决定</text></g>
-  <g filter="url(#shadow)"><rect class="output" x="1050" y="1112" width="280" height="88" rx="15"/><text class="node-title" x="1190" y="1147">Follow-up Agent</text><text class="node-sub" x="1190" y="1173">安排客户回复与后续跟进</text></g>
-  <path class="edge reflection secondary" d="M200 1200 V1222 H1405 V527 H1162"/>
-  <path class="edge reflection secondary agent-link" d="M530 1112 V1042 H470 V966 H488"/>
-  <path class="edge delivery" d="M1000 1156 H1038"/>
-  <path class="edge delivery" d="M1190 1200 V1230 H750 V1248"/>
-  <g filter="url(#shadow)"><rect class="output" x="500" y="1260" width="500" height="76" rx="17"/><text class="node-title" x="750" y="1291">回复交付 · 跟进计划 · 审计留痕</text><text class="node-sub" x="750" y="1316">Follow-up Agent 持久化结果，任务可恢复、全过程可回放</text></g>
-  <rect class="support" x="90" y="1352" width="1320" height="42" rx="18"/><text class="node-sub" x="750" y="1378">支撑能力：Checkpoint 状态恢复 · Trace 全链路追踪 · 证据版本 · Token / 成本记录（底座能力，不是业务 Agent）</text>
+
+  <rect class="canvas" width="1500" height="1620" rx="24"/>
+  <rect class="frame" x="24" y="24" width="1452" height="1572" rx="22"/>
+  <text class="title" x="72" y="72">多 Agent 协作流程：一张售后工单如何完成证据闭环</text>
+  <text class="subtitle" x="72" y="104">主链路单向阅读；Agent 任务交接使用粗线高亮，异常分支使用虚线，并把证据、规则、人工和交付按形状区分。</text>
+
+  <text class="section" x="72" y="146">1 工单接入</text>
+  <g filter="url(#shadow)">
+    <rect class="orchestrator" x="500" y="128" width="500" height="78" rx="16"/>
+    <text class="node-title" x="750" y="160">LangGraph Orchestrator</text>
+    <text class="node-sub" x="750" y="184">加载工单状态 · 路由节点 · 失败后从 Checkpoint 恢复</text>
+  </g>
+  <use href="#p-orchestrator-triage" class="edge main-base"/><use href="#p-orchestrator-triage" class="edge main-pulse"/>
+  <g filter="url(#shadow)">
+    <rect class="agent" x="500" y="238" width="500" height="78" rx="16"/>
+    <text class="node-title" x="750" y="270">Triage Agent</text>
+    <text class="node-sub" x="750" y="294">识别问题类型、风险等级和缺失信息</text>
+  </g>
+
+  <text class="section" x="72" y="350">2 并行取证与统一证据</text>
+  <g filter="url(#shadow)">
+    <rect class="evidence-zone" x="170" y="365" width="1160" height="270" rx="20"/>
+    <text class="node-title" x="750" y="396">Order Fact 与 Policy RAG 并行取证</text>
+    <text class="node-sub" x="750" y="421">普通场景也使用同一结构；调度差异不再额外画第二套主路径</text>
+    <rect class="evidence" x="260" y="434" width="340" height="88" rx="14"/>
+    <text class="node-title" x="430" y="468">Order Fact Agent</text>
+    <text class="node-sub" x="430" y="493">订单 · 支付 · 物流 · 历史售后</text>
+    <rect class="evidence" x="900" y="434" width="340" height="88" rx="14"/>
+    <text class="node-title" x="1070" y="468">Policy RAG Agent</text>
+    <text class="node-sub" x="1070" y="493">现行政策 · 适用条件 · 引用来源</text>
+    <rect class="bundle" x="510" y="546" width="480" height="68" rx="12"/>
+    <text class="node-title" x="750" y="574">Evidence Bundle</text>
+    <text class="node-sub" x="750" y="597">事实 + 条款 + 来源 + 时间范围 + 置信状态</text>
+  </g>
+  <use href="#p-triage-order" class="edge evidence-base"/><use href="#p-triage-order" class="edge evidence-pulse"/>
+  <use href="#p-triage-policy" class="edge evidence-base"/><use href="#p-triage-policy" class="edge evidence-pulse"/>
+  <rect class="label-bg" x="348" y="337" width="86" height="22" rx="5"/><text class="label" x="391" y="352">并行取证</text>
+  <rect class="label-bg" x="1066" y="337" width="86" height="22" rx="5"/><text class="label" x="1109" y="352">并行取证</text>
+  <use href="#p-order-bundle" class="edge evidence-base"/><use href="#p-order-bundle" class="edge evidence-pulse"/>
+  <use href="#p-policy-bundle" class="edge evidence-base"/><use href="#p-policy-bundle" class="edge evidence-pulse"/>
+
+  <text class="section" x="72" y="686">3 决策控制</text>
+  <path class="edge control" d="M750 614 V668"/>
+  <g filter="url(#shadow)">
+    <path class="gate" d="M520 682 H980 L1020 727 L980 772 H520 L480 727 Z"/>
+    <text class="node-title" x="750" y="714">确定性规则门禁</text>
+    <text class="node-sub" x="750" y="739">代码决定动作、金额、风险等级和审批要求</text>
+    <text class="node-sub" x="750" y="760">只接收结构化 Evidence Bundle，模型不能覆盖执行边界</text>
+  </g>
+  <path class="edge governance" d="M1020 727 H1090"/>
+  <g filter="url(#shadow)">
+    <rect class="external" x="1102" y="674" width="300" height="106" rx="12"/>
+    <text class="node-title" x="1252" y="706">业务执行服务</text>
+    <text class="node-sub" x="1252" y="731">退款 · 补发 · 赔付等写动作</text>
+    <text class="small" x="1252" y="757">当前未接入，仅保留边界</text>
+  </g>
+
+  <text class="section" x="72" y="830">4 方案、回复与独立复核</text>
+  <use href="#p-gate-resolution" class="edge main-base"/><use href="#p-gate-resolution" class="edge main-pulse"/>
+  <g filter="url(#shadow)">
+    <rect class="agent" x="500" y="816" width="500" height="78" rx="16"/>
+    <text class="node-title" x="750" y="848">Resolution Agent</text>
+    <text class="node-sub" x="750" y="872">把受控证据整理成处理建议，不执行退款或补发</text>
+  </g>
+  <use href="#p-resolution-response" class="edge main-base"/><use href="#p-resolution-response" class="edge main-pulse"/>
+  <g filter="url(#shadow)">
+    <rect class="agent" x="500" y="934" width="500" height="78" rx="16"/>
+    <text class="node-title" x="750" y="966">Response Agent</text>
+    <text class="node-sub" x="750" y="990">生成面向客户的回复草稿</text>
+  </g>
+  <use href="#p-response-review" class="edge main-base"/><use href="#p-response-review" class="edge main-pulse"/>
+  <g filter="url(#shadow)">
+    <rect class="review" x="500" y="1052" width="500" height="78" rx="16"/>
+    <text class="node-title" x="750" y="1084">Review Agent</text>
+    <text class="node-sub" x="750" y="1108">独立检查证据、金额、承诺、引用和审批状态</text>
+  </g>
+  <use href="#p-review-outcome" class="edge main-base"/><use href="#p-review-outcome" class="edge main-pulse"/>
+  <g filter="url(#shadow)">
+    <path class="decision" d="M750 1150 L920 1210 L750 1270 L580 1210 Z"/>
+    <text class="node-title" x="750" y="1204">审核结果判断</text>
+    <text class="small" x="750" y="1228">证据不足 · 需要修订 · 高风险 · 通过</text>
+  </g>
+
+  <text class="section" x="72" y="1322">5 局部分支与交付</text>
+  <path class="edge return" d="M606 1210 H240 V1328"/>
+  <path class="edge return" d="M680 1252 L560 1328"/>
+  <path class="edge approval" d="M820 1252 L880 1328"/>
+  <path class="edge delivery-base" d="M894 1210 H1200 V1328"/>
+  <path class="edge delivery-pulse" d="M894 1210 H1200 V1328"/>
+  <rect class="label-bg" x="333" y="1197" width="82" height="22" rx="5"/><text class="label" x="374" y="1212">证据不足</text>
+  <rect class="label-bg" x="568" y="1269" width="82" height="22" rx="5"/><text class="label" x="609" y="1284">需要修订</text>
+  <rect class="label-bg" x="844" y="1269" width="72" height="22" rx="5"/><text class="label" x="880" y="1284">高风险</text>
+  <rect class="label-bg" x="1018" y="1197" width="48" height="22" rx="5"/><text class="label" x="1042" y="1212">通过</text>
+
+  <g filter="url(#shadow)">
+    <rect class="evidence" x="100" y="1340" width="280" height="90" rx="15"/>
+    <text class="node-title" x="240" y="1375">补查证据</text>
+    <text class="node-sub" x="240" y="1401">回到证据汇总和规则决策</text>
+    <rect class="review" x="420" y="1340" width="280" height="90" rx="15"/>
+    <text class="node-title" x="560" y="1375">Revision Agent</text>
+    <text class="node-sub" x="560" y="1401">只修订复核明确指出的问题</text>
+    <rect class="human" x="740" y="1340" width="280" height="90" rx="15"/>
+    <text class="node-title" x="880" y="1375">人工审核</text>
+    <text class="node-sub" x="880" y="1401">高风险或无法确认时由人决定</text>
+    <rect class="output" x="1060" y="1340" width="280" height="90" rx="15"/>
+    <text class="node-title" x="1200" y="1375">回复交付</text>
+    <text class="node-sub" x="1200" y="1401">交付已审核回复并登记结果</text>
+  </g>
+  <path class="edge return" d="M240 1430 V1454"/>
+  <circle cx="240" cy="1470" r="16" fill="#fff1f2" stroke="#e11d48" stroke-width="2"/>
+  <text class="label" x="240" y="1474">A</text>
+  <text class="small" x="338" y="1474">返回证据层</text>
+  <circle cx="482" cy="580" r="16" fill="#fff1f2" stroke="#e11d48" stroke-width="2"/>
+  <text class="label" x="482" y="584">A</text>
+  <path class="edge return" d="M498 580 H510"/>
+  <text class="small" x="430" y="612">补证据后重新过门禁</text>
+  <use href="#p-revision-review" class="edge main-base"/><use href="#p-revision-review" class="edge main-pulse"/>
+  <path class="edge delivery-base" d="M1020 1385 H1048"/><path class="edge delivery-pulse" d="M1020 1385 H1048"/>
+  <use href="#p-delivery-followup" class="edge delivery-base"/><use href="#p-delivery-followup" class="edge delivery-pulse"/>
+  <g filter="url(#shadow)">
+    <rect class="output" x="500" y="1478" width="500" height="70" rx="16"/>
+    <text class="node-title" x="750" y="1507">Follow-up Agent</text>
+    <text class="node-sub" x="750" y="1531">安排后续检查、升级提醒和客户回访</text>
+  </g>
+  <rect class="support" x="90" y="1562" width="1320" height="40" rx="18"/>
+  <text class="node-sub" x="750" y="1587">全局底座：Checkpoint 状态恢复 · Trace 全链路追踪 · 证据版本 · 审批留痕 · Token / 成本记录</text>
 </svg>

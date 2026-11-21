@@ -1,0 +1,107 @@
+{
+  "schema": "public-source-sync-v1",
+  "date": "2026-11-21",
+  "source_commit": "c339e7157fb6e1a9ae9e6315dfe2d07592938d14",
+  "previous_public_commit": "2db77bf20537bd61e12faf02df55cece60247aef",
+  "history_strategy": "ordinary incremental commit on independent public history; no source-history import",
+  "copied_project_files": 57,
+  "runtime_comparison": {
+    "paths": [
+      "backend/app",
+      "backend/sandbox_services",
+      "backend/migrations",
+      "frontend"
+    ],
+    "files_compared": 229,
+    "all_equal": true,
+    "normalization": "CRLF to LF",
+    "path_and_content_manifest_sha256": "75ac83eb2ee28c79701a9bb2b09c4fe0c6135e5a8d8449c3043c089065d64d94"
+  },
+  "local_validation": {
+    "backend": {
+      "status": "passed",
+      "passed": 1528,
+      "skipped": 4,
+      "failed": 0,
+      "elapsed_seconds": 158.74,
+      "warnings": [
+        "One Windows subprocess text-decoding warning; no failed assertion."
+      ],
+      "warning_followup": {
+        "test": "tests/unit/test_document_holdout.py::test_prepare_cli_can_run_from_repository_root",
+        "environment": "PYTHONUTF8=1; PYTHONIOENCODING=utf-8",
+        "thread_exception_warnings_as_errors": true,
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "frontend_typecheck": {
+      "status": "passed"
+    },
+    "frontend_build": {
+      "status": "passed",
+      "warnings": [
+        "Two existing dependency PURE-annotation warnings."
+      ]
+    },
+    "python_compile": {
+      "status": "passed"
+    },
+    "dependency_locks": {
+      "status": "passed"
+    },
+    "compose_config": {
+      "status": "passed",
+      "files": [
+        "deploy/docker-compose.demo.yml",
+        "deploy/docker-compose.commerce-sandbox.yml"
+      ],
+      "services_started": false
+    },
+    "policy_retrieval": {
+      "status": "passed",
+      "cases": 8,
+      "recall_at_5": 1.0,
+      "mrr": 0.9375,
+      "model": "stub",
+      "reranker": false
+    }
+  },
+  "frontend_dependency_audit": {
+    "status": "attention_required",
+    "counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 4,
+      "critical": 0,
+      "total": 4
+    },
+    "high_severity_packages": [
+      "@vue/server-renderer",
+      "source-map-js",
+      "vite",
+      "vue"
+    ],
+    "dependency_versions_changed": false,
+    "exploitability_tested": false
+  },
+  "publication_review": {
+    "private_materials_included": false,
+    "credential_signature_findings": 0,
+    "private_machine_path_findings": 0,
+    "public_readme_and_platform_specific_scope_preserved": true
+  },
+  "github_actions": {
+    "status": "not_assessed_by_local_record",
+    "instruction": "Check the run attached to the actual public commit."
+  },
+  "historical_sandbox_report": {
+    "path": "docs/testing/artifacts/saleor-commerce-sandbox-slice5-local.json",
+    "date": "2026-11-16",
+    "rerun_for_this_sync": false
+  },
+  "real_model_calls": false,
+  "enterprise_endpoints_verified": false,
+  "production_ready": false
+}

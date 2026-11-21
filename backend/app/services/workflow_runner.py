@@ -540,3 +540,6 @@ def reset_runner() -> None:
         if _runner is not None:
             _runner.shutdown(wait=False)
         _runner = None
+    from app.graph.checkpointer import reset_checkpointer
+
+    reset_checkpointer()

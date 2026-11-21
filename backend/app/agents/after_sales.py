@@ -43,7 +43,6 @@ ISSUE_KEYWORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
             "催单",
             "超时",
             "没收到",
-            "签收",
             "快递异常",
             "物流",
         ),
@@ -112,6 +111,10 @@ ISSUE_PRIORITY: dict[str, int] = {
 # 用户明确索要退款时的措辞（方案生成要尊重明确诉求）。
 # "退给我"与"退我"不互为子串（"这笔钱退给我"里没有"退我"），所以两个都要在。
 EXPLICIT_REFUND_WORDS = ("退款", "退钱", "退我", "退给我", "把钱退")
+EXPLICIT_REFUND_PATTERNS: tuple[re.Pattern[str], ...] = (
+    re.compile(r"退还.{0,12}(?:金额|款项|货款|余额)"),
+    re.compile(r"剩余可退(?:金额|款项|余额)"),
+)
 
 
 def _indicates_fulfillment(value: object) -> bool:
@@ -150,6 +153,33 @@ def _indicates_not_received(text: object) -> bool:
     )
 
 
+def detect_fact_source_conflicts(facts: dict) -> list[str]:
+    """Detect deterministic contradictions between independently queried sources."""
+
+    order_status = str(facts.get("order_status") or "").strip().lower()
+    paid_raw = facts.get("paid_amount")
+    try:
+        paid_amount = float(str(paid_raw)) if paid_raw not in (None, "") else None
+    except (TypeError, ValueError):
+        paid_amount = None
+    paid_order_markers = (
+        "已支付",
+        "已发货",
+        "部分发货",
+        "已履约",
+        "已签收",
+        "paid",
+        "shipped",
+        "fulfilled",
+        "delivered",
+        "completed",
+    )
+    conflicts: list[str] = []
+    if paid_amount == 0 and any(marker in order_status for marker in paid_order_markers):
+        conflicts.append("订单状态显示已支付，但支付来源实付金额为 0")
+    return conflicts
+
+
 def decide_action(
     *,
     query: str,
@@ -167,12 +197,21 @@ def decide_action(
     金额同样只**引用**：退款取支付事实的实付金额，补偿取政策文本里写明的标准。
     """
     paid_amount = facts.get("paid_amount")
+    refundable_amount = facts.get("refundable_amount")
+    refundable_present = refundable_amount not in (None, "")
+    try:
+        refundable_zero = refundable_present and float(str(refundable_amount)) <= 0
+    except (TypeError, ValueError):
+        refundable_zero = False
+    refund_amount = refundable_amount if refundable_present else paid_amount
     stalled = facts.get("stalled_hours") or 0
     order_status = str(facts.get("order_status") or "").strip()
     latest_track = str(facts.get("latest_track") or "").strip()
     signed_at = str(facts.get("signed_at") or "").strip()
     missing: list[str] = []
     conflict = False
+    source_conflicts = [str(item) for item in (facts.get("source_conflicts") or [])]
+    source_errors = facts.get("source_errors") or {}
 
     # 客户口述只用于识别诉求，执行动作必须服从已核验事实。客户说“未发货”但
     # 平台已经显示发货/运输/签收时，直接补发会造成重复履约，必须先人工核实。
@@ -189,7 +228,33 @@ def decide_action(
         and _indicates_not_received(query)
     )
 
-    if not_shipped_conflict or not_received_conflict:
+    if source_conflicts:
+        action, amount = ActionType.ASK_CUSTOMER.value, None
+        source = "跨来源事实冲突"
+        conflict = True
+        missing.append("跨来源事实冲突，需人工核对：" + "；".join(source_conflicts))
+    elif (
+        wants_refund_explicitly(query) or issue_type == IssueType.REFUND.value
+    ) and source_errors:
+        action, amount = ActionType.ASK_CUSTOMER.value, None
+        failed_sources = sorted(str(item) for item in source_errors)
+        source = "事实来源异常"
+        conflict = True
+        if failed_sources == ["payment"]:
+            missing.append("支付事实来源不可用，需人工核对后再处理退款")
+        else:
+            missing.append(
+                "事实来源不可用，需人工核对后再处理退款："
+                + "、".join(failed_sources)
+            )
+    elif (
+        wants_refund_explicitly(query) or issue_type == IssueType.REFUND.value
+    ) and refundable_zero:
+        action, amount = ActionType.ASK_CUSTOMER.value, None
+        source = "支付事实（剩余可退金额为 0）"
+        conflict = True
+        missing.append("剩余可退余额为 0，需人工核对是否已完成退款")
+    elif not_shipped_conflict or not_received_conflict:
         action, amount = ActionType.ASK_CUSTOMER.value, None
         source = "订单事实与客户描述冲突"
         conflict = True
@@ -203,16 +268,26 @@ def decide_action(
             missing.append(f"实际签收情况（客户称未收到，但{conflict_fact}）")
         else:
             missing.append(f"实际履约情况（客户描述未发货，但{conflict_fact}）")
-    elif wants_refund_explicitly(query) and paid_amount:
-        action, amount = ActionType.REFUND.value, paid_amount
-        source = "支付事实（实付金额）"
+    elif wants_refund_explicitly(query) and refund_amount:
+        action, amount = ActionType.REFUND.value, refund_amount
+        source = (
+            "支付事实（剩余可退金额）"
+            if refundable_present
+            else "支付事实（实付金额）"
+        )
     elif wants_refund_explicitly(query):
         action, amount, source = ActionType.REFUND.value, None, None
         missing.append("实付金额")
     elif issue_type == IssueType.REFUND.value:
-        action, amount = ActionType.REFUND.value, paid_amount
-        source = "支付事实（实付金额）" if paid_amount else None
-        if not paid_amount:
+        action, amount = ActionType.REFUND.value, refund_amount
+        source = (
+            "支付事实（剩余可退金额）"
+            if refundable_present
+            else "支付事实（实付金额）"
+            if paid_amount
+            else None
+        )
+        if not refund_amount:
             missing.append("实付金额")
     elif issue_type in (IssueType.RETURN.value, IssueType.EXCHANGE.value):
         action = (
@@ -268,6 +343,7 @@ class FactItem(BaseModel):
     source: str
     observed_at: str | None = None
     request_id: str | None = None
+    source_version: str | None = None
     is_mock: bool = True
     payload: dict = Field(default_factory=dict)
     error: dict | None = None
@@ -354,6 +430,12 @@ def classify_issue(text: str) -> str:
             index = lowered.find(keyword)
             if index >= 0:
                 candidates.append((ISSUE_PRIORITY.get(issue_type, 99), index, issue_type))
+    for pattern in EXPLICIT_REFUND_PATTERNS:
+        match = pattern.search(lowered)
+        if match:
+            candidates.append(
+                (ISSUE_PRIORITY[IssueType.REFUND.value], match.start(), IssueType.REFUND.value)
+            )
     if not candidates:
         return IssueType.OTHER.value
     candidates.sort()
@@ -363,7 +445,9 @@ def classify_issue(text: str) -> str:
 def wants_refund_explicitly(text: str) -> bool:
     """用户是否明确要退款（方案生成据此把"退货/破损"等诉求落到退款动作上）。"""
     lowered = text or ""
-    return any(word in lowered for word in EXPLICIT_REFUND_WORDS)
+    return any(word in lowered for word in EXPLICIT_REFUND_WORDS) or any(
+        pattern.search(lowered) for pattern in EXPLICIT_REFUND_PATTERNS
+    )
 
 
 def detect_sentiment(text: str) -> str:
@@ -491,6 +575,7 @@ class OrderFactAgent(BaseAgent):
                 # 实测踩过：facts.*.observed_at 报 "Input should be a valid string"）
                 "observed_at": _iso(item.get("observed_at")),
                 "request_id": item.get("request_id"),
+                "source_version": item.get("source_version"),
                 "is_mock": item.get("is_mock", True),
                 "payload": item.get("payload") or {},
                 "error": item.get("error"),
@@ -1153,6 +1238,7 @@ __all__ = [
     "RevisionAgent",
     "TriageAgent",
     "classify_issue",
+    "detect_fact_source_conflicts",
     "detect_sentiment",
     "detect_urgency",
     "parse_amount",

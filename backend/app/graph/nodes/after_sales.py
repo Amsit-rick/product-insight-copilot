@@ -75,12 +75,25 @@ def load_ticket_context(state: AnalysisState, *, runtime: NodeRuntime) -> dict:
             }
 
         facts = service.facts(ticket.id)
+        latest_by_source = {}
+        for fact in facts:
+            latest_by_source[fact.source] = fact
+        current_facts = list(latest_by_source.values())
         digest: dict[str, Any] = {}
         is_mock = True
-        for fact in facts:
+        source_errors: dict[str, str] = {}
+        source_versions: set[str] = set()
+        for fact in current_facts:
             is_mock = is_mock and bool(fact.is_mock)
+            if fact.error:
+                source_errors[fact.source] = str(fact.error.get("code") or "unknown_error")
+            if fact.source_version:
+                source_versions.add(fact.source_version)
             for key, value in (fact.payload or {}).items():
-                digest.setdefault(key, value)
+                digest[key] = value
+        from app.agents.after_sales import detect_fact_source_conflicts
+
+        source_conflicts = detect_fact_source_conflicts(digest)
         # 从事实里挑出方案生成必需的字段（显式列出，避免模型从一堆键里乱猜）
         fact_digest = {
             "order_status": digest.get("order_status"),
@@ -98,6 +111,9 @@ def load_ticket_context(state: AnalysisState, *, runtime: NodeRuntime) -> dict:
             "eligible_amount": digest.get("eligible_amount"),
             "excluded_items": digest.get("excluded_items"),
             "aftersale_history": digest.get("aftersale_history"),
+            "source_errors": source_errors,
+            "source_conflicts": source_conflicts,
+            "source_versions": sorted(source_versions),
             "is_mock": is_mock and bool(facts),
             "fact_count": len(facts),
         }
@@ -109,6 +125,7 @@ def load_ticket_context(state: AnalysisState, *, runtime: NodeRuntime) -> dict:
                 "customer_id": ticket.customer_id,
                 "issue_type": ticket.issue_type,
                 "sentiment": ticket.sentiment,
+                "conflict": bool(filters.get("conflict")) or bool(source_conflicts),
             }
         )
         from app.services.reflection_release import release_state_for_rollout

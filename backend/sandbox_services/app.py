@@ -20,12 +20,58 @@ from typing import Annotated, Any
 from fastapi import Depends, FastAPI, Header, Query, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
 
+from sandbox_services.providers import (
+    FactProvider,
+    ProviderError,
+    build_fact_provider,
+)
+
 
 OK_ORDER = "SANDBOX-OK-001"
 NOT_FOUND_ORDER = "SANDBOX-NOTFOUND-001"
 TIMEOUT_ORDER = "SANDBOX-TIMEOUT-001"
 AUTH_ORDER = "SANDBOX-AUTH-001"
 BAD_JSON_ORDER = "SANDBOX-BADJSON-001"
+
+FACT_FAULT_SCENARIOS: dict[str, dict[str, str]] = {
+    "SCN-FAULT-LOGISTICS-TIMEOUT": {
+        "name": "物流查询超时",
+        "target_source": "logistics",
+        "fault": "timeout",
+        "expected_error": "adapter_timeout",
+    },
+    "SCN-FAULT-PAYMENT-FIELD-MISSING": {
+        "name": "支付关键字段缺失",
+        "target_source": "payment",
+        "fault": "missing_required_field",
+        "expected_error": "adapter_invalid_response",
+    },
+    "SCN-FAULT-LOGISTICS-BAD-TIME": {
+        "name": "物流观测时间非法",
+        "target_source": "logistics",
+        "fault": "invalid_time",
+        "expected_error": "adapter_invalid_response",
+    },
+    "SCN-FAULT-PAYMENT-RATE-LIMIT": {
+        "name": "支付接口限流",
+        "target_source": "payment",
+        "fault": "rate_limit",
+        "expected_error": "adapter_rate_limited",
+    },
+    "SCN-FAULT-ORDER-UPSTREAM-ERROR": {
+        "name": "Saleor 上游服务异常",
+        "target_source": "order",
+        "fault": "upstream_error",
+        "expected_error": "adapter_upstream_error",
+    },
+    "SCN-FAULT-AFTERSALE-BAD-JSON": {
+        "name": "售后接口非法 JSON",
+        "target_source": "aftersale",
+        "fault": "bad_json",
+        "expected_error": "adapter_invalid_response",
+    },
+}
+FAULT_BASE_SCENARIO = "SCN-NORMAL-DELIVERED"
 
 ALLOWED_METRICS = {
     "crash_rate",
@@ -41,47 +87,6 @@ METRIC_VALUES = {
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-
-
-def _fact_payload(source: str, customer_id: str | None) -> dict[str, Any]:
-    if source == "order":
-        return {
-            "order_status": "已签收",
-            "order_amount": "268.00",
-            "order_items": "SKU-100 x 1",
-            "order_channel": "自营商城",
-            "address": "上海市浦东新区世纪大道 100 号",
-            "receiver_phone": "13812345678",
-            "category": "猫粮",
-            "unknown_field": "must-be-dropped",
-        }
-    if source == "payment":
-        return {
-            "paid_amount": "268.00",
-            "refundable_amount": "268.00",
-            "pay_channel": "支付宝",
-            "transaction_id": "must-be-dropped",
-        }
-    if source == "logistics":
-        return {
-            "carrier": "顺丰速运",
-            "tracking_no": "SF1234567890",
-            "latest_track": "已签收（本人签收）",
-            "signed_at": "2026-09-25T12:00:00+08:00",
-            "stalled_hours": 0,
-            "eta": "2026-09-25",
-            "package_weight": "1.2kg",
-        }
-    return {
-        "aftersale_history": "2026-09-10 同类商品退货 1 次（已完结）",
-        "last_case_result": "退货退款已结案",
-        "gross_amount": "268.00",
-        "eligible_amount": "268.00",
-        "excluded_items": "无",
-        "promotion_threshold": "满 199 减 30",
-        "promotion_result": "已抵扣",
-        "customer_id": customer_id or "SANDBOX-CUST-001",
-    }
 
 
 @dataclass
@@ -121,6 +126,7 @@ def create_app(
     api_key: str | None = None,
     webhook_secret: str | None = None,
     delay_seconds: float | None = None,
+    fact_provider: FactProvider | None = None,
 ) -> FastAPI:
     sandbox_api_key = api_key or os.getenv("SANDBOX_API_KEY", "local-sandbox-key")
     signing_secret = webhook_secret or os.getenv(
@@ -133,6 +139,7 @@ def create_app(
         else float(os.getenv("SANDBOX_DELAY_SECONDS", "0.6"))
     )
     state = WebhookReceiptState()
+    provider = fact_provider or build_fact_provider()
 
     app = FastAPI(
         title="Reference Integration Sandbox",
@@ -143,6 +150,11 @@ def create_app(
         ),
     )
     app.state.webhook_receipts = state
+    app.state.fact_provider = provider
+
+    @app.on_event("shutdown")
+    async def close_fact_provider() -> None:
+        await provider.aclose()
 
     def require_api_key(
         x_api_key: Annotated[str | None, Header(alias="X-Api-Key")] = None,
@@ -166,8 +178,38 @@ def create_app(
         return JSONResponse(status_code=401, content=detail)
 
     @app.get("/health", include_in_schema=False)
-    def health() -> dict[str, str]:
-        return {"status": "ok", "service": "reference-integration-sandbox"}
+    async def health() -> dict[str, str]:
+        provider_health = await provider.health()
+        return {
+            "status": "ok",
+            "service": "reference-integration-sandbox",
+            **provider_health,
+        }
+
+    @app.get("/scenarios", dependencies=[Depends(require_api_key)])
+    def scenarios() -> dict[str, Any]:
+        catalog = getattr(provider, "public_scenarios", None)
+        if not callable(catalog):
+            return {
+                "environment": "local_static_sandbox",
+                "scenarios": [],
+            }
+        return catalog()
+
+    @app.get("/fault-scenarios", dependencies=[Depends(require_api_key)])
+    def fault_scenarios() -> dict[str, Any]:
+        return {
+            "environment": "local_high_fidelity_sandbox",
+            "scenarios": [
+                {
+                    "id": scenario_id,
+                    "name": item["name"],
+                    "target_source": item["target_source"],
+                    "expected_error": item["expected_error"],
+                }
+                for scenario_id, item in FACT_FAULT_SCENARIOS.items()
+            ],
+        }
 
     async def fact_response(
         source: str,
@@ -175,20 +217,70 @@ def create_app(
         request_id: str | None,
         customer_id: str | None = None,
     ) -> Response:
+        fault = FACT_FAULT_SCENARIOS.get(order_id)
+        resolved_order_id = FAULT_BASE_SCENARIO if fault else order_id
+        targeted_fault = fault if fault and fault["target_source"] == source else None
+        if targeted_fault and targeted_fault["fault"] == "rate_limit":
+            return JSONResponse(
+                status_code=429,
+                content={"error": "rate_limited"},
+                headers={"Retry-After": "1"},
+            )
+        if targeted_fault and targeted_fault["fault"] == "upstream_error":
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "error": {
+                        "code": "adapter_upstream_error",
+                        "message": "Saleor upstream query failed",
+                    }
+                },
+            )
+        if targeted_fault and targeted_fault["fault"] == "bad_json":
+            return PlainTextResponse("this is not json")
         if order_id == AUTH_ORDER:
             return JSONResponse(status_code=401, content={"error": "unauthorized"})
         if order_id == NOT_FOUND_ORDER:
             return JSONResponse(status_code=404, content={"error": "order_not_found"})
         if order_id == BAD_JSON_ORDER:
             return PlainTextResponse("this is not json")
-        if order_id == TIMEOUT_ORDER and source == "logistics" and timeout_delay > 0:
+        if (
+            (order_id == TIMEOUT_ORDER and source == "logistics")
+            or (targeted_fault and targeted_fault["fault"] == "timeout")
+        ) and timeout_delay > 0:
             await asyncio.sleep(timeout_delay)
         trace_id = request_id or f"sandbox-{uuid.uuid4().hex[:12]}"
+        try:
+            fact = await provider.fetch(
+                source,
+                resolved_order_id,
+                customer_id=customer_id,
+            )
+        except ProviderError as exc:
+            return JSONResponse(
+                status_code=exc.status_code,
+                content={
+                    "error": {
+                        "code": exc.code,
+                        "message": exc.safe_message,
+                    },
+                    "request_id": trace_id,
+                },
+                headers={"X-Request-ID": trace_id},
+            )
+        data = dict(fact.data)
+        observed_at = fact.observed_at
+        if targeted_fault and targeted_fault["fault"] == "missing_required_field":
+            if source == "payment":
+                data.pop("paid_amount", None)
+        if targeted_fault and targeted_fault["fault"] == "invalid_time":
+            observed_at = "not-a-valid-time"
         return JSONResponse(
             content={
-                "data": _fact_payload(source, customer_id),
-                "observed_at": _now_iso(),
+                "data": data,
+                "observed_at": observed_at,
                 "request_id": trace_id,
+                "source_version": fact.source_version,
             },
             headers={"X-Request-ID": trace_id},
         )
@@ -358,4 +450,4 @@ def create_app(
 app = create_app()
 
 
-__all__ = ["app", "create_app"]
+__all__ = ["FACT_FAULT_SCENARIOS", "app", "create_app"]

@@ -17,6 +17,7 @@ from types import ModuleType
 
 import pytest
 
+import app.graph.checkpointer as checkpointer_module
 from app.config import get_settings
 from app.db.session import SessionLocal
 from app.graph.checkpointer import (
@@ -68,6 +69,26 @@ def settings_with_checkpointer(tmp_path: Path, backend: str):
             "checkpointer_sqlite_path": str(path),
         }
     )
+
+
+def test_reset_checkpointer_closes_sqlite_connection(monkeypatch):
+    class FakeConnection:
+        closed = False
+
+        def close(self):
+            self.closed = True
+
+    class FakeSqliteSaver:
+        def __init__(self):
+            self.conn = FakeConnection()
+
+    saver = FakeSqliteSaver()
+    monkeypatch.setattr(checkpointer_module, "_saver", saver)
+    monkeypatch.setattr(checkpointer_module, "_saver_context", None)
+
+    reset_checkpointer()
+
+    assert saver.conn.closed is True
 
 
 def make_runner(settings) -> WorkflowRunner:

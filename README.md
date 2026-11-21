@@ -26,12 +26,13 @@ Product Insight Copilot 将这些环节拆成受控工作流，并把每个 Agen
 | 售后多 Agent 协作 | Triage、Order Fact、Policy RAG、Resolution、Response、Review、Revision、Follow-up Agent 分工执行；事实与政策可并行取证 |
 | 只读事实查询 | 订单、支付、物流和售后适配器默认只读；模型不能直接访问任意 SQL，也不能修改业务数据 |
 | 混合 RAG | 文档解析、语义切分、关键词与向量召回、重排、版本/生效期/适用范围过滤及来源引用 |
-| 确定性风险治理 | 动作、金额、风险等级和审批要求由代码节点判定；接口层拒绝未批准的高风险执行请求 |
+| 确定性风险治理 | 动作、金额、风险等级和审批要求由代码节点判定；接口层拒绝未批准的高风险建议发送请求 |
 | 完整反思机制 | 独立 Review/Critic 检查证据、政策、金额、动作、审批、引用和回复一致性；支持补检索、有限修订、转人工或拒绝 |
-| Human-in-the-Loop | L3/L4 等高风险场景进入主管或风控审核，拒绝后终止后续流程并保留审核记录 |
-| Durable Agent | 任务、节点、事件、检查点和结果持久化，支持失败重试、暂停后继续、幂等执行和任务回放 |
+| Human-in-the-Loop | L3/L4 等高风险建议需要具有审批权限的人员审核，保留结果与理由；风控要求标签不等于已对接独立风控系统 |
+| Durable Agent | 任务、节点、事件、检查点和结果持久化，支持失败重试、暂停后继续及结构化历史回放 |
 | 全链路 Trace | 关联任务、Agent 节点、模型、RAG、事实工具、引用、反思、审批、成本和最终回复 |
 | 产品诊断工作流 | 产品知识、用户反馈、版本研发和指标 Agent 并行分析，输出带证据与不确定性说明的诊断报告 |
+| 可选 Saleor Sandbox | 以本地合成订单和显式覆盖层验证连续业务状态、四类只读事实与上游故障，默认关闭 |
 
 ## 核心业务流程
 
@@ -131,6 +132,41 @@ docker compose -f deploy\docker-compose.demo.yml down
 
 演示模式使用 SQLite、stub 模型和虚构数据，不需要模型密钥，也不会产生真实模型费用。它只适合本地体验，不能直接暴露到公网。
 
+### 可选：Saleor 高保真业务 Sandbox
+
+固定 JSON 适合快速回归；若要观察连续订单状态和跨来源事实，可启用独立的 Saleor 本地栈：
+
+```cmd
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 start
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 status
+```
+
+首次启动会拉取镜像、迁移和播种。该栈使用独立网络、数据卷及本地生成的凭据，事实接口为
+`http://127.0.0.1:8092`，不改变默认演示模式。运行时只查询，测试数据准备身份与查询身份分离。
+
+它提供 10 类业务场景与 6 类故障场景，包括部分履约、部分退款、重复退款、来源冲突、
+支付字段缺失、上游限流与非法响应。数据来自 **Saleor 本地合成订单 + 显式 local overlay**；
+物流轨迹覆盖层不是承运商数据，测试退款状态也不代表真实资金移动。
+
+完成下方本地 Python 环境依赖安装后，可在项目根目录执行主链路验证：
+
+```cmd
+cd backend
+..\.venv\Scripts\python.exe scripts\verify_saleor_main_workflow.py --sandbox-port 8092 --json-out ..\docs\testing\artifacts\saleor-commerce-sandbox-current.json
+```
+
+历史机器报告记录 2026-11-16 业务 10/10、故障 6/6；当次使用 Stub 模型、Inline 执行和真实本地 HTTP，
+不能外推真实模型或企业网络表现。事实存储和 Trace 记录 `source_version`，便于区分来源与版本。
+完整步骤和边界见 [本地集成沙箱](docs/integrations/local-integration-sandbox.md)、
+[选型记录](docs/architecture/adr-003-saleor-commerce-sandbox.md) 和
+[历史验收报告](docs/testing/artifacts/saleor-commerce-sandbox-slice5-local.json)。
+
+停止该独立环境：
+
+```cmd
+powershell -ExecutionPolicy Bypass -File scripts\commerce_sandbox.ps1 stop
+```
+
 ### 本地开发
 
 后端，在项目根目录打开 CMD：
@@ -189,6 +225,8 @@ GitHub Actions 会执行：
 | [发布检查清单](RELEASE_CHECKLIST.md) | 发布前检查、回滚和外部待验收项 |
 | [事实接口契约](docs/integrations/fact-http-contract.md) | 订单、支付、物流和售后只读接口约定 |
 | [本地集成沙箱](docs/integrations/local-integration-sandbox.md) | 事实、指标和 Webhook 的本地对接环境 |
+| [Saleor 选型与边界](docs/architecture/adr-003-saleor-commerce-sandbox.md) | 本地状态驱动 Sandbox、版本冻结与身份隔离 |
+| [公开版本同步说明](docs/public-sync.md) | 本地开发基线、公开仓库同步方式及验证记录 |
 | [部署说明](deploy/README.md) | Docker Compose、环境变量和运行方式 |
 | [测试证据](docs/testing/) | 回归、性能、恢复、供应链与交付验证记录 |
 
@@ -208,6 +246,8 @@ scripts/       启动、验收、评测、恢复和供应链脚本
 - 本地 stub 模型用于零成本演示，不代表真实模型质量；
 - 真实模型、Embedding 和 Reranker 需要在目标业务语料上重新评测；
 - 企业订单、支付、物流、售后接口接入前，只能验证本地只读沙箱契约；
+- 当前“发送”仅保存本地工单消息与状态，没有接入企业聊天渠道或真实退款写接口；
+- 审批后替换正文的版本绑定、并发审批/发送及独立风控权限仍需补齐，现有门禁不代表外部操作恰好一次；
 - PostgreSQL、Redis、对象存储、多副本、备份恢复和告警需要在目标环境重新验收；
 - 生产环境必须使用企业身份体系、最小权限账号、Vault/KMS、集中日志和正式备份策略；
 - 关联分析不等同于因果结论，证据不足或冲突时必须保留不确定性并进入人工判断。

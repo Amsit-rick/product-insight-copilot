@@ -2,190 +2,92 @@
   "schema_version": 2,
   "diagram_type": "workflow",
   "meta": {
-    "title": "多 Agent 协作流程：一张工单由谁接力处理",
+    "title": "多 Agent 协作流程：一张售后工单如何完成证据闭环",
     "locale": "zh-CN",
     "animation": "trace",
     "quality_profile": "showcase",
-    "legend": {
-      "mode": "hidden"
-    }
+    "legend": { "mode": "hidden" },
+    "views": [
+      { "id": "main_flow", "label": "正常处理链路", "focus": ["orchestrator", "triage_agent", "order_fact_agent", "policy_rag_agent", "evidence_bundle", "decision_gate", "resolution_agent", "response_agent", "review_agent", "review_outcome", "delivery", "followup_agent"], "note": "从工单接入、并行取证、规则门禁到回复交付的主链路。" },
+      { "id": "quality_loop", "label": "复核与返工", "focus": ["review_agent", "review_outcome", "retrieve_more", "revision_agent", "human_review"], "note": "证据不足、有限修订和高风险人工审核分别局部闭环。" },
+      { "id": "governance", "label": "治理与执行边界", "focus": ["decision_gate", "human_review", "persist_trace"], "note": "模型只生成建议和回复；退款、补发等写动作当前未接入。" }
+    ]
   },
   "lanes": [
-    { "id": "orchestration", "label": "编排与路由" },
-    { "id": "facts", "label": "订单事实取证" },
-    { "id": "policy", "label": "政策知识取证" },
-    { "id": "decision", "label": "决策与回复" },
-    { "id": "reflection", "label": "独立复核与反思", "variant": "exception" },
-    { "id": "approval", "label": "人工审核", "variant": "exception" },
-    { "id": "delivery", "label": "交付与跟进" },
-    { "id": "support", "label": "状态与审计支撑" }
+    { "id": "orchestration", "label": "1 工单接入" },
+    { "id": "facts", "label": "2 订单事实取证" },
+    { "id": "policy", "label": "2 政策知识取证" },
+    { "id": "evidence", "label": "2 证据汇总" },
+    { "id": "decision", "label": "3 决策控制" },
+    { "id": "response", "label": "4 方案与回复" },
+    { "id": "reflection", "label": "4 独立复核", "variant": "exception" },
+    { "id": "outcome", "label": "4 审核判断", "variant": "exception" },
+    { "id": "branches", "label": "5 分支处理", "variant": "exception" },
+    { "id": "delivery", "label": "5 回复交付" },
+    { "id": "followup", "label": "5 跟进计划" },
+    { "id": "support", "label": "6 全局底座" }
   ],
   "phases": [
-    { "id": "route_phase", "label": "受理与路由", "fromCol": 0, "toCol": 1 },
-    { "id": "evidence_phase", "label": "事实与政策", "fromCol": 2, "toCol": 2, "variant": "emphasis" },
-    { "id": "decision_phase", "label": "受控决策", "fromCol": 3, "toCol": 4, "variant": "security" },
-    { "id": "review_phase", "label": "复核与交付", "fromCol": 5, "toCol": 5 }
+    { "id": "intake_phase", "label": "受理与分流", "fromCol": 0, "toCol": 1 },
+    { "id": "evidence_phase", "label": "并行取证与汇总", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "decision_phase", "label": "代码门禁与方案", "fromCol": 4, "toCol": 5, "variant": "security" }
   ],
-  "mainPath": [
-    "orchestrator",
-    "triage_agent",
-    "order_fact_agent",
-    "decision_gate",
-    "resolution_agent",
-    "response_agent",
-    "review_agent",
-    "followup_agent",
-    "persist_trace"
-  ],
+  "mainPath": ["orchestrator", "triage_agent", "order_fact_agent", "evidence_bundle", "decision_gate", "resolution_agent", "response_agent", "review_agent", "review_outcome", "delivery", "followup_agent", "persist_trace"],
   "semanticChecks": {
     "allowedRoots": ["orchestrator"],
     "allowedTerminals": ["persist_trace"],
     "requiredPaths": [
       { "from": "triage_agent", "to": "order_fact_agent" },
       { "from": "triage_agent", "to": "policy_rag_agent" },
-      { "from": "review_agent", "to": "retrieve_more" },
-      { "from": "review_agent", "to": "revision_agent" },
-      { "from": "review_agent", "to": "human_review" },
-      { "from": "review_agent", "to": "followup_agent" }
+      { "from": "order_fact_agent", "to": "evidence_bundle" },
+      { "from": "policy_rag_agent", "to": "evidence_bundle" },
+      { "from": "review_outcome", "to": "retrieve_more" },
+      { "from": "review_outcome", "to": "revision_agent" },
+      { "from": "review_outcome", "to": "human_review" },
+      { "from": "review_outcome", "to": "delivery" }
     ]
   },
   "nodes": [
-    {
-      "id": "orchestrator",
-      "lane": "orchestration",
-      "col": 0,
-      "type": "messagebus",
-      "label": "LangGraph Orchestrator",
-      "sublabel": "恢复状态并决定下一节点",
-      "width": 150
-    },
-    {
-      "id": "triage_agent",
-      "lane": "orchestration",
-      "col": 1,
-      "type": "backend",
-      "label": "Triage Agent",
-      "sublabel": "识别问题类型、风险与缺失信息",
-      "width": 138
-    },
-    {
-      "id": "order_fact_agent",
-      "lane": "facts",
-      "col": 2,
-      "type": "database",
-      "label": "Order Fact Agent",
-      "sublabel": "查询订单、支付、物流和历史售后",
-      "width": 148
-    },
-    {
-      "id": "policy_rag_agent",
-      "lane": "policy",
-      "col": 2,
-      "type": "cloud",
-      "label": "Policy RAG Agent",
-      "sublabel": "检索生效政策、条件和引用来源",
-      "width": 148
-    },
-    {
-      "id": "decision_gate",
-      "lane": "decision",
-      "col": 3,
-      "type": "security",
-      "label": "确定性规则门禁",
-      "sublabel": "代码决定动作、金额、风险和审批",
-      "tag": "模型无最终执行权",
-      "width": 150
-    },
-    {
-      "id": "resolution_agent",
-      "lane": "decision",
-      "col": 4,
-      "type": "backend",
-      "label": "Resolution Agent",
-      "sublabel": "把证据整理为可执行处理方案",
-      "width": 146
-    },
-    {
-      "id": "response_agent",
-      "lane": "decision",
-      "col": 5,
-      "type": "frontend",
-      "label": "Response Agent",
-      "sublabel": "生成面向客户的回复草稿",
-      "width": 138
-    },
-    {
-      "id": "review_agent",
-      "lane": "reflection",
-      "col": 5,
-      "type": "security",
-      "label": "Review Agent",
-      "sublabel": "检查证据、承诺与审批",
-      "width": 142
-    },
-    {
-      "id": "retrieve_more",
-      "lane": "reflection",
-      "col": 2,
-      "type": "cloud",
-      "label": "补查证据",
-      "sublabel": "证据不足时回到政策检索",
-      "width": 130
-    },
-    {
-      "id": "revision_agent",
-      "lane": "reflection",
-      "col": 4,
-      "type": "backend",
-      "label": "Revision Agent",
-      "sublabel": "只修订复核指出的问题",
-      "width": 138
-    },
-    {
-      "id": "human_review",
-      "lane": "approval",
-      "col": 5,
-      "type": "external",
-      "label": "人工审核",
-      "sublabel": "高风险结论或敏感动作由人确认",
-      "width": 138
-    },
-    {
-      "id": "followup_agent",
-      "lane": "delivery",
-      "col": 5,
-      "type": "backend",
-      "label": "Follow-up Agent",
-      "sublabel": "安排回复后的跟进计划",
-      "width": 136
-    },
-    {
-      "id": "persist_trace",
-      "lane": "support",
-      "col": 5,
-      "type": "database",
-      "label": "持久化与全链路追踪",
-      "sublabel": "状态、证据与成本留痕",
-      "width": 154
-    }
+    { "id": "orchestrator", "lane": "orchestration", "col": 0, "type": "messagebus", "label": "LangGraph Orchestrator", "sublabel": "加载状态、路由节点、失败后恢复", "width": 158 },
+    { "id": "triage_agent", "lane": "orchestration", "col": 1, "type": "backend", "label": "Triage Agent", "sublabel": "识别问题、风险与缺失信息", "width": 148 },
+    { "id": "order_fact_agent", "lane": "facts", "col": 2, "type": "database", "label": "Order Fact Agent", "sublabel": "订单、支付、物流和历史售后", "width": 154 },
+    { "id": "policy_rag_agent", "lane": "policy", "col": 2, "type": "cloud", "label": "Policy RAG Agent", "sublabel": "现行政策、适用条件和引用来源", "width": 154 },
+    { "id": "evidence_bundle", "lane": "evidence", "col": 3, "type": "database", "label": "Evidence Bundle", "sublabel": "事实 + 条款 + 来源 + 时间 + 置信状态", "width": 170 },
+    { "id": "decision_gate", "lane": "decision", "col": 4, "type": "security", "label": "确定性规则门禁", "sublabel": "代码决定动作、金额、风险和审批", "tag": "模型无最终执行权", "width": 162 },
+    { "id": "resolution_agent", "lane": "decision", "col": 5, "type": "backend", "label": "Resolution Agent", "sublabel": "生成受约束的处理建议", "width": 150 },
+    { "id": "response_agent", "lane": "response", "col": 5, "type": "frontend", "label": "Response Agent", "sublabel": "生成面向客户的回复草稿", "width": 148 },
+    { "id": "review_agent", "lane": "reflection", "col": 5, "type": "security", "label": "Review Agent", "sublabel": "独立检查证据、承诺、引用和审批", "width": 154 },
+    { "id": "review_outcome", "lane": "outcome", "col": 5, "type": "security", "label": "审核结果判断", "sublabel": "证据不足 / 修订 / 高风险 / 通过", "width": 154 },
+    { "id": "retrieve_more", "lane": "branches", "col": 2, "type": "cloud", "label": "补查证据", "sublabel": "只回到取证和规则决策", "width": 140 },
+    { "id": "revision_agent", "lane": "reflection", "col": 3, "type": "backend", "label": "Revision Agent", "sublabel": "只修订复核明确指出的问题", "width": 146 },
+    { "id": "human_review", "lane": "branches", "col": 4, "type": "external", "label": "人工审核", "sublabel": "高风险或无法确认时由人决定", "width": 142 },
+    { "id": "delivery", "lane": "delivery", "col": 5, "type": "frontend", "label": "回复交付", "sublabel": "交付已审核回复，不直接执行退款", "width": 148 },
+    { "id": "followup_agent", "lane": "followup", "col": 5, "type": "backend", "label": "Follow-up Agent", "sublabel": "安排后续检查和升级提醒", "width": 146 },
+    { "id": "persist_trace", "lane": "support", "col": 5, "type": "database", "label": "Checkpoint + Trace + Audit", "sublabel": "状态、证据版本、成本和审批留痕", "width": 172 }
   ],
   "edges": [
-    { "from": "orchestrator", "to": "triage_agent", "label": "加载工单上下文", "role": "main" },
-    { "from": "triage_agent", "to": "order_fact_agent", "label": "所有场景", "role": "main" },
-    { "from": "triage_agent", "to": "policy_rag_agent", "label": "高风险并行", "role": "async" },
-    { "from": "order_fact_agent", "to": "policy_rag_agent", "label": "普通场景顺序执行", "role": "branch" },
-    { "from": "order_fact_agent", "to": "decision_gate", "label": "高风险事实汇合", "role": "branch" },
-    { "from": "policy_rag_agent", "to": "decision_gate", "role": "main" },
-    { "from": "decision_gate", "to": "resolution_agent", "label": "受控处理边界", "role": "main" },
-    { "from": "resolution_agent", "to": "response_agent", "label": "处理方案", "role": "main" },
-    { "from": "response_agent", "to": "review_agent", "label": "先生成再复核", "role": "main" },
-    { "from": "review_agent", "to": "followup_agent", "label": "通过", "role": "main" },
-    { "from": "review_agent", "to": "retrieve_more", "label": "证据不足", "role": "error", "variant": "security" },
-    { "from": "retrieve_more", "to": "policy_rag_agent", "label": "补查后重审", "role": "return" },
-    { "from": "review_agent", "to": "revision_agent", "label": "需要修订", "role": "error", "variant": "security" },
-    { "from": "revision_agent", "to": "review_agent", "label": "有限修订后重审", "role": "return" },
-    { "from": "review_agent", "to": "human_review", "label": "高风险 / 无法确认", "role": "branch", "variant": "security" },
-    { "from": "human_review", "to": "followup_agent", "label": "人工确认", "role": "main" },
-    { "from": "followup_agent", "to": "persist_trace", "label": "交付并留痕", "role": "main" }
+    { "from": "orchestrator", "to": "triage_agent", "label": "加载工单上下文", "role": "main", "variant": "emphasis", "width": 2.2 },
+    { "from": "triage_agent", "to": "order_fact_agent", "label": "并行取证", "role": "async", "variant": "emphasis", "width": 2.2 },
+    { "from": "triage_agent", "to": "policy_rag_agent", "label": "并行取证", "role": "async", "variant": "emphasis", "width": 2.2 },
+    { "from": "order_fact_agent", "to": "evidence_bundle", "label": "结构化事实", "role": "main", "width": 2.2 },
+    { "from": "policy_rag_agent", "to": "evidence_bundle", "label": "政策与引用", "role": "main", "width": 2.2 },
+    { "from": "evidence_bundle", "to": "decision_gate", "label": "统一输入契约", "role": "main", "variant": "emphasis", "width": 2.2 },
+    { "from": "decision_gate", "to": "resolution_agent", "label": "受控处理边界", "role": "main", "variant": "security", "width": 2.2 },
+    { "from": "resolution_agent", "to": "response_agent", "label": "处理建议", "role": "main", "variant": "emphasis", "width": 2.2 },
+    { "from": "response_agent", "to": "review_agent", "label": "先生成再复核", "role": "main", "variant": "emphasis", "width": 2.2 },
+    { "from": "review_agent", "to": "review_outcome", "label": "结构化复核结果", "role": "main", "variant": "security", "width": 2.2 },
+    { "from": "review_outcome", "to": "delivery", "label": "通过", "role": "main", "variant": "emphasis", "width": 2.2 },
+    { "from": "review_outcome", "to": "retrieve_more", "label": "证据不足", "role": "error", "variant": "dashed" },
+    { "from": "retrieve_more", "to": "evidence_bundle", "label": "补证据后重新决策", "role": "return", "variant": "dashed" },
+    { "from": "review_outcome", "to": "revision_agent", "label": "需要修订", "role": "error", "variant": "dashed" },
+    { "from": "revision_agent", "to": "review_agent", "label": "有限修订后重审", "role": "return", "variant": "dashed" },
+    { "from": "review_outcome", "to": "human_review", "label": "高风险 / 无法确认", "role": "branch", "variant": "security" },
+    { "from": "human_review", "to": "delivery", "label": "人工确认", "role": "main" },
+    { "from": "delivery", "to": "followup_agent", "label": "登记跟进", "role": "main", "variant": "emphasis", "width": 2.2 },
+    { "from": "followup_agent", "to": "persist_trace", "label": "持久化并留痕", "role": "main" }
+  ],
+  "cards": [
+    { "dot": "amber", "title": "执行边界", "items": ["本系统只生成建议和已审核回复", "退款、补发、赔付等写接口当前未接入"] },
+    { "dot": "cyan", "title": "证据契约", "items": ["订单事实与政策依据统一汇总", "规则门禁只接收结构化 Evidence Bundle"] }
   ]
 }

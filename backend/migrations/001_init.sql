@@ -724,6 +724,7 @@ CREATE TABLE order_facts (
 	request_id VARCHAR(64), 
 	is_mock BOOLEAN NOT NULL, 
 	adapter VARCHAR(32), 
+	source_version VARCHAR(64),
 	error JSON, 
 	created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now() NOT NULL, 
 	updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now() NOT NULL, 

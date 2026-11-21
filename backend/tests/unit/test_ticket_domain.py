@@ -232,7 +232,14 @@ def test_mask_value_passes_through_non_sensitive():
 
 
 # --------------------------------------------------------------------------- 详情视图装配
-def _fact(source: str, payload: dict, *, observed_at=None, is_mock: bool = True) -> OrderFact:
+def _fact(
+    source: str,
+    payload: dict,
+    *,
+    observed_at=None,
+    is_mock: bool = True,
+    source_version: str | None = None,
+) -> OrderFact:
     return OrderFact(
         ticket_id="t1",
         source=source,
@@ -241,6 +248,7 @@ def _fact(source: str, payload: dict, *, observed_at=None, is_mock: bool = True)
         observed_at=observed_at or utcnow(),
         request_id="req-1",
         is_mock=is_mock,
+        source_version=source_version,
     )
 
 
@@ -277,10 +285,20 @@ def test_fact_rows_mark_stale_and_mask_sensitive():
 
 def test_fact_rows_carry_provenance_for_ui():
     """FR-02：每个字段要能标出来源与查询时间。"""
-    row = build_fact_rows([_fact("payment", {"paid_amount": "156.00"})], ttl_seconds=900)[0]
+    row = build_fact_rows(
+        [
+            _fact(
+                "payment",
+                {"paid_amount": "156.00"},
+                source_version="saleor-3.23.49+scenario-v1",
+            )
+        ],
+        ttl_seconds=900,
+    )[0]
     assert row["source"] == "payment"
     assert row["observed_at"]
     assert row["request_id"] == "req-1"
+    assert row["source_version"] == "saleor-3.23.49+scenario-v1"
 
 
 def test_fact_rows_translate_sensitive_field_names_for_customer_service():

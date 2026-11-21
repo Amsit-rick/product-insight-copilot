@@ -1,0 +1,896 @@
+{
+  "schema_version": "saleor-main-workflow-slice4-v1",
+  "generated_at": "2026-11-15T13:49:34.224171+00:00",
+  "status": "verified_local",
+  "environment": "local_high_fidelity_sandbox",
+  "transport": "main_api_to_sandbox_real_http",
+  "llm_provider": "stub",
+  "fact_adapter": "http-fact-adapter",
+  "task_execution": "inline",
+  "enterprise_endpoint_verified": false,
+  "real_payment_verified": false,
+  "real_carrier_verified": false,
+  "production_ready": false,
+  "summary": {
+    "business_passed": 10,
+    "business_total": 10,
+    "fault_passed": 6,
+    "fault_total": 6
+  },
+  "business_cases": [
+    {
+      "scenario_id": "SCN-NORMAL-DELIVERED",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "ask_customer",
+      "expected_action": "ask_customer",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 1,
+      "revision_rounds": 0,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-UNPAID-CANCELED",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "ask_customer",
+      "expected_action": "ask_customer",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 1,
+      "revision_rounds": 0,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-PAID-UNSHIPPED-REFUND",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "refund",
+      "expected_action": "refund",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 2,
+      "revision_rounds": 1,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        },
+        {
+          "name": "refund_requires_supervisor",
+          "passed": true
+        },
+        {
+          "name": "refund_waits_for_approval",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-PARTIAL-FULFILLMENT",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "ask_customer",
+      "expected_action": "ask_customer",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 1,
+      "revision_rounds": 0,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-LOGISTICS-STALLED",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "contact_logistics",
+      "expected_action": "contact_logistics",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 1,
+      "revision_rounds": 0,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-DELIVERED-RETURN",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "refund",
+      "expected_action": "refund",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 2,
+      "revision_rounds": 1,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        },
+        {
+          "name": "refund_requires_supervisor",
+          "passed": true
+        },
+        {
+          "name": "refund_waits_for_approval",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-PARTIAL-REFUND",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "refund",
+      "expected_action": "refund",
+      "refund_balance_matches": true,
+      "reflection_enabled": true,
+      "reflection_rounds": 2,
+      "revision_rounds": 1,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        },
+        {
+          "name": "partial_refund_action",
+          "passed": true
+        },
+        {
+          "name": "partial_refund_balance_present",
+          "passed": true
+        },
+        {
+          "name": "partial_refund_amount_matches_balance",
+          "passed": true
+        },
+        {
+          "name": "partial_refund_uses_remaining_balance_source",
+          "passed": true
+        },
+        {
+          "name": "refund_requires_supervisor",
+          "passed": true
+        },
+        {
+          "name": "refund_waits_for_approval",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-DUPLICATE-REFUND",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "ask_customer",
+      "expected_action": "ask_customer",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 1,
+      "revision_rounds": 0,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_blocked",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-MISSING-ITEM",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "reship",
+      "expected_action": "reship",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 2,
+      "revision_rounds": 1,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-CROSS-SOURCE-CONFLICT",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "source_versions": [
+        "saleor-3.23.49+scenario-v1"
+      ],
+      "action_type": "ask_customer",
+      "expected_action": "ask_customer",
+      "refund_balance_matches": null,
+      "reflection_enabled": true,
+      "reflection_rounds": 1,
+      "revision_rounds": 0,
+      "reflection_bounded": true,
+      "checks": [
+        {
+          "name": "analysis_accepted",
+          "passed": true
+        },
+        {
+          "name": "workflow_completed",
+          "passed": true
+        },
+        {
+          "name": "four_sources_persisted",
+          "passed": true
+        },
+        {
+          "name": "sources_are_real_http",
+          "passed": true
+        },
+        {
+          "name": "source_version_preserved",
+          "passed": true
+        },
+        {
+          "name": "trace_sources_complete",
+          "passed": true
+        },
+        {
+          "name": "recommendation_generated",
+          "passed": true
+        },
+        {
+          "name": "reflection_executed",
+          "passed": true
+        },
+        {
+          "name": "reflection_is_bounded",
+          "passed": true
+        },
+        {
+          "name": "scenario_action_matches",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_blocked",
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "fault_cases": [
+    {
+      "scenario_id": "SCN-FAULT-LOGISTICS-TIMEOUT",
+      "target_source": "logistics",
+      "expected_error": "adapter_timeout",
+      "target_error_code": "adapter_timeout",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "healthy_source_count": 3,
+      "action_type": "ask_customer",
+      "unsafe_refund_generated": false,
+      "checks": [
+        {
+          "name": "analysis_has_expected_outcome",
+          "passed": true
+        },
+        {
+          "name": "workflow_finished_or_stopped",
+          "passed": true
+        },
+        {
+          "name": "four_source_results_persisted",
+          "passed": true
+        },
+        {
+          "name": "target_error_recorded",
+          "passed": true
+        },
+        {
+          "name": "other_sources_preserved",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_not_generated",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-FAULT-PAYMENT-FIELD-MISSING",
+      "target_source": "payment",
+      "expected_error": "adapter_invalid_response",
+      "target_error_code": "adapter_invalid_response",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "healthy_source_count": 3,
+      "action_type": "ask_customer",
+      "unsafe_refund_generated": false,
+      "checks": [
+        {
+          "name": "analysis_has_expected_outcome",
+          "passed": true
+        },
+        {
+          "name": "workflow_finished_or_stopped",
+          "passed": true
+        },
+        {
+          "name": "four_source_results_persisted",
+          "passed": true
+        },
+        {
+          "name": "target_error_recorded",
+          "passed": true
+        },
+        {
+          "name": "other_sources_preserved",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_not_generated",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-FAULT-LOGISTICS-BAD-TIME",
+      "target_source": "logistics",
+      "expected_error": "adapter_invalid_response",
+      "target_error_code": "adapter_invalid_response",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "healthy_source_count": 3,
+      "action_type": "ask_customer",
+      "unsafe_refund_generated": false,
+      "checks": [
+        {
+          "name": "analysis_has_expected_outcome",
+          "passed": true
+        },
+        {
+          "name": "workflow_finished_or_stopped",
+          "passed": true
+        },
+        {
+          "name": "four_source_results_persisted",
+          "passed": true
+        },
+        {
+          "name": "target_error_recorded",
+          "passed": true
+        },
+        {
+          "name": "other_sources_preserved",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_not_generated",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-FAULT-PAYMENT-RATE-LIMIT",
+      "target_source": "payment",
+      "expected_error": "adapter_rate_limited",
+      "target_error_code": "adapter_rate_limited",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "healthy_source_count": 3,
+      "action_type": "ask_customer",
+      "unsafe_refund_generated": false,
+      "checks": [
+        {
+          "name": "analysis_has_expected_outcome",
+          "passed": true
+        },
+        {
+          "name": "workflow_finished_or_stopped",
+          "passed": true
+        },
+        {
+          "name": "four_source_results_persisted",
+          "passed": true
+        },
+        {
+          "name": "target_error_recorded",
+          "passed": true
+        },
+        {
+          "name": "other_sources_preserved",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_not_generated",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-FAULT-ORDER-UPSTREAM-ERROR",
+      "target_source": "order",
+      "expected_error": "adapter_upstream_error",
+      "target_error_code": "adapter_upstream_error",
+      "passed": true,
+      "analyze_status": 409,
+      "task_status": null,
+      "source_count": 4,
+      "healthy_source_count": 3,
+      "action_type": null,
+      "unsafe_refund_generated": false,
+      "checks": [
+        {
+          "name": "analysis_has_expected_outcome",
+          "passed": true
+        },
+        {
+          "name": "workflow_finished_or_stopped",
+          "passed": true
+        },
+        {
+          "name": "four_source_results_persisted",
+          "passed": true
+        },
+        {
+          "name": "target_error_recorded",
+          "passed": true
+        },
+        {
+          "name": "other_sources_preserved",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_not_generated",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scenario_id": "SCN-FAULT-AFTERSALE-BAD-JSON",
+      "target_source": "aftersale",
+      "expected_error": "adapter_invalid_response",
+      "target_error_code": "adapter_invalid_response",
+      "passed": true,
+      "analyze_status": 202,
+      "task_status": "completed",
+      "source_count": 4,
+      "healthy_source_count": 3,
+      "action_type": "ask_customer",
+      "unsafe_refund_generated": false,
+      "checks": [
+        {
+          "name": "analysis_has_expected_outcome",
+          "passed": true
+        },
+        {
+          "name": "workflow_finished_or_stopped",
+          "passed": true
+        },
+        {
+          "name": "four_source_results_persisted",
+          "passed": true
+        },
+        {
+          "name": "target_error_recorded",
+          "passed": true
+        },
+        {
+          "name": "other_sources_preserved",
+          "passed": true
+        },
+        {
+          "name": "unsafe_refund_not_generated",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

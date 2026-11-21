@@ -142,12 +142,18 @@ def reset_checkpointer() -> None:
     """测试用：清掉单例（下一次调用会按配置重建）。"""
     global _saver, _saver_context, _description
     with _lock:
+        saver = _saver
         context = _saver_context
         _saver_context = None
         _saver = None
         _description = {}
         if context is not None:
             context.__exit__(None, None, None)
+        else:
+            connection = getattr(saver, "conn", None)
+            close = getattr(connection, "close", None)
+            if callable(close):
+                close()
 
 
 __all__ = [

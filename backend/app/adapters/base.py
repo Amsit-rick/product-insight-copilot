@@ -32,6 +32,7 @@ class AdapterResult:
     payload: dict = field(default_factory=dict)
     observed_at: datetime | None = None
     request_id: str | None = None
+    source_version: str | None = None
     is_mock: bool = True
     adapter: str = ""
     error: dict | None = None
@@ -48,6 +49,7 @@ class AdapterResult:
             "payload": self.payload,
             "observed_at": self.observed_at,
             "request_id": self.request_id,
+            "source_version": self.source_version,
             "is_mock": self.is_mock,
             "adapter": self.adapter,
             "error": self.error,

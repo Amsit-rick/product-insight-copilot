@@ -34,6 +34,7 @@ docs/product-insight-agent-flow.visual-check.*
 # ---- 环境与密钥（绝不入库）----
 .env
 .env.local
+.commerce-sandbox.env
 *.pem
 *.key
 

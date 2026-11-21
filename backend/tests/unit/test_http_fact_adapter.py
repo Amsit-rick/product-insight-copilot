@@ -60,6 +60,7 @@ def test_success_uses_get_propagates_request_id_and_sanitizes_payload():
                 },
                 "observed_at": "2026-09-25T12:00:00+00:00",
                 "request_id": "upstream-request-id",
+                "source_version": "saleor-3.23.49+scenario-v1",
             },
         )
 
@@ -69,6 +70,7 @@ def test_success_uses_get_propagates_request_id_and_sanitizes_payload():
     assert result.is_mock is False
     assert result.adapter == "http-fact-adapter"
     assert result.request_id == "upstream-request-id"
+    assert result.source_version == "saleor-3.23.49+scenario-v1"
     assert result.observed_at.isoformat() == "2026-09-25T12:00:00+00:00"
     assert result.payload["receiver_phone"] == "138****5678"
     assert result.payload["address"] == "上海市浦东新区***"
@@ -85,6 +87,7 @@ def test_success_recursively_masks_sensitive_values_inside_allowed_nested_fields
             200,
             json={
                 "data": {
+                    "order_status": "已签收",
                     "order_items": [
                         {
                             "sku": "SKU-100",
@@ -122,7 +125,10 @@ def test_retryable_503_recovers_on_second_attempt():
         attempts += 1
         if attempts == 1:
             return httpx.Response(503, json={"message": "temporary"})
-        return httpx.Response(200, json={"data": {"carrier": "顺丰"}})
+        return httpx.Response(
+            200,
+            json={"data": {"carrier": "顺丰", "latest_track": "运输中"}},
+        )
 
     result = make_adapter(handler).fetch_logistics("O100")
 
@@ -170,6 +176,38 @@ def test_404_and_invalid_response_are_structured_failures():
     assert (not_found.error or {})["code"] == "order_not_found"
     assert "O404" not in str(not_found.error)
     assert (malformed.error or {})["code"] == "adapter_invalid_response"
+
+
+def test_success_response_requires_the_minimum_source_contract_fields():
+    missing_payment = make_adapter(
+        lambda _request: httpx.Response(
+            200,
+            json={
+                "data": {"refundable_amount": "88.00"},
+                "source_version": "saleor-3.23.49+scenario-v1",
+            },
+        )
+    ).fetch_payment("O100")
+
+    assert missing_payment.ok is False
+    assert (missing_payment.error or {})["code"] == "adapter_invalid_response"
+    assert "paid_amount" not in str(missing_payment.error)
+
+
+def test_invalid_source_version_is_rejected_without_echoing_it():
+    result = make_adapter(
+        lambda _request: httpx.Response(
+            200,
+            json={
+                "data": {"paid_amount": "88.00"},
+                "source_version": {"token": "must-not-leak"},
+            },
+        )
+    ).fetch_payment("O100")
+
+    assert result.ok is False
+    assert (result.error or {})["code"] == "adapter_invalid_response"
+    assert "must-not-leak" not in str(result.error)
 
 
 def test_endpoint_templates_reject_embedded_credentials_fragments_and_production_http():

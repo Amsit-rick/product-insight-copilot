@@ -179,6 +179,14 @@ def _ensure_local_ticket_quality_columns(engine) -> None:
                         text(f"ALTER TABLE analysis_tasks ADD COLUMN {name} {definition}")
                     )
 
+    if inspector.has_table("order_facts"):
+        fact_columns = {item["name"] for item in inspector.get_columns("order_facts")}
+        if "source_version" not in fact_columns:
+            with engine.begin() as connection:
+                connection.execute(
+                    text("ALTER TABLE order_facts ADD COLUMN source_version VARCHAR(64)")
+                )
+
     if not inspector.has_table("tickets"):
         return
     columns = {item["name"] for item in inspector.get_columns("tickets")}

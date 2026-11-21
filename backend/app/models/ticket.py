@@ -158,6 +158,7 @@ class OrderFact(UUIDPkMixin, TimestampMixin, Base):
     payload: Mapped[dict] = mapped_column(JSON, default=dict)
     observed_at: Mapped[datetime | None] = mapped_column(DateTime)
     request_id: Mapped[str | None] = mapped_column(String(64), index=True)
+    source_version: Mapped[str | None] = mapped_column(String(64))
     is_mock: Mapped[bool] = mapped_column(Boolean, default=True)
     adapter: Mapped[str | None] = mapped_column(String(32))
     error: Mapped[dict | None] = mapped_column(JSON)

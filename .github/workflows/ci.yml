@@ -23,10 +23,15 @@ jobs:
         env:
           PIC_API_IMAGE: registry.invalid/pic-api@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
           PIC_RELEASE_PULL_POLICY: never
+          # 仅用于 Compose 变量插值与静态解析，不会启动服务或作为运行凭据。
+          SALEOR_SECRET_KEY: ci-compose-config-only-secret
+          SALEOR_SEED_ADMIN_PASSWORD: ci-compose-config-only-password
         run: |
           docker compose -f deploy/docker-compose.yml config --quiet
           docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.release.yml \
             --profile proactive --profile sandbox config --quiet
+          docker compose -f deploy/docker-compose.commerce-sandbox.yml \
+            --profile commerce-sandbox config --quiet
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

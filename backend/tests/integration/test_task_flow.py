@@ -116,6 +116,7 @@ def test_trace_and_events_record_agent_and_tool_activity(client, auth):
     assert trace["tool_calls"], "工具调用必须留痕"
     assert all(call["policy_decision"] for call in trace["tool_calls"])
     assert trace["totals"]["denied_tool_calls"] == 0
+    assert trace["fact_sources"] == []
 
     events = client.get(f"/api/v1/tasks/{task['id']}/events", headers=auth["pm"]).json()
     nodes = {item["node"] for item in events["items"]}

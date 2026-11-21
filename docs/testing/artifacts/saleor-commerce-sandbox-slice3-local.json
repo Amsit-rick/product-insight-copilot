@@ -1,0 +1,438 @@
+{
+  "schema_version": "saleor-scenario-verification-v1",
+  "generated_at": "2026-11-15T12:45:08.355064+00:00",
+  "status": "verified_local",
+  "environment": "local_high_fidelity_sandbox",
+  "transport": "real_http",
+  "enterprise_endpoint_verified": false,
+  "real_payment_verified": false,
+  "real_carrier_verified": false,
+  "production_ready": false,
+  "summary": {
+    "passed": 43,
+    "failed": 0,
+    "total": 43,
+    "scenario_count": 10,
+    "fact_query_count": 40,
+    "latency_ms_p50": 68.14,
+    "latency_ms_p95": 98.44
+  },
+  "checks": [
+    {
+      "name": "health",
+      "passed": true,
+      "actual_status": 200
+    },
+    {
+      "name": "scenario_catalog_requires_api_key",
+      "passed": true,
+      "actual_status": 401
+    },
+    {
+      "name": "scenario_catalog",
+      "passed": true,
+      "actual_status": 200,
+      "scenario_count": 10
+    },
+    {
+      "name": "scenario:SCN-NORMAL-DELIVERED:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-NORMAL-DELIVERED:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-NORMAL-DELIVERED:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "carrier",
+        "latest_track",
+        "signed_at",
+        "stalled_hours",
+        "tracking_no"
+      ]
+    },
+    {
+      "name": "scenario:SCN-NORMAL-DELIVERED:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-UNPAID-CANCELED:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-UNPAID-CANCELED:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-UNPAID-CANCELED:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track"
+      ]
+    },
+    {
+      "name": "scenario:SCN-UNPAID-CANCELED:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PAID-UNSHIPPED-REFUND:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PAID-UNSHIPPED-REFUND:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PAID-UNSHIPPED-REFUND:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PAID-UNSHIPPED-REFUND:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-FULFILLMENT:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-FULFILLMENT:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-FULFILLMENT:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track",
+        "tracking_no"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-FULFILLMENT:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-LOGISTICS-STALLED:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-LOGISTICS-STALLED:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-LOGISTICS-STALLED:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "carrier",
+        "latest_track",
+        "stalled_hours",
+        "tracking_no"
+      ]
+    },
+    {
+      "name": "scenario:SCN-LOGISTICS-STALLED:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DELIVERED-RETURN:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DELIVERED-RETURN:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DELIVERED-RETURN:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track",
+        "signed_at"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DELIVERED-RETURN:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-REFUND:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-REFUND:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-REFUND:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track"
+      ]
+    },
+    {
+      "name": "scenario:SCN-PARTIAL-REFUND:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DUPLICATE-REFUND:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DUPLICATE-REFUND:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DUPLICATE-REFUND:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track"
+      ]
+    },
+    {
+      "name": "scenario:SCN-DUPLICATE-REFUND:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-MISSING-ITEM:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-MISSING-ITEM:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-MISSING-ITEM:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track",
+        "signed_at"
+      ]
+    },
+    {
+      "name": "scenario:SCN-MISSING-ITEM:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    },
+    {
+      "name": "scenario:SCN-CROSS-SOURCE-CONFLICT:orders",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "order_amount",
+        "order_channel",
+        "order_items",
+        "order_status"
+      ]
+    },
+    {
+      "name": "scenario:SCN-CROSS-SOURCE-CONFLICT:payments",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "paid_amount",
+        "refundable_amount"
+      ]
+    },
+    {
+      "name": "scenario:SCN-CROSS-SOURCE-CONFLICT:logistics",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "latest_track"
+      ]
+    },
+    {
+      "name": "scenario:SCN-CROSS-SOURCE-CONFLICT:aftersales",
+      "passed": true,
+      "actual_status": 200,
+      "field_names": [
+        "aftersale_history",
+        "eligible_amount",
+        "gross_amount",
+        "last_case_result"
+      ]
+    }
+  ]
+}

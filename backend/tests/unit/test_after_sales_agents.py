@@ -141,6 +141,20 @@ def test_refund_words_detected():
     assert wants_refund_explicitly("能不能补发一件") is False
 
 
+def test_refund_intent_recognizes_remaining_balance_without_misreading_returned_goods():
+    text = "之前只退了一部分，现在申请退还剩余可退金额。"
+    assert wants_refund_explicitly(text) is True
+    assert classify_issue(text) == IssueType.REFUND.value
+    assert wants_refund_explicitly("请告知怎么退还商品") is False
+
+
+def test_normal_delivered_question_is_not_misclassified_as_logistics_stalled():
+    assert (
+        classify_issue("商品已经签收，我想了解一下售后处理条件。")
+        == IssueType.OTHER.value
+    )
+
+
 def test_urgency_and_sentiment_rules():
     assert detect_urgency("再不处理我就去投诉曝光了") == "urgent"
     assert detect_urgency("麻烦看下物流") == "medium"
@@ -239,6 +253,171 @@ def test_decide_action_refund_references_paid_amount():
     assert decision["amount"] == "89.00"
     assert "支付事实" in decision["amount_source"]
     assert decision["issue_type"] == IssueType.REFUND.value
+
+
+def test_decide_action_uses_remaining_refundable_amount_after_partial_refund():
+    from app.agents.after_sales import decide_action
+
+    decision = decide_action(
+        query="剩余金额也申请退款",
+        issue_type=IssueType.REFUND.value,
+        facts={
+            "paid_amount": "268.00",
+            "refundable_amount": "134.00",
+            "order_status": "已签收",
+        },
+    )
+
+    assert decision["action_type"] == ActionType.REFUND.value
+    assert decision["amount"] == "134.00"
+    assert "可退金额" in decision["amount_source"]
+
+
+def test_decide_action_blocks_duplicate_refund_when_refundable_balance_is_zero():
+    from app.agents.after_sales import decide_action
+
+    decision = decide_action(
+        query="再给我退款一次",
+        issue_type=IssueType.REFUND.value,
+        facts={
+            "paid_amount": "268.00",
+            "refundable_amount": "0.00",
+            "order_status": "已签收",
+        },
+    )
+
+    assert decision["action_type"] == ActionType.ASK_CUSTOMER.value
+    assert decision["amount"] is None
+    assert decision["conflict"] is True
+    assert any("可退余额" in item for item in decision["missing_information"])
+
+
+def test_decide_action_blocks_refund_when_order_and_payment_sources_conflict():
+    from app.agents.after_sales import decide_action
+
+    decision = decide_action(
+        query="申请退款，请把钱退给我",
+        issue_type=IssueType.REFUND.value,
+        facts={
+            "order_status": "已支付",
+            "paid_amount": "0.00",
+            "source_conflicts": ["订单显示已支付，但支付来源实付金额为 0"],
+        },
+    )
+
+    assert decision["action_type"] == ActionType.ASK_CUSTOMER.value
+    assert decision["amount"] is None
+    assert decision["conflict"] is True
+    assert any("跨来源" in item for item in decision["missing_information"])
+
+
+def test_fact_conflict_detection_is_deterministic_and_amount_aware():
+    from app.agents.after_sales import detect_fact_source_conflicts
+
+    assert detect_fact_source_conflicts(
+        {"order_status": "已支付", "paid_amount": "0.00"}
+    ) == ["订单状态显示已支付，但支付来源实付金额为 0"]
+    assert detect_fact_source_conflicts(
+        {"order_status": "待付款", "paid_amount": "0.00"}
+    ) == []
+    assert detect_fact_source_conflicts(
+        {"order_status": "已签收", "paid_amount": "268.00"}
+    ) == []
+    assert detect_fact_source_conflicts(
+        {"order_status": "已支付", "paid_amount": "invalid"}
+    ) == []
+
+
+@pytest.mark.parametrize(
+    ("query", "issue_type", "facts", "expected_action"),
+    [
+        ("申请退款", IssueType.REFUND.value, {}, ActionType.REFUND.value),
+        ("普通咨询", IssueType.REFUND.value, {}, ActionType.REFUND.value),
+        ("我要退货", IssueType.RETURN.value, {}, ActionType.RETURN_GOODS.value),
+        ("我要换货", IssueType.EXCHANGE.value, {}, ActionType.EXCHANGE.value),
+        ("商品损坏", IssueType.DAMAGED.value, {}, ActionType.RESHIP.value),
+        (
+            "物流没有更新",
+            IssueType.LOGISTICS_STALLED.value,
+            {"stalled_hours": 24},
+            ActionType.CONTACT_LOGISTICS.value,
+        ),
+        (
+            "优惠没有生效",
+            IssueType.PROMOTION_NOT_APPLIED.value,
+            {},
+            ActionType.REPLY_ONLY.value,
+        ),
+        ("需要帮助", IssueType.OTHER.value, {}, ActionType.ASK_CUSTOMER.value),
+    ],
+)
+def test_decide_action_low_frequency_deterministic_branches(
+    query, issue_type, facts, expected_action
+):
+    from app.agents.after_sales import decide_action
+
+    decision = decide_action(query=query, issue_type=issue_type, facts=facts)
+
+    assert decision["action_type"] == expected_action
+
+
+def test_decide_action_logistics_compensation_requires_policy_amount():
+    from app.agents.after_sales import decide_action
+
+    missing_policy = decide_action(
+        query="物流停滞三天",
+        issue_type=IssueType.LOGISTICS_STALLED.value,
+        facts={"stalled_hours": 72},
+    )
+    with_policy = decide_action(
+        query="物流停滞三天",
+        issue_type=IssueType.LOGISTICS_STALLED.value,
+        facts={"stalled_hours": 72},
+        policy_text="超时补偿标准为 20 元",
+    )
+
+    assert missing_policy["amount"] is None
+    assert any("补偿标准" in item for item in missing_policy["missing_information"])
+    assert with_policy["amount"] == "20"
+
+
+def test_decide_action_blocks_refund_when_payment_source_failed():
+    from app.agents.after_sales import decide_action
+
+    decision = decide_action(
+        query="申请退款，请把钱退给我",
+        issue_type=IssueType.REFUND.value,
+        facts={
+            "order_status": "待发货",
+            "source_errors": {"payment": "adapter_timeout"},
+        },
+    )
+
+    assert decision["action_type"] == ActionType.ASK_CUSTOMER.value
+    assert decision["amount"] is None
+    assert decision["conflict"] is True
+    assert any("支付事实" in item for item in decision["missing_information"])
+
+
+@pytest.mark.parametrize("failed_source", ["order", "logistics", "aftersale"])
+def test_decide_action_blocks_refund_when_any_fact_source_failed(failed_source):
+    """退款承诺依赖完整事实链，任一来源异常都必须先转人工核验。"""
+    from app.agents.after_sales import decide_action
+
+    decision = decide_action(
+        query="申请退款，请把钱退给我",
+        issue_type=IssueType.REFUND.value,
+        facts={
+            "order_status": "待发货",
+            "paid_amount": "89.00",
+            "source_errors": {failed_source: "adapter_timeout"},
+        },
+    )
+
+    assert decision["action_type"] == ActionType.ASK_CUSTOMER.value
+    assert decision["amount"] is None
+    assert decision["conflict"] is True
+    assert any("事实来源" in item for item in decision["missing_information"])
 
 
 def test_decide_action_is_pure_and_ignores_extra_facts():

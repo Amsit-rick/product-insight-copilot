@@ -5,10 +5,12 @@ import hmac
 import json
 from datetime import date
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.adapters.metric_http import HttpMetricSourceAdapter
 from sandbox_services.app import create_app
+from sandbox_services.providers import ProviderFact, ProviderUnavailable
 
 
 API_KEY = "test-sandbox-key"
@@ -56,7 +58,12 @@ def test_health_and_fact_endpoints_are_read_only_and_authenticated():
             headers=_api_headers(),
         )
 
-    assert health.json() == {"status": "ok", "service": "reference-integration-sandbox"}
+    assert health.json() == {
+        "status": "ok",
+        "service": "reference-integration-sandbox",
+        "fact_provider": "static",
+        "fact_provider_status": "static",
+    }
     assert unauthorized.status_code == 401
     for response in (order, payment, logistics, aftersale):
         assert response.status_code == 200
@@ -187,3 +194,159 @@ def test_webhook_retry_and_dead_letter_scenarios_are_deterministic():
     assert retry_second.status_code == 204
     assert dead.status_code == 400
     assert replayed.status_code == 204
+
+
+class _SaleorReadyProvider:
+    mode = "saleor"
+
+    async def fetch(self, source, order_id, *, customer_id=None):  # noqa: ANN001
+        return ProviderFact(
+            data={"order_status": f"saleor:{source}:{order_id}"},
+            observed_at="2026-11-15T10:00:00+00:00",
+            source_version="saleor-3.23.49",
+        )
+
+    async def health(self):
+        return {
+            "fact_provider": "saleor",
+            "fact_provider_status": "saleor_ready",
+        }
+
+    async def aclose(self):
+        return None
+
+
+class _SaleorUnavailableProvider(_SaleorReadyProvider):
+    async def fetch(self, source, order_id, *, customer_id=None):  # noqa: ANN001
+        raise ProviderUnavailable(
+            "adapter_unavailable",
+            "Saleor is unavailable",
+            status_code=503,
+        )
+
+    async def health(self):
+        return {
+            "fact_provider": "saleor",
+            "fact_provider_status": "saleor_unavailable",
+        }
+
+
+class _ScenarioReadyProvider(_SaleorReadyProvider):
+    async def fetch(self, source, order_id, *, customer_id=None):  # noqa: ANN001
+        payloads = {
+            "order": {"order_status": "已签收", "order_amount": "268.00"},
+            "payment": {"paid_amount": "268.00", "refundable_amount": "268.00"},
+            "logistics": {"latest_track": "已签收"},
+            "aftersale": {"aftersale_history": "无已知售后"},
+        }
+        return ProviderFact(
+            data=payloads[source],
+            observed_at="2026-11-15T10:00:00+00:00",
+            source_version="saleor-3.23.49+scenario-v1",
+        )
+
+
+def test_fact_endpoints_can_use_an_explicit_saleor_provider():
+    app = create_app(
+        api_key=API_KEY,
+        webhook_secret=WEBHOOK_SECRET,
+        delay_seconds=0,
+        fact_provider=_SaleorReadyProvider(),
+    )
+    with TestClient(app) as client:
+        health = client.get("/health")
+        response = client.get("/orders/20", headers=_api_headers())
+
+    assert health.json()["fact_provider_status"] == "saleor_ready"
+    assert response.status_code == 200
+    assert response.json() == {
+        "data": {"order_status": "saleor:order:20"},
+        "observed_at": "2026-11-15T10:00:00+00:00",
+        "request_id": "test-request-id",
+        "source_version": "saleor-3.23.49",
+    }
+
+
+def test_saleor_failure_is_structured_and_never_falls_back_to_static_data():
+    app = create_app(
+        api_key=API_KEY,
+        webhook_secret=WEBHOOK_SECRET,
+        delay_seconds=0,
+        fact_provider=_SaleorUnavailableProvider(),
+    )
+    with TestClient(app) as client:
+        health = client.get("/health")
+        response = client.get("/orders/20", headers=_api_headers())
+
+    assert health.json()["fact_provider_status"] == "saleor_unavailable"
+    assert response.status_code == 503
+    assert response.json() == {
+        "error": {
+            "code": "adapter_unavailable",
+            "message": "Saleor is unavailable",
+        },
+        "request_id": "test-request-id",
+    }
+    assert "268.00" not in response.text
+
+
+def test_fact_fault_catalog_is_authenticated_and_contains_six_safe_scenarios():
+    app = create_app(
+        api_key=API_KEY,
+        webhook_secret=WEBHOOK_SECRET,
+        delay_seconds=0,
+        fact_provider=_ScenarioReadyProvider(),
+    )
+    with TestClient(app) as client:
+        unauthorized = client.get("/fault-scenarios")
+        response = client.get("/fault-scenarios", headers=_api_headers())
+
+    assert unauthorized.status_code == 401
+    assert response.status_code == 200
+    payload = response.json()
+    assert len(payload["scenarios"]) == 6
+    rendered = json.dumps(payload, ensure_ascii=False).lower()
+    assert "upstream_order_id" not in rendered
+    assert "token" not in rendered
+    assert "graphql" not in rendered
+
+
+def test_fact_fault_aliases_affect_only_the_targeted_source():
+    app = create_app(
+        api_key=API_KEY,
+        webhook_secret=WEBHOOK_SECRET,
+        delay_seconds=0,
+        fact_provider=_ScenarioReadyProvider(),
+    )
+    with TestClient(app) as client:
+        normal_order = client.get(
+            "/orders/SCN-FAULT-PAYMENT-FIELD-MISSING", headers=_api_headers()
+        )
+        missing_payment = client.get(
+            "/payments/SCN-FAULT-PAYMENT-FIELD-MISSING", headers=_api_headers()
+        )
+        rate_limited = client.get(
+            "/payments/SCN-FAULT-PAYMENT-RATE-LIMIT", headers=_api_headers()
+        )
+        upstream_error = client.get(
+            "/orders/SCN-FAULT-ORDER-UPSTREAM-ERROR", headers=_api_headers()
+        )
+        bad_time = client.get(
+            "/logistics/SCN-FAULT-LOGISTICS-BAD-TIME", headers=_api_headers()
+        )
+        bad_json = client.get(
+            "/aftersales/SCN-FAULT-AFTERSALE-BAD-JSON", headers=_api_headers()
+        )
+
+    assert normal_order.status_code == 200
+    assert normal_order.json()["data"]["order_status"] == "已签收"
+    assert missing_payment.status_code == 200
+    assert "paid_amount" not in missing_payment.json()["data"]
+    assert rate_limited.status_code == 429
+    assert upstream_error.status_code == 503
+    assert upstream_error.json()["error"]["code"] == "adapter_upstream_error"
+    assert bad_time.status_code == 200
+    assert bad_time.json()["observed_at"] == "not-a-valid-time"
+    assert bad_json.status_code == 200
+    with pytest.raises(ValueError):
+        bad_json.json()
