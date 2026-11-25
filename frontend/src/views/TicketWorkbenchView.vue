@@ -18,6 +18,11 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { afterSalesPolicyApi, ticketApi } from '@/api/endpoints'
 import { useSessionStore } from '@/stores/session'
+import { ArrowUpRight, Bell, CheckCheck, Clock3, Download, FileText, MessageSquareText, Plus, Search, ShieldCheck, UsersRound, X } from '@lucide/vue'
+import PageHeader from '@/components/PageHeader.vue'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import type {
   AfterSalesPolicyOut,
   ReplyTemplateOut,
@@ -970,51 +975,54 @@ onUnmounted(() => {
 
 <template>
   <div class="tk">
-    <div class="tk__head">
-      <div>
-        <h2>{{ workbenchTitle }}</h2>
-        <p class="pic-muted">先看需要你处理的工单，再按“下一步”完成回复、补充或审批。</p>
-      </div>
-      <div class="tk__head-actions">
-        <el-button @click="openMentionPanel">待我关注<span v-if="unreadMentionCount" class="mention-count">{{ unreadMentionCount }}</span></el-button>
-        <el-button v-if="canManageTemplates" @click="openTemplateManager">管理回复模板</el-button>
-        <el-button @click="exportList">导出列表</el-button>
-        <el-button type="primary" @click="askCreate">＋ 新建工单</el-button>
-      </div>
-    </div>
+    <PageHeader :title="workbenchTitle" eyebrow="TICKET WORKSPACE" description="先看需要你处理的工单，再按“下一步”完成回复、补充或审批。">
+      <Button variant="ghost" @click="openMentionPanel"><Bell :size="15" />待我关注<span v-if="unreadMentionCount" class="mention-count">{{ unreadMentionCount }}</span></Button>
+      <Button v-if="canManageTemplates" variant="outline" @click="openTemplateManager"><FileText :size="15" />管理回复模板</Button>
+      <Button variant="outline" @click="exportList"><Download :size="15" />导出列表</Button>
+      <Button @click="askCreate"><Plus :size="16" />新建工单</Button>
+    </PageHeader>
 
     <div class="tk__stats" role="group" aria-label="工单行动队列">
       <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'at_risk' }]" :aria-pressed="attentionQueue === 'at_risk'" @click="selectAttention('at_risk')" @keydown="handleAttentionKeydown($event, 'at_risk')">
-        <span class="stat__label">即将超时</span>
+        <span class="stat__label">即将超时<Clock3 :size="16" class="stat__icon stat__icon--risk" aria-hidden="true" /></span>
         <strong class="stat__value stat__value--risk">{{ stats?.at_risk ?? 0 }}</strong>
         <span class="stat__hint stat__hint--risk">请优先处理</span>
       </button>
       <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_reply' }]" :aria-pressed="attentionQueue === 'waiting_reply'" @click="selectAttention('waiting_reply')" @keydown="handleAttentionKeydown($event, 'waiting_reply')">
-        <span class="stat__label">等待我回复</span>
+        <span class="stat__label">等待我回复<MessageSquareText :size="16" class="stat__icon stat__icon--reply" aria-hidden="true" /></span>
         <strong class="stat__value">{{ stats?.waiting_reply ?? 0 }}</strong>
         <span class="stat__hint">事实已经齐全</span>
       </button>
       <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_customer' }]" :aria-pressed="attentionQueue === 'waiting_customer'" @click="selectAttention('waiting_customer')" @keydown="handleAttentionKeydown($event, 'waiting_customer')">
-        <span class="stat__label">等待客户补充</span>
+        <span class="stat__label">等待客户补充<UsersRound :size="16" class="stat__icon stat__icon--customer" aria-hidden="true" /></span>
         <strong class="stat__value">{{ stats?.waiting_customer ?? 0 }}</strong>
         <span class="stat__hint">无需反复查看</span>
       </button>
       <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'waiting_review' }]" :aria-pressed="attentionQueue === 'waiting_review'" @click="selectAttention('waiting_review')" @keydown="handleAttentionKeydown($event, 'waiting_review')">
-        <span class="stat__label">待主管审批</span>
+        <span class="stat__label">待主管审批<ShieldCheck :size="16" class="stat__icon stat__icon--review" aria-hidden="true" /></span>
         <strong class="stat__value">{{ stats?.waiting_review ?? 0 }}</strong>
         <span class="stat__hint">审批后自动提醒</span>
       </button>
       <button type="button" :class="['stat', { 'stat--active': attentionQueue === 'resolved_today' }]" :aria-pressed="attentionQueue === 'resolved_today'" @click="selectAttention('resolved_today')" @keydown="handleAttentionKeydown($event, 'resolved_today')">
-        <span class="stat__label">今日已完成</span>
+        <span class="stat__label">今日已完成<CheckCheck :size="16" class="stat__icon stat__icon--done" aria-hidden="true" /></span>
         <strong class="stat__value">{{ stats?.resolved_today ?? 0 }}</strong>
         <span class="stat__hint">已发送或已关闭</span>
       </button>
     </div>
-    <p class="queue-caption">点选上方队列可按处理时限筛选；每条工单都会标出当前状态和建议的下一步。</p>
+    <p class="queue-caption"><ArrowUpRight :size="13" aria-hidden="true" />点选上方队列可按处理时限筛选；打开一单即可查看下一步。</p>
 
     <div v-if="attentionQueue" class="queue-filter" role="status" aria-live="polite" aria-atomic="true">
       <span>当前队列：<strong>{{ attentionLabel }}</strong></span>
       <el-button text type="primary" @click="attentionQueue = null; page = 1; loadTickets()">查看全部</el-button>
+    </div>
+
+    <Card class="ticket-list-panel gap-0 overflow-hidden py-0">
+    <div class="list-section-head">
+      <div>
+        <h3>工单列表</h3>
+        <p>打开一单后，按“客户反馈 → 核实信息 → 处理建议 → 处理记录”查看。</p>
+      </div>
+      <span>{{ total }} 条</span>
     </div>
 
     <div class="tk__filters">
@@ -1028,7 +1036,7 @@ onUnmounted(() => {
         ]"
         @change="changeScope"
       />
-      <el-input v-model="keyword" aria-label="搜索工单" placeholder="搜索工单号、订单号或问题关键词" clearable style="width: 260px" @keyup.enter="page = 1; loadTickets()" />
+      <div class="ticket-search"><Button class="ticket-search__submit" variant="ghost" size="icon-sm" aria-label="查询工单" @click="page = 1; loadTickets()"><Search :size="15" aria-hidden="true" /></Button><Input v-model="keyword" aria-label="搜索工单" placeholder="搜索工单号、订单号或问题关键词" @keyup.enter="page = 1; loadTickets()" /><Button v-if="keyword" variant="ghost" size="icon-sm" aria-label="清除工单搜索" @click="keyword = ''; page = 1; loadTickets()"><X :size="14" /></Button></div>
       <details class="advanced-filters">
         <summary>更多筛选<span v-if="advancedFilterCount" class="advanced-filters__count">{{ advancedFilterCount }}</span></summary>
         <div class="advanced-filters__body">
@@ -1047,14 +1055,6 @@ onUnmounted(() => {
           <el-button text type="primary" @click="resetFilters">重置筛选</el-button>
         </div>
       </details>
-    </div>
-
-    <div class="list-section-head">
-      <div>
-        <h3>工单列表</h3>
-        <p>打开一单后，按“客户反馈 → 核实信息 → 处理建议 → 处理记录”查看。</p>
-      </div>
-      <span>{{ total }} 条</span>
     </div>
 
     <el-table
@@ -1122,6 +1122,8 @@ onUnmounted(() => {
         @current-change="loadTickets"
       />
     </div>
+
+    </Card>
 
     <!-- 工单详情：先给下一步，再按客户反馈、核实信息、建议和处理记录分区 -->
     <el-drawer
@@ -1678,21 +1680,13 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.tk {
-  padding: 4px 2px 24px;
-}
-.tk__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-}
-.tk__head-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
+.tk { padding: 0 0 20px; }
+.ticket-list-panel { border: 1px solid var(--border); border-radius: 10px; }
+.ticket-search { position: relative; flex: 1; min-width: 220px; max-width: 360px; }
+
+.ticket-search :deep(input) { padding-left: 33px; padding-right: 34px; font-size: 11px; }
+.ticket-search > button { position: absolute; right: 3px; top: 2px; color: #71717a; }
+.ticket-search > .ticket-search__submit { right: auto; left: 3px; }
 .mention-count {
   display: inline-flex;
   min-width: 18px;
@@ -1710,64 +1704,19 @@ onUnmounted(() => {
   margin: 0 0 4px;
   font-size: 20px;
 }
-.tk__stats {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  margin: 18px 0 16px;
-  border: 1px solid var(--pic-line, #e1e5e9);
-  border-radius: 6px;
-  overflow: hidden;
-}
-.stat {
-  appearance: none;
-  width: 100%;
-  padding: 14px 18px;
-  border: 0;
-  border-right: 1px solid var(--pic-line, #e1e5e9);
-  background: #fff;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transition: background-color 0.16s ease, box-shadow 0.16s ease;
-}
-.stat:last-child {
-  border-right: none;
-}
-.stat:hover {
-  background: #f6faf8;
-}
-.stat:focus-visible {
-  position: relative;
-  z-index: 1;
-  outline: 2px solid #187c67;
-  outline-offset: -2px;
-}
-.stat--active {
-  background: #edf7f3;
-  box-shadow: inset 0 -3px 0 #187c67;
-}
-.stat__label {
-  font-size: 12px;
-  color: #5f6872;
-}
-.stat__value {
-  font-size: 23px;
-  font-weight: 650;
-}
-.stat__value--risk {
-  color: #b44141;
-}
-.stat__hint {
-  font-size: 12px;
-  color: #68727f;
-}
-.stat__hint--risk {
-  color: #b44141;
-}
+.tk__stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0 0 14px; }
+.stat { appearance: none; width: 100%; min-width: 0; padding: 17px 18px 16px; border: 1px solid #e4e4e7; border-radius: 9px; background: #fff; color: inherit; font: inherit; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 1px 2px #18181b03; transition: border-color .15s, box-shadow .15s; }
+.stat:hover { border-color: #b5b5bd; box-shadow: 0 2px 5px #18181b06; }
+.stat:focus-visible { outline: 2px solid #52525b; outline-offset: 3px; }
+.stat--active { border-color: #52525b; box-shadow: 0 0 0 1px #52525b; background: #fafafa; }
+.stat__label { display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 8px; font-size: 11px; color: #62626b; }
+.stat__icon { color: #a1a1aa; }
+.stat__icon--risk { color: #b45353; }
+.stat__icon--done { color: #438369; }
+.stat__value { font-size: 29px; font-weight: 600; letter-spacing: -1px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat__value--risk { color: #b23d45; }
+.stat__hint { font-size: 11px; color: #71717a; }
+.stat__hint--risk { color: #a95156; }
 .queue-filter {
   display: flex;
   min-height: 34px;
@@ -1782,7 +1731,10 @@ onUnmounted(() => {
   font-size: 13px;
 }
 .queue-caption {
-  margin: -10px 0 14px;
+  margin: 0 0 23px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
   color: #68727f;
   font-size: 12px;
   line-height: 1.5;
@@ -2051,7 +2003,10 @@ onUnmounted(() => {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  margin-bottom: 12px;
+  margin: 0;
+  padding: 14px 18px;
+  border-top: 1px solid #ededf0;
+  border-bottom: 1px solid #ededf0;
 }
 .advanced-filters {
   position: relative;
@@ -2526,4 +2481,15 @@ onUnmounted(() => {
     flex-direction: column;
   }
 }
+
+.list-section-head { padding: 18px 20px; margin: 0; border: 0; }
+.list-section-head h3 { font-size: 13px; font-weight: 600; margin: 0 0 5px; }
+.list-section-head p { font-size: 11px; margin: 0; color: #71717a; }
+.list-section-head > span { font-size: 11px; padding: 3px 8px; border: 1px solid #e4e4e7; border-radius: 5px; background: #fafafa; white-space: nowrap; }
+.tk__pager { margin: 0; padding: 13px 18px; }
+.cell-strong { font-size: 12px; font-weight: 550; }
+.cell-sub { font-size: 11px; color: #71717a; margin-top: 4px; }
+@media (max-width: 1180px) { .tk__stats { gap: 8px; } .stat { padding: 15px 12px; } }
+@media (max-width: 900px) { .tk__stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .tk__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stat:last-child { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 7px 12px; } .stat:last-child .stat__value { grid-column: 2; grid-row: 1 / 3; } .stat:last-child .stat__icon { display: none; } .tk__filters { padding: 12px; } .ticket-search { width: 100%; max-width: none; } .list-section-head { padding: 16px; } .tk__pager { padding: 12px; gap: 8px; flex-wrap: wrap; } }
 </style>

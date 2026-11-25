@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /**
  * 诊断报告页：结论、影响范围、事实/推断/假设/建议、证据、反证、不确定性、审核操作。
  * 指标曲线通过受控指标接口实时取数（报告只保存指标引用与数据版本，不保存行数据）。
@@ -146,16 +147,15 @@ onMounted(load)
 
 <template>
   <div v-loading="loading">
-    <div class="pic-page-title">
-      <h2>诊断报告</h2>
-      <div style="display: flex; gap: 8px">
+    <PageHeader title="诊断报告" description="查看结论、支撑证据和待确认事项，按需导出。" eyebrow="REPORT">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
         <el-button link type="primary" @click="router.push({ name: 'task-progress', params: { id: taskId } })">
           任务进度
         </el-button>
         <el-button :disabled="!report" @click="exportFile('md')">导出 Markdown</el-button>
         <el-button :disabled="!report" @click="exportFile('json')">导出 JSON</el-button>
       </div>
-    </div>
+    </PageHeader>
 
     <el-empty v-if="!report && !loading" description="该任务还没有生成报告" />
 

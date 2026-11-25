@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /** 审计日志（管理员）：登录、任务、文档、导入、审批、越权拒绝等全量留痕。 */
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
@@ -43,9 +44,10 @@ onMounted(load)
 
 <template>
   <div v-loading="loading">
+    <PageHeader title="审计日志" description="按操作类型追溯访问、审批与异常记录。" eyebrow="AUDIT LOG" />
     <el-card shadow="never">
       <template #header>
-        <span style="font-weight: 600">审计日志</span>
+        <span style="font-weight: 600">操作记录</span>
         <span class="pic-muted" style="margin-left: 10px">
           共 {{ total }} 条（当前展示 {{ items.length }} 条，其中非成功结果 {{ denied.length }} 条）
         </span>

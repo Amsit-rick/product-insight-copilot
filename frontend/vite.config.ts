@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
@@ -16,6 +17,7 @@ export default defineConfig({
   // Element Plus 按需引入：模板里的 el-* 组件自动注册，避免把整库打进主 bundle。
   // 样式继续使用全局 index.css（ElMessage/ElMessageBox 等服务式 API 也依赖它）。
   plugins: [
+    tailwindcss(),
     vue(),
     Components({
       dts: false,

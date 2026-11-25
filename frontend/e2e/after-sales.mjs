@@ -184,10 +184,45 @@ async function accessibleButtonNames() {
     .filter(Boolean)
 }
 
+// Fixture setup must not rely on the first page containing this run's ticket.
+// Native Enter/Space interaction remains covered by the action-card tests.
+async function filterTicketRows(subject) {
+  const available = await evaluate(`(() => {
+    const input = document.querySelector('input[aria-label="搜索工单"]')
+    if (!input) return false
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set
+    setter.call(input, ${JSON.stringify(subject)})
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    return true
+  })()`)
+  if (!available) return false
+  await evaluate(`document.querySelector('button[aria-label="查询工单"]').click()`)
+  const deadline = Date.now() + 10000
+  while (Date.now() < deadline) {
+    const found = await evaluate(`(() => {
+      const rows = [...document.querySelectorAll('.el-table__body tr.el-table__row')]
+      return rows.length === 1 && rows[0].innerText.includes(${JSON.stringify(subject)})
+    })()`)
+    if (found) return true
+    await sleep(100)
+  }
+  return false
+}
+
+async function waitForLoginForm() {
+  const deadline = Date.now() + 15000
+  while (Date.now() < deadline) {
+    if (await evaluate('Boolean(document.querySelector("#login-username")) && Boolean(document.querySelector("#login-password"))')) return
+    await sleep(100)
+  }
+  throw new Error('登录表单没有挂载完成')
+}
+
 async function loginAs(username, password) {
   await send('Network.clearBrowserCookies')
   await send('Page.navigate', { url: `${APP_URL}#/login` })
-  await waitForText('电商售后工作台')
+  // The product name also appears in the new sidebar: wait for the actual form.
+  await waitForLoginForm()
   await evaluate(`(() => {
     const set = (el, value) => {
       const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set
@@ -212,7 +247,7 @@ async function logout() {
     const logoutButton = Array.prototype.slice.call(document.querySelectorAll('button')).find((item) => item.innerText.trim() === '退出')
     if (logoutButton) logoutButton.click()
   })()`)
-  await waitForText('电商售后工作台')
+  await waitForLoginForm()
 }
 
 async function main() {
@@ -346,7 +381,7 @@ async function main() {
     if (checkbox && !checkbox.classList.contains('is-checked')) checkbox.click()
     return Boolean(checkbox)
   })()`)
-  const detailRowReady = testRecordsEnabled && await waitForText(detailSubject, 10000)
+  const detailRowReady = testRecordsEnabled && await filterTicketRows(detailSubject)
   const listAfterCreate = await pageText()
   record(
     '客服列表不暴露原始客户编号',
@@ -576,18 +611,7 @@ async function main() {
     if (checkbox && !checkbox.classList.contains('is-checked')) checkbox.click()
     return Boolean(checkbox)
   })()`)
-  await evaluate(`(() => {
-    const input = document.querySelector('input[aria-label="搜索工单"]')
-    if (!input) return false
-    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set
-    setter.call(input, ${JSON.stringify(approvalSubject)})
-    input.dispatchEvent(new Event('input', { bubbles: true }))
-    input.dispatchEvent(new Event('change', { bubbles: true }))
-    input.focus()
-    return true
-  })()`)
-  await pressKey('Enter', 'Enter', 13)
-  await sleep(600)
+  await filterTicketRows(approvalSubject)
   const approvalOpened = await evaluate(`(() => {
     const row = Array.prototype.slice.call(document.querySelectorAll('.el-table__body tbody tr, table tbody tr'))
       .find((item) => item.innerText.includes(${JSON.stringify(approvalSubject)}))
@@ -669,18 +693,7 @@ async function main() {
     if (checkbox && !checkbox.classList.contains('is-checked')) checkbox.click()
     return Boolean(checkbox)
   })()`)
-  await evaluate(`(() => {
-    const input = document.querySelector('input[aria-label="搜索工单"]')
-    if (!input) return false
-    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set
-    setter.call(input, ${JSON.stringify(missingOrderSubject)})
-    input.dispatchEvent(new Event('input', { bubbles: true }))
-    input.dispatchEvent(new Event('change', { bubbles: true }))
-    input.focus()
-    return true
-  })()`)
-  await pressKey('Enter', 'Enter', 13)
-  await sleep(600)
+  await filterTicketRows(missingOrderSubject)
   const missingOrderOpened = await evaluate(`(() => {
     const row = Array.prototype.slice.call(document.querySelectorAll('.el-table__body tbody tr, table tbody tr'))
       .find((item) => item.innerText.includes(${JSON.stringify(missingOrderSubject)}))

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /** 工作台：任务列表、运行状态、待审核任务和失败任务。 */
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -171,15 +172,14 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <div class="pic-page-title">
-      <h2>工作台</h2>
-      <div style="display: flex; gap: 8px">
+    <PageHeader title="诊断工作台" description="查看诊断任务、审核进度与执行结果。" eyebrow="ANALYSIS">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
         <el-button :icon="'Refresh'" @click="load">刷新</el-button>
         <el-button v-if="canCreate" type="primary" @click="router.push({ name: 'task-create' })">
           新建诊断
         </el-button>
       </div>
-    </div>
+    </PageHeader>
 
     <div class="pic-stat-grid">
       <el-card shadow="never">

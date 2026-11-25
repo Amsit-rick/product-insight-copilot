@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /** 人工审核：待审核列表 + 审核请求详情（冲突双方、覆盖度、Agent 摘要）+ 审核操作。 */
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -89,8 +90,7 @@ onMounted(load)
 
 <template>
   <div>
-    <div class="pic-page-title">
-      <h2>人工审核</h2>
+    <PageHeader title="人工审核" description="先核对事实与风险，再决定通过、驳回或补充说明。" eyebrow="HUMAN REVIEW">
       <div style="display: flex; gap: 8px; align-items: center">
         <el-select v-model="statusFilter" aria-label="按审核状态筛选" style="width: 150px" @change="load">
           <el-option label="待审核" value="pending" />
@@ -100,7 +100,7 @@ onMounted(load)
         </el-select>
         <el-button @click="load">刷新</el-button>
       </div>
-    </div>
+    </PageHeader>
 
     <el-alert
       v-if="!canApprove"

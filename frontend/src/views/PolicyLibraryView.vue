@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /**
  * 售后政策库管理页（需求书 §6 政策库 / §7 知识库页"检索测试"）。
  *
@@ -340,17 +341,14 @@ onMounted(() => {
 
 <template>
   <div class="pl" v-loading="loading">
-    <div class="pic-page-title">
-      <h2>售后政策库</h2>
-      <span class="pic-muted">policy_kb · 版本 / 生效期 / 适用范围 / 检索测试</span>
-    </div>
+    <PageHeader title="售后政策库" description="查找现行政策，核对适用范围、版本与生效时间。" eyebrow="POLICY LIBRARY" />
 
     <!-- 这一页的立场：政策依据必须来自现行且在适用范围内的版本 -->
     <el-alert
       type="warning"
       :closable="false"
-      title="政策依据必须来自现行且在适用范围内的版本，引用已失效 / 未生效版本属合规事故。"
-      description="下面的「可用 / 已失效 / 未生效 / 不可用」与原因文字全部由后端 applicability() 判定后返回（含归档、生效期、店铺与平台范围），本页只做展示，不重复实现判定。"
+      title="仅使用当前生效、适用范围匹配的政策作为处理依据。"
+      description="选择店铺、平台、会员等级和时间后，可查看哪些政策适用；已失效、未生效或已归档的版本会明确标记。"
     />
 
     <el-alert
@@ -365,15 +363,15 @@ onMounted(() => {
     <!-- 上下文条：适用范围过滤的界面入口 -->
     <el-card shadow="never" class="pic-section-gap">
       <template #header>
-        <span style="font-weight: 600">适用上下文（适用范围过滤）</span>
+        <span style="font-weight: 600">适用范围</span>
         <span class="pic-muted" style="margin-left: 10px">
-           这四个参数就是"按谁的时间、哪家店、哪个平台、哪个会员等级"去判定政策能不能用；改动后点「按此上下文重算」
+           按实际工单选择条件，修改后点击「按此上下文重算」。
         </span>
       </template>
 
       <div class="ctx">
         <div class="ctx__item">
-          <span class="ctx__label">shop_id（店铺）</span>
+          <span class="ctx__label">店铺</span>
           <el-select
             v-model="context.shop_id"
             filterable
@@ -387,7 +385,7 @@ onMounted(() => {
           </el-select>
         </div>
         <div class="ctx__item">
-          <span class="ctx__label">platform（平台）</span>
+          <span class="ctx__label">销售平台</span>
           <el-select
             v-model="context.platform"
             filterable
@@ -401,7 +399,7 @@ onMounted(() => {
           </el-select>
         </div>
         <div class="ctx__item">
-          <span class="ctx__label">member_level（会员等级）</span>
+          <span class="ctx__label">会员等级</span>
           <el-select
             v-model="context.member_level"
             filterable
@@ -416,7 +414,7 @@ onMounted(() => {
           </el-select>
         </div>
         <div class="ctx__item">
-          <span class="ctx__label">at（判定时点）</span>
+          <span class="ctx__label">判定时间</span>
           <el-date-picker
             v-model="context.at"
             type="datetime"

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { policyApi, userApi } from '@/api/endpoints'
@@ -276,13 +277,9 @@ onMounted(() => void load())
 
 <template>
   <div v-loading="loading" class="access-policy-page">
-    <section class="page-intro">
-      <div>
-        <h2>访问策略</h2>
-        <p>统一控制“谁可以对什么资源做什么”，并在真实操作前预演最终结论。</p>
-      </div>
+    <PageHeader title="访问策略" description="控制谁可以访问哪些资源，并在实际操作前预演权限结果。" eyebrow="ACCESS CONTROL">
       <el-button type="primary" @click="dialogVisible = true">新增策略</el-button>
-    </section>
+    </PageHeader>
 
     <div class="value-strip">
       <div><b>1. 角色权限</b><span>先检查岗位是否具备这个动作</span></div>

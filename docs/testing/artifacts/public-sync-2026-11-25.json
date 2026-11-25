@@ -1,0 +1,167 @@
+{
+  "schema": "public-source-sync-v2",
+  "date": "2026-11-25",
+  "source_commit": "e5e974810081c129f382f6bf91be343a2afbd436",
+  "previous_public_commit": "d9a527433b94f07bdc4fa5c52a491efe8bf70b2c",
+  "history_strategy": "ordinary incremental commit on independent public history; no source-history import",
+  "scope": [
+    "frontend",
+    "README",
+    "project screenshots",
+    "synchronization evidence"
+  ],
+  "backend_runtime_changed": false,
+  "frontend_comparison": {
+    "files": 71,
+    "all_equal": true,
+    "normalization": "CRLF to LF"
+  },
+  "validation": {
+    "npm_ci": "passed",
+    "typecheck": "passed",
+    "production_build": "passed",
+    "backend": {
+      "passed": 1531,
+      "skipped": 1,
+      "failed": 0,
+      "skipped_tests": [
+        {
+          "name": "test_pgvector_排除过期政策文档",
+          "reason": "需要显式提供 PGVECTOR_TEST_DATABASE_URL（隔离的 PostgreSQL + pgvector）"
+        }
+      ]
+    },
+    "browser_smoke": {
+      "passed": 93,
+      "failed": 0
+    },
+    "after_sales_roles": {
+      "passed": 43,
+      "failed": 0,
+      "reflection_ui": true
+    },
+    "ui_redesign": {
+      "passed": 73,
+      "failed": 0
+    },
+    "automated_accessibility": {
+      "page_states_passed": 14,
+      "failed": 0,
+      "not_full_wcag_certification": true
+    },
+    "served_public_build": {
+      "served_public_build_files_equal": true,
+      "public_file_count": 67,
+      "retained_old_assets": true
+    },
+    "environment": "isolated SQLite + stub model + mock order facts; no real model or enterprise-system acceptance"
+  },
+  "known_issues": {
+    "backend_false_refusal_fixed": false,
+    "dependency_audit": {
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 4,
+        "critical": 0,
+        "total": 4
+      },
+      "packages": [
+        "@vue/server-renderer",
+        "source-map-js",
+        "vite",
+        "vue"
+      ]
+    },
+    "build_warnings": "Two existing upstream VueUse PURE annotation-position warnings",
+    "production_acceptance": "not performed"
+  },
+  "historical_frontend_records": "Preserve their capture-time results and hashes; the current publication manifest below supersedes older file inventories.",
+  "github_actions": "Not assessed by this pre-push local validation record; verify the pushed commit separately.",
+  "normalized_frontend_sha256": {
+    "frontend/README.md": "b5d2dfb25cb02463087f6f56fed72192e36f52e01f1a821ed503081238d32017",
+    "frontend/THIRD_PARTY_NOTICES.md": "fd45503cc2f5fa5cf9d547cf32dd28931c67992e827f946d1ab74e1465dda307",
+    "frontend/components.json": "f007900fefd53737542b03abff8953ed268cb608408c44a1ad59020695639f04",
+    "frontend/e2e/accessibility.mjs": "53a44c9541ec5f6a3f37d7030361c400076eeb5037a1d15a94a5cf1186d27f2a",
+    "frontend/e2e/after-sales.mjs": "c3886ad9afb865cfe1ba3b9590c2b19908b21c2114aaaf3ef246bc0511802b75",
+    "frontend/e2e/smoke.mjs": "33a9f888f512be56d772ae149aa4a5ae8e9f91a11d692a5ebadff7bec0cb7f1f",
+    "frontend/e2e/ui-redesign.mjs": "04a35dafd4fad92ff934c91f6163dc2e32dd7c7a903cbcb906a707f577b44756",
+    "frontend/index.html": "24db552e5ecdc077c49d1684616ae7b96f717a3edbcffc739fd836cb94be663e",
+    "frontend/package-lock.json": "925d3bd3f848551f985fb6a916d1e2dba52a5338950086f5abddc0b935ad001f",
+    "frontend/package.json": "409efe2ae35d330af4686b44076fb0a9a561acdcdc39306ac3ac5d4f20ec027d",
+    "frontend/src/App.vue": "2d1a7daec03ff9b58b865ff411443e5b0349b9a53e0ff29bfdd828a71da10e4f",
+    "frontend/src/components/AppNavigation.vue": "a83cd631eda562ec5a0d954780f016c8af1c076ffb21db93c81244b41b08b35d",
+    "frontend/src/components/PageHeader.vue": "d845dd1846c3dd74c6cbfeaf9613f36d2b462de6296c1f955c480eeb9c4fb2df",
+    "frontend/src/components/ui/badge/Badge.vue": "bf86ef1cef26f75cea0b885adb2e0c5f7521fe4e228e3f7e61b7c0f42fd4e58e",
+    "frontend/src/components/ui/badge/index.ts": "40059c209ec5a43b52aed1339767bfb9801d76a837aeed9b5a6991608c501c67",
+    "frontend/src/components/ui/button/Button.vue": "47b4a8d7c7c42c7070e460fe4edd3f729a2fb63dc7320f09cd9db46b1dbc52b8",
+    "frontend/src/components/ui/button/index.ts": "1710820182b3f7c91823da7f4f516026a124ec86f7a3a10a96fb55e518f12b41",
+    "frontend/src/components/ui/card/Card.vue": "f792a0180d90010b7f224aa08345a95f1ee1f45e21d0ade8b3aa684299416abd",
+    "frontend/src/components/ui/card/CardAction.vue": "96b31cf6e5509bf3b7b900dbbd72408b6f54701473e555dfd79976f1e2950bab",
+    "frontend/src/components/ui/card/CardContent.vue": "c0dc7b82968f127e7d55dc19b8ff9371c452145b4caf48d4c04770c0f12c7b79",
+    "frontend/src/components/ui/card/CardDescription.vue": "b83461e0570a76fa18950564d8da940a6bcfa7311d0283cc87ec764484e3cb2d",
+    "frontend/src/components/ui/card/CardFooter.vue": "8ca42fe06a37fba0050a5a04e621f0788ba0facf7c0d7fef0100cc660ee4106f",
+    "frontend/src/components/ui/card/CardHeader.vue": "eb9540756f3f56451f6a01234688b0b3c6d1f98100acdab29c35b7da0abd5e0d",
+    "frontend/src/components/ui/card/CardTitle.vue": "be1c63549fbb324c06abc304ea9f5c9a0e15266584e7ccce09226c8873f835b9",
+    "frontend/src/components/ui/card/index.ts": "4b49e6713f4c57dbe1437ce8652dc8bc5c1f8f756eebae0ddf3cbe3d38217995",
+    "frontend/src/components/ui/dropdown-menu/DropdownMenu.vue": "ad0759b7b6d57e02444a4ba3f00412400a77d49262fd6f2b186f18d83f7fb0cc",
+    "frontend/src/components/ui/dropdown-menu/DropdownMenuContent.vue": "f57cd3ad8df67f9f0b4e2610f003f365832f14acacfe11aa9c0ac69e9d0df67e",
+    "frontend/src/components/ui/dropdown-menu/DropdownMenuItem.vue": "691faa787ae88e0a82d90366e04c96c2bee06275b2cefbb47c378314c4766005",
+    "frontend/src/components/ui/dropdown-menu/DropdownMenuLabel.vue": "2de1b68683f7925bb4179fcc02551c895fe9baee3cfcf253fc7081874527c4ec",
+    "frontend/src/components/ui/dropdown-menu/DropdownMenuSeparator.vue": "fe91524e4b38edfa979507831a8884e969966bbb5656e8e366dad270111a0923",
+    "frontend/src/components/ui/dropdown-menu/DropdownMenuTrigger.vue": "052aeba71e7accc3f4b1e733f98592d7c7f9eabedaf82ba25caaac7f651e6ba2",
+    "frontend/src/components/ui/dropdown-menu/index.ts": "17a6ff45671063775f8ec36fa0f914cf49bf833f67d3bc42416785a4641ea861",
+    "frontend/src/components/ui/input/Input.vue": "bec5152c41bf7f8dd735d9b1a1454d44e013f6d602ae52e6a0de2e3748536b45",
+    "frontend/src/components/ui/input/index.ts": "ba728db29f97b894318836d094705b34c0f792352548189703224c694d29ed5b",
+    "frontend/src/components/ui/separator/Separator.vue": "01afeeaf9f4ced86a93fdde4e70d12e2d5913bc3b2ec2289caff3e93801b721f",
+    "frontend/src/components/ui/separator/index.ts": "fcd7839dc204de276f98b80a4ccdb58c7d7494f64389c682312d3490e01b9025",
+    "frontend/src/components/ui/sheet/Sheet.vue": "765fc0405d3b98658739e5019baa17bb914c5b8cd832a7daa4397f2bd2400cae",
+    "frontend/src/components/ui/sheet/SheetClose.vue": "a9ae9e32f8154e17e3d14e1a9c4d1555edc8cecd2eb813e832f999b6e356a0bf",
+    "frontend/src/components/ui/sheet/SheetContent.vue": "9fd066d0ef83adb9c8be48f358cdf2d6b3af579cf16c2196f626b46eaaeb72dc",
+    "frontend/src/components/ui/sheet/SheetDescription.vue": "47e2a9b1f028c874864869f67e327dfc77829839d4d340a498d95ce0a983dcda",
+    "frontend/src/components/ui/sheet/SheetFooter.vue": "6043806cee7dd6d80b78f6f922b11b4ac50531ef1c1b1adf285b766aaece83e8",
+    "frontend/src/components/ui/sheet/SheetHeader.vue": "f7fa221e5ba3189df9cefed138f1f75e85861b253fcc28cb9a39f3d6700ac6a8",
+    "frontend/src/components/ui/sheet/SheetOverlay.vue": "5808362f7dc8963b800d8eb3f23302e5dfd6c2f7b6ff088c9b93690a11d977ee",
+    "frontend/src/components/ui/sheet/SheetTitle.vue": "7c7cfea4bd58df46ac4aee41f60a99045dfcfc1706549800b4fffc42ed3d43cc",
+    "frontend/src/components/ui/sheet/SheetTrigger.vue": "cac73faa1a4ac604675ac86c5dc24f9ee424979fcaa63a25b1a760e9aba1e79c",
+    "frontend/src/components/ui/sheet/index.ts": "582344a7a7cb9156143fff5e3a898e31833970efac5b1ee6b1d2322938fe37f6",
+    "frontend/src/lib/runtime.ts": "03e6232486fb68e2df48e9a5a8bd26c8b1f9dcf1f384a6f2af05da228ee891b7",
+    "frontend/src/lib/utils.ts": "5d80b8eb203371e0e70cc8aee08aae92ddf25459cf2d6832c99ae6ffe685c4aa",
+    "frontend/src/main.ts": "8b2fd4acf18ca07d875f3f2885dfdb132e08480c39b07c3ff5eab1560e677bac",
+    "frontend/src/router/index.ts": "6e9196ece1528c655d273406121b99f9fef9c594f26ded8e77af3b0da78150f4",
+    "frontend/src/styles/shadcn.css": "e494a80356b3c774175d9a814375935415f4e7dfc17b23a3d9d96e8d05e82010",
+    "frontend/src/styles/workspace.css": "061533d674dbd0ee20147b23e7297a1201a964c0d326dca90093626dfdddc85d",
+    "frontend/src/views/ApprovalView.vue": "430b764710702d1e228818b63a269f94948670061439f1c9341c7f89d9921793",
+    "frontend/src/views/AuditView.vue": "23adf0493ae06e941dabfcc033c1cb755b8e30e82c6950c75260d2ad2008f1ca",
+    "frontend/src/views/EvaluationsView.vue": "6becf9da6ba4f120c36da757134f9efe69226671ed1833a37e2f52dbfb0ba2d4",
+    "frontend/src/views/KnowledgeView.vue": "d6eebe8dc96dd893663d1d3c45e0cb1da461da25237478b95a41889c2ee8f512",
+    "frontend/src/views/LoginView.vue": "817d9d604c7a8f9796f0cf7b369ae0ee121dfdf627f5b3361817ef23ed60a1c5",
+    "frontend/src/views/MetricsView.vue": "95d69220d9465037e4da6ecc9cebcf03b42831a7806c1eb4d8cdd5e1b2c4f99f",
+    "frontend/src/views/PoliciesView.vue": "dc7cab4718de36246bfbadcc25bd88e10689e923a41c6602275a70e3e93318af",
+    "frontend/src/views/PolicyLibraryView.vue": "e125f0eb830e698bd3119dbeaa794cd938ec04ed136ac5a6dab76b09fbf0fc0b",
+    "frontend/src/views/QaView.vue": "ed42b81481699909935a4719b383fdc2a1dc9cd398ca78781a283e53f5ccad04",
+    "frontend/src/views/QualityReviewView.vue": "c13e665102ed59d6adf127ee2b6ff0e436511470d519ab7b5645f31fddf18582",
+    "frontend/src/views/ReportView.vue": "778280a128d81ca72e08c5b594b5b6a57e370137276fec33d2a676ac8a40ec8f",
+    "frontend/src/views/SystemView.vue": "6f8accfaaac9e1a522f4e3ee6a59ea682846339e5d56695caf68933201c04878",
+    "frontend/src/views/TaskCreateView.vue": "a97cfd38c3d48262ab440915f2a94959cea5a3d0de360c9bfef1566843a24ad7",
+    "frontend/src/views/TaskProgressView.vue": "c696c8fcfe2ba398dafbd1e9971b07d2fbde6e2257c8011c2ef34d4af18e73c6",
+    "frontend/src/views/TicketWorkbenchView.vue": "76280fc31fd60624295b892e2c1097809205933e2749c23ae549a50b0874f47d",
+    "frontend/src/views/WorkbenchView.vue": "552365328732c369ba4e278ba54e294ce980cb38045f1ba699011c927258d8f5",
+    "frontend/verification/qa-feedback-2026-11-25.json": "ee192db3e1fa20ea4f6eddf80d4a528aa07dee7360eed4051a5ede826a57aa91",
+    "frontend/verification/ui-redesign-2026-11-25.json": "1174357ce80c0e041cb874a8900ac0ee37b34f0e37d9cd9c03383c125c359bfa",
+    "frontend/vite.config.ts": "072d10c1409da2874f91d82e49d660e5acca011fc6bcc55c1caf8733af3fc933"
+  },
+  "publication_checks": {
+    "files_enumerated": 804,
+    "configured_scan_rules": [
+      "private_material",
+      "workstation_path",
+      "key_signature"
+    ],
+    "findings": [],
+    "readme_relative_links": 31,
+    "missing_links": [],
+    "scan_is_not_an_exhaustive_secret_proof": true
+  }
+}

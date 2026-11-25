@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /** 新建诊断：问题描述、产品、平台、版本、时间范围、知识库与数据范围。 */
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -86,10 +87,9 @@ async function submit(): Promise<void> {
 
 <template>
   <div>
-    <div class="pic-page-title">
-      <h2>新建诊断</h2>
+    <PageHeader title="新建诊断" description="说明问题并限定分析范围，系统会据此收集证据。" eyebrow="NEW ANALYSIS">
       <el-button link type="primary" @click="router.push({ name: 'workbench' })">返回工作台</el-button>
-    </div>
+    </PageHeader>
 
     <el-alert
       type="info"

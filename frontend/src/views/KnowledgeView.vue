@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /** 知识库管理：文档上传、版本、索引状态、权限与失败记录 + 指标数据导入。 */
 import { computed, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -188,10 +189,9 @@ onMounted(loadAll)
 
 <template>
   <div>
-    <div class="pic-page-title">
-      <h2>知识库管理</h2>
+    <PageHeader title="知识库管理" description="管理可见资料和文档索引，为问答与诊断提供依据。" eyebrow="KNOWLEDGE">
       <el-button @click="loadAll">刷新</el-button>
-    </div>
+    </PageHeader>
 
     <el-card shadow="never">
       <template #header><span style="font-weight: 600">知识库概览（仅显示你有权限的）</span></template>
@@ -354,7 +354,7 @@ onMounted(loadAll)
           <template #header>
             <div style="display: flex; justify-content: space-between; align-items: center">
               <span style="font-weight: 600">文档列表</span>
-              <div style="display: flex; gap: 8px">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap">
                 <el-select v-model="filters.kb_code" aria-label="按知识库筛选文档" placeholder="全部知识库" clearable style="width: 160px" @change="loadDocuments">
                   <el-option v-for="kb in kbs" :key="kb.code" :label="kb.name" :value="kb.code" />
                 </el-select>

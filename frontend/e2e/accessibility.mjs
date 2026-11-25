@@ -86,6 +86,11 @@ async function navigate(hash, marker) {
 async function loginAs(username, password) {
   await send('Network.clearBrowserCookies')
   await navigate('#/login', '电商售后工作台')
+  const formDeadline = Date.now() + 15000
+  while (!await evaluate('Boolean(document.querySelector("#login-password"))')) {
+    if (Date.now() > formDeadline) throw new Error('登录表单没有挂载完成')
+    await sleep(100)
+  }
   const submitted = await evaluate(`(() => {
     const inputs = Array.prototype.slice.call(document.querySelectorAll('input'))
     const usernameInput = inputs.find((item) => item.type === 'text') || inputs[0]

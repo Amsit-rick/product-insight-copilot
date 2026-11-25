@@ -140,7 +140,7 @@ router.beforeEach(async (to) => {
 
 router.afterEach((to) => {
   const title = (to.meta.title as string | undefined) ?? ''
-  document.title = title ? `${title} · 电商售后工作台` : '电商售后工作台'
+  document.title = title ? `${title} · Product Insight Copilot` : 'Product Insight Copilot · 电商售后工作台'
 })
 
 export default router

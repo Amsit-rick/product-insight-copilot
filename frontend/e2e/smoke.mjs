@@ -124,6 +124,31 @@ async function pageText() {
   return evaluate('document.body?.innerText || ""')
 }
 
+// Target this run's fixture, even when older E2E records occupy the first page.
+async function searchExactTicket(externalId) {
+  const focused = await evaluate(`(() => {
+    const input = document.querySelector('.tk__filters input[aria-label="搜索工单"]')
+    if (!input) return false
+    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set
+    setter.call(input, ${JSON.stringify(externalId)})
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    input.focus()
+    return true
+  })()`)
+  if (!focused) throw new Error('工单搜索框不可用')
+  await evaluate(`document.querySelector('.tk__filters button[aria-label="查询工单"]').click()`)
+  const deadline = Date.now() + 15000
+  while (Date.now() < deadline) {
+    const found = await evaluate(`(() => {
+      const rows = [...document.querySelectorAll('.el-table__body tbody tr.el-table__row')]
+      return rows.length === 1 && rows[0].innerText.includes(${JSON.stringify(externalId.slice(-8))})
+    })()`)
+    if (found) return
+    await sleep(150)
+  }
+  throw new Error(`没有定位到本轮工单 ${externalId}`)
+}
+
 /**
  * 登录（可指定账号）。
  * 清理浏览器 Cookie 再导航：会话令牌存放在 HttpOnly Cookie，不能也不应从页面脚本读取。
@@ -537,6 +562,12 @@ async function main() {
   await sleep(300)
 
   const initialQaTurns = await evaluate(`document.querySelectorAll('.qa__turn').length`)
+  // Retrieval options are intentionally collapsed in the redesigned QA page.
+  await evaluate(`(() => {
+    const toggle = document.querySelector('[data-testid="qa-settings-toggle"]')
+    if (toggle?.getAttribute('aria-expanded') === 'false') toggle.click()
+  })()`)
+  await sleep(150)
   const qaQuestion = '埋点字典里 user_login 事件的口径是怎么定义的？'
   const asked = await evaluate(`(() => {
     // 先关掉「模型归纳」：纯检索式不碰模型，接了真实模型的环境也不会产生费用
@@ -546,7 +577,7 @@ async function main() {
     if (!box) return 'no-textarea'
     box.value = ${JSON.stringify(qaQuestion)}
     box.dispatchEvent(new Event('input', { bubbles: true }))
-    const btn = [...document.querySelectorAll('button')].find((b) => /提问/.test(b.innerText))
+    const btn = [...document.querySelectorAll('.qa__composer button')].find((b) => /提问/.test(b.innerText))
     if (!btn) return 'no-button'
     btn.click()
     return 'clicked'
@@ -602,7 +633,7 @@ async function main() {
     const turns = [...document.querySelectorAll('.qa__turn')]
     return turns[turns.length - 1]?.innerText || ''
   })()`)
-  const insufficientQa = /当前知识库没有找到足以直接回答|知识库里没有检索到能回答/.test(qaText)
+  const insufficientQa = /暂未找到足够依据|当前知识库没有找到足以直接回答|知识库里没有检索到能回答/.test(qaText)
   const collapsedState = await evaluate(`(() => {
     const turns = [...document.querySelectorAll('.qa__turn')]
     const turn = turns[turns.length - 1]
@@ -874,7 +905,7 @@ async function main() {
 
     const openedMemberLevel = await evaluate(`(() => {
       const item = [...document.querySelectorAll('.ctx__item')].find((node) =>
-        /member_level/.test(node.innerText)
+        /会员等级/.test(node.innerText)
       )
       const input = item?.querySelector('input')
       if (!input) return false
@@ -942,7 +973,7 @@ async function main() {
     const mobileLayout = await evaluate(`({
       viewport: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
-      titleVisible: Boolean([...document.querySelectorAll('h2')].find((node) => /售后政策库/.test(node.innerText))),
+      titleVisible: Boolean([...document.querySelectorAll('.pic-page-header h1')].find((node) => /售后政策库/.test(node.innerText))),
       widest: [...document.querySelectorAll('body *')]
         .map((node) => ({
           tag: node.tagName,
@@ -1070,6 +1101,7 @@ async function main() {
       return true
     })()`)
     await sleep(800)
+    await searchExactTicket(ticket.external_id)
     const mineText = await pageText()
     record(
       '“我的工单”按当前登录客服筛选',
@@ -1212,6 +1244,7 @@ async function main() {
       if (count > 0) break
       await sleep(1000)
     }
+    await searchExactTicket(refundTicket.external_id)
     const openedRefundTicket = await evaluate(`
       (() => {
         const row = Array.from(document.querySelectorAll('.el-table__body tbody tr.el-table__row'))

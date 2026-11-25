@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /** 任务进度：工作流节点、Agent 状态、耗时、重试、人工等待与事件流。 */
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -142,13 +143,12 @@ watch(taskId, loadAll)
 
 <template>
   <div v-loading="loading">
-    <div class="pic-page-title">
-      <h2>任务进度</h2>
-      <div style="display: flex; gap: 8px">
+    <PageHeader title="任务进度" description="跟踪 Agent 分工、执行状态和证据收集过程。" eyebrow="TASK PROGRESS">
+      <div style="display: flex; gap: 8px; flex-wrap: wrap">
         <el-button link type="primary" @click="router.push({ name: 'workbench' })">返回工作台</el-button>
         <el-button :icon="'Refresh'" @click="loadAll">刷新</el-button>
       </div>
-    </div>
+    </PageHeader>
 
     <el-card v-if="task" shadow="never">
       <div style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap">
@@ -162,7 +162,7 @@ watch(taskId, loadAll)
         <div style="text-align: right; display: flex; flex-direction: column; gap: 8px; align-items: flex-end">
           <StatusTag :status="task.status" :retry-count="task.retry_count" :waiting-reason="task.waiting_reason" />
           <RiskTag :risk="task.risk_level" />
-          <div style="display: flex; gap: 8px">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
             <el-button
               v-if="['pending', 'running', 'waiting_human'].includes(task.status)"
               size="small"

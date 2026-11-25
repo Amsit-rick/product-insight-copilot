@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 import { computed, onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ticketApi } from '@/api/endpoints'
@@ -215,11 +216,7 @@ onMounted(load)
 
 <template>
   <div class="quality-page">
-    <div class="pic-page-title">
-      <div>
-        <h2>质检抽查</h2>
-        <p class="pic-muted">抽查建议和回复是否有事实依据；结果只写入内部记录，不会发送给客户。</p>
-      </div>
+    <PageHeader title="质检抽查" description="抽查建议和回复是否有事实依据；结果只写入内部记录，不会发送给客户。" eyebrow="QUALITY REVIEW">
       <div class="quality-page__actions">
         <el-input v-model="keyword" aria-label="搜索质检工单" clearable placeholder="搜索工单号、订单号或问题" style="width: 250px" @keyup.enter="searchKeyword" @clear="searchKeyword" />
         <el-select :model-value="qualityFilter" aria-label="按质检状态筛选" style="width: 150px" @update:model-value="changeQualityFilter">
@@ -236,7 +233,7 @@ onMounted(load)
         <el-button @click="exportReviews">导出筛选结果</el-button>
         <el-button @click="load">刷新</el-button>
       </div>
-    </div>
+    </PageHeader>
 
     <el-row :gutter="16" class="pic-section-gap">
       <el-col :span="9">
@@ -347,6 +344,7 @@ onMounted(load)
 
 <style scoped>
 .quality-page__actions, .quality-list-head, .quality-detail-head, .quality-submit { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.quality-page__actions { flex-wrap: wrap; }
 .quality-ticket { display: flex; width: 100%; border: 0; border-bottom: 1px solid #edf0f2; background: transparent; padding: 12px 4px; text-align: left; cursor: pointer; justify-content: space-between; gap: 10px; }
 .quality-ticket:hover, .quality-ticket.is-active { background: #f3f7ff; }
 .quality-ticket:focus-visible { outline: 2px solid #176b5b; outline-offset: -2px; }

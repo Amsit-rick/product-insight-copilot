@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /**
  * 系统状态：把"只能看接口"的运行时状态搬到界面上，让人工测试不用敲命令。
  * 覆盖：健康检查、模型路由/灰度、限额与预算、缓存、成本、任务执行后端、
@@ -484,9 +485,10 @@ onMounted(load)
 
 <template>
   <div v-loading="loading">
+    <PageHeader title="系统状态" description="查看服务健康、执行队列和交付检查，定位运行问题。" eyebrow="OPERATIONS" />
     <el-card shadow="never">
       <template #header>
-        <span style="font-weight: 600">系统状态</span>
+        <span style="font-weight: 600">运行概览</span>
         <el-tag v-if="health" :type="health.status === 'ok' ? 'success' : 'danger'" size="small" style="margin-left: 10px">
           {{ health.status }}
         </el-tag>

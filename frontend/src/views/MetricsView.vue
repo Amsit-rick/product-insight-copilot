@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /**
  * 指标查询：把 4 个固定能力做成可点界面。
  *
@@ -122,9 +123,10 @@ onMounted(async () => {
 
 <template>
   <div v-loading="loading">
+    <PageHeader title="指标查询" description="选择业务指标和时间范围，查看趋势、分群及对比结果。" eyebrow="METRICS" />
     <el-card shadow="never">
       <template #header>
-        <span style="font-weight: 600">指标查询</span>
+        <span style="font-weight: 600">查询条件</span>
         <span class="pic-muted" style="margin-left: 10px">
           当前账号 {{ session.displayName }} 可见 {{ definitions.length }} 个指标（无权限的指标不会出现在下拉里）
         </span>

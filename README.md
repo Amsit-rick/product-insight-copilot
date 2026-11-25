@@ -1,4 +1,4 @@
-# Product Insight Copilot — 受控多 Agent 售后决策平台
+# Product Insight Copilot — 电商售后多 Agent 工单系统
 
 [![CI](https://github.com/Amsit-rick/product-insight-copilot/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Amsit-rick/product-insight-copilot/actions/workflows/ci.yml)
 
@@ -80,10 +80,31 @@ Product Insight Copilot 将这些环节拆成受控工作流，并把每个 Agen
 
 ## 界面预览
 
+新版前端使用 Vue 3 + shadcn-vue，围绕客服每天要处理的工单重新分区：
+
+- **分组导航**：业务工作区、知识与资料、分析与诊断、管理与运维，按账号权限显示；桌面可收起，手机使用侧边菜单。
+- **工单工作区**：五类行动队列、搜索与筛选、工单列表各自独立；打开工单后按客户反馈、已核实信息、处理建议、处理记录查看。
+- **知识库问答**：默认进入首页，主动选择历史会话后恢复；正文、相关材料与排查说明分开显示，辅助内容默认折叠。
+- **实际模式可见**：未启用生成模型时明确显示“资料检索模式”，不会把检索占位文本当作已经生成的答案。
+
 <p align="center">
-  <img src="docs/product-redesign/screenshots/ticket-detail.png" alt="售后工单详情：事实、建议、协作与处理记录" width="49%" />
-  <img src="docs/product-redesign/screenshots/approval-gate.png" alt="高风险售后建议的人工审批门禁" width="49%" />
+  <img src="docs/product-redesign/screenshots/workbench.png" alt="新版售后工单工作区：分组导航、五类待办、搜索筛选与工单列表" width="100%" />
 </p>
+
+<details>
+<summary>查看知识库问答、工单详情、审批门禁和登录页</summary>
+
+<p align="center">
+  <img src="docs/product-redesign/screenshots/knowledge-qa.png" alt="知识库问答首页：当前可见资料、历史会话、检索设置和实际运行模式" width="100%" />
+  <img src="docs/product-redesign/screenshots/ticket-detail.png" alt="工单详情：客户反馈、事实核验、处理建议与处理记录" width="100%" />
+  <img src="docs/product-redesign/screenshots/approval-gate.png" alt="待审批退款建议及服务端审批要求" width="100%" />
+  <img src="docs/product-redesign/screenshots/login.png" alt="登录页：工作流程说明与虚构演示角色选择" width="100%" />
+</p>
+
+</details>
+
+截图采集于 2026-11-25，使用隔离 SQLite、stub 模型和虚构演示数据。截图只展示界面与交互，不能证明真实模型回答质量。
+新控件采用 shadcn-vue 源码，复杂表单与表格保留 Element Plus；来源和 MIT 许可见 [组件声明](frontend/THIRD_PARTY_NOTICES.md)。
 
 ## 快速开始
 
@@ -200,10 +221,21 @@ npm run dev
 | RAG | pgvector / fallback vector store、混合召回、Reranker、引用元数据 |
 | 状态与队列 | PostgreSQL / SQLite、Redis / memory fallback、Durable Checkpoint |
 | 对象存储 | MinIO / S3-compatible storage / local storage |
-| 前端 | Vue 3、TypeScript、Vite、Pinia、Element Plus |
+| 前端 | Vue 3、TypeScript、Vite、Pinia、shadcn-vue / Reka UI、Tailwind CSS 4、Element Plus |
 | 交付与观测 | Docker Compose、Pytest、CDP E2E、GitHub Actions、Trace 与审计日志 |
 
 ## 质量与验证
+
+2026-11-25 的前端追加验证在本地隔离演示环境完成：页面与交互检查 **73/73**，axe 自动扫描 **14/14** 个页面状态通过；
+类型检查和生产构建通过。检查覆盖原问题的真实拒答状态、诊断详情默认折叠、模型模式提示、会话恢复、权限导航，以及桌面、平板和手机布局。
+这些数字是工程检查数量，不是回答准确率或召回率；axe 通过也不等于完整 WCAG 认证。
+完整记录见 [前端说明](frontend/README.md) 和 [问答展示修正记录](frontend/verification/qa-feedback-2026-11-25.json)。
+
+本次发布副本复验：后端 **1531 通过、1 跳过**（真实 pgvector 集成需单独提供隔离数据库）；
+浏览器主线 **93/93**、售后角色 **43/43**、界面检查 **73/73**、可访问性扫描 **14/14** 通过。
+浏览器使用与公开构建逐文件一致的静态资源，后端采用隔离 SQLite 和 stub 模型；没有重跑真实模型或企业接口验收。
+当前发布文件清单见 [同步验证记录](docs/testing/artifacts/public-sync-2026-11-25.json)。
+
 
 GitHub Actions 会执行：
 
@@ -226,6 +258,7 @@ GitHub Actions 会执行：
 | [事实接口契约](docs/integrations/fact-http-contract.md) | 订单、支付、物流和售后只读接口约定 |
 | [本地集成沙箱](docs/integrations/local-integration-sandbox.md) | 事实、指标和 Webhook 的本地对接环境 |
 | [Saleor 选型与边界](docs/architecture/adr-003-saleor-commerce-sandbox.md) | 本地状态驱动 Sandbox、版本冻结与身份隔离 |
+| [前端界面与验证说明](frontend/README.md) | shadcn-vue 接入、运行方式、前端回归与已知问题 |
 | [公开版本同步说明](docs/public-sync.md) | 本地开发基线、公开仓库同步方式及验证记录 |
 | [部署说明](deploy/README.md) | Docker Compose、环境变量和运行方式 |
 | [测试证据](docs/testing/) | 回归、性能、恢复、供应链与交付验证记录 |
@@ -240,6 +273,12 @@ docs/          架构、集成、测试和产品说明
 scripts/       启动、验收、评测、恢复和供应链脚本
 .github/       GitHub Actions 工作流
 ```
+
+## 已知问题
+
+- **知识库问答存在误拒答**：演示环境中，“客服工单里用户抱怨最多的是哪几类问题？”对应的分类表已入库，但检索返回材料未包含该表；词面覆盖规则以 `4/13 ≈ 31%` 低于 `32%` 拒答。本次修正了重复提示、内部参数直接暴露和固定示例误导，**没有修复后端召回与判定问题**。
+- **stub 不生成真实模型答案**：检索命中资料不等于已经生成归纳答案，需展开材料核对原文。接入生成模型后仍需独立评测。
+- **依赖审计尚有告警**：现有 Vue、SSR、Vite 和 source-map-js 共 4 项 High 包告警尚未整改；类型检查、构建和浏览器测试通过不代表依赖安全审计通过。
 
 ## 能力边界
 

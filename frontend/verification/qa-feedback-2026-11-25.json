@@ -1,0 +1,625 @@
+{
+  "date": "2026-11-25",
+  "scope": "frontend refusal presentation and runtime-mode clarity",
+  "previous_ui_record_is_historical": true,
+  "backend_modified": false,
+  "backend_false_refusal_fixed": false,
+  "reproduction": {
+    "query": "客服工单里用户抱怨最多的是哪几类问题？",
+    "insufficient": true,
+    "coverage": {
+      "coverage": 0.3077,
+      "threshold": 0.32,
+      "top_score": 0.2098,
+      "high_score_escape": 0.26,
+      "terms": 13,
+      "matched": 4,
+      "missing_terms": [
+        "几类",
+        "单里",
+        "怨最",
+        "户抱",
+        "抱怨",
+        "最多",
+        "类问",
+        "里用",
+        "问题"
+      ],
+      "dropped_terms": [
+        "哪几",
+        "多的",
+        "是哪",
+        "的是"
+      ],
+      "answerable": false
+    },
+    "expected_indexed_chunks": 1,
+    "expected_chunk_retrieved": false,
+    "sources": [
+      {
+        "chunk_id": "4b6ed71b-7356-4b24-acc2-cc1a7525d024",
+        "kb_code": "feedback_kb",
+        "source_name": "客服工单汇总20260821-0827.md",
+        "section_title": "客服工单汇总（2026-08-21 ~ 2026-08-27）",
+        "contains_expected_classification": false
+      },
+      {
+        "chunk_id": "b761dd1c-8a81-4e55-84ec-2e8c4a85f9c5",
+        "kb_code": "feedback_kb",
+        "source_name": "客服工单汇总20260821-0827.md",
+        "section_title": "1. 样本口径",
+        "contains_expected_classification": false
+      },
+      {
+        "chunk_id": "63b4a69c-9c55-4569-b89d-657188384d1c",
+        "kb_code": "feedback_kb",
+        "source_name": "应用商店评论摘要20260820-0828.md",
+        "section_title": "6. 说明与限制",
+        "contains_expected_classification": false
+      },
+      {
+        "chunk_id": "8e5abd62-3ebf-4763-8788-53028aef70b5",
+        "kb_code": "feedback_kb",
+        "source_name": "客服工单汇总20260821-0827.md",
+        "section_title": "6. 与 iOS 对比",
+        "contains_expected_classification": false
+      },
+      {
+        "chunk_id": "ed2fe941-e495-498a-9f17-3594262e6989",
+        "kb_code": "feedback_kb",
+        "source_name": "客服工单汇总20260821-0827.md",
+        "section_title": "7. 客服侧判断",
+        "contains_expected_classification": false
+      },
+      {
+        "chunk_id": "ac937488-461a-460a-b383-f54944e04361",
+        "kb_code": "operation_kb",
+        "source_name": "指标口径与报表说明.md",
+        "section_title": "1. 指标定义",
+        "contains_expected_classification": false
+      }
+    ],
+    "model_generation_requested": false,
+    "backend_modified": false
+  },
+  "frontend_changes": [
+    "Single plain-language refusal; raw diagnostics collapsed",
+    "Original refusal remains inspectable; citations not treated as proof of answerability",
+    "Removed static example questions; show actually accessible indexed knowledge bases with document counts",
+    "Reuse /health to label retrieval-only mode; do not present extraction placeholder as generated answer"
+  ],
+  "validation": {
+    "typecheck": "passed",
+    "production_build": "passed with existing upstream annotation warnings",
+    "browser_checks": {
+      "passed": 73,
+      "failed": 0,
+      "checks": [
+        {
+          "name": "登录页使用 shadcn 原生输入与按钮",
+          "ok": true
+        },
+        {
+          "name": "登录页 WCAG A/AA",
+          "ok": true,
+          "detail": []
+        },
+        {
+          "name": "客服导航按权限分组",
+          "ok": true
+        },
+        {
+          "name": "工单桌面无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "工单页 WCAG A/AA",
+          "ok": true,
+          "detail": []
+        },
+        {
+          "name": "搜索按钮可筛选工单",
+          "ok": true
+        },
+        {
+          "name": "清除搜索恢复工单",
+          "ok": true
+        },
+        {
+          "name": "侧栏可以收起",
+          "ok": true
+        },
+        {
+          "name": "收起后的导航链接仍有业务名称",
+          "ok": true
+        },
+        {
+          "name": "跳转到内容不改变业务路由",
+          "ok": true
+        },
+        {
+          "name": "账号菜单显示退出入口",
+          "ok": true
+        },
+        {
+          "name": "问答初次进入首页",
+          "ok": true
+        },
+        {
+          "name": "首页按实际可见知识库展示范围，撤掉固定承诺式示例",
+          "ok": true
+        },
+        {
+          "name": "未启用生成模型时明确显示检索模式",
+          "ok": true
+        },
+        {
+          "name": "检索设置默认收起",
+          "ok": true
+        },
+        {
+          "name": "检索设置可以展开",
+          "ok": true
+        },
+        {
+          "name": "问答桌面无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1204,
+            "content": 1204
+          }
+        },
+        {
+          "name": "问答首页 WCAG A/AA",
+          "ok": true,
+          "detail": []
+        },
+        {
+          "name": "回答正文直接显示，引用默认折叠",
+          "ok": true
+        },
+        {
+          "name": "原问题仍如实标记依据不足",
+          "ok": true
+        },
+        {
+          "name": "拒答主视图不重复堆警告、不暴露碎词阈值",
+          "ok": true
+        },
+        {
+          "name": "折叠说明保留原始拒答判定，可供核对",
+          "ok": true
+        },
+        {
+          "name": "有历史时再次进入仍是首页",
+          "ok": true
+        },
+        {
+          "name": "会话搜索显示真实空结果",
+          "ok": true
+        },
+        {
+          "name": "历史会话可以恢复",
+          "ok": true
+        },
+        {
+          "name": "历史问答 WCAG A/AA",
+          "ok": true,
+          "detail": []
+        },
+        {
+          "name": "命中资料但未生成归纳时不伪装成答案",
+          "ok": true
+        },
+        {
+          "name": "问答手机无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 390,
+            "content": 390
+          }
+        },
+        {
+          "name": "手机提问框保持可见",
+          "ok": true,
+          "detail": {
+            "bottom": 844,
+            "top": 712,
+            "height": 844
+          }
+        },
+        {
+          "name": "手机导航为带焦点约束的对话框",
+          "ok": true
+        },
+        {
+          "name": "手机导航 WCAG A/AA",
+          "ok": true,
+          "detail": []
+        },
+        {
+          "name": "选择手机导航后自动关闭",
+          "ok": true
+        },
+        {
+          "name": "工单手机无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "手机工单 WCAG A/AA",
+          "ok": true,
+          "detail": []
+        },
+        {
+          "name": "审核桌面无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "质检平板无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "质检手机无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "政策库桌面无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "政策库手机无整页横向溢出",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "管理员拥有完整分组导航",
+          "ok": true
+        },
+        {
+          "name": "workbench 页面有清晰标题",
+          "ok": true,
+          "detail": "诊断工作台"
+        },
+        {
+          "name": "workbench 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "workbench 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "workbench 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "knowledge 页面有清晰标题",
+          "ok": true,
+          "detail": "知识库管理"
+        },
+        {
+          "name": "knowledge 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "knowledge 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "knowledge 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "metrics 页面有清晰标题",
+          "ok": true,
+          "detail": "指标查询"
+        },
+        {
+          "name": "metrics 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "metrics 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "metrics 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "system 页面有清晰标题",
+          "ok": true,
+          "detail": "系统状态"
+        },
+        {
+          "name": "system 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "system 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "system 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "evaluations 页面有清晰标题",
+          "ok": true,
+          "detail": "评测集"
+        },
+        {
+          "name": "evaluations 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "evaluations 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "evaluations 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "access-control 页面有清晰标题",
+          "ok": true,
+          "detail": "访问策略"
+        },
+        {
+          "name": "access-control 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "access-control 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "access-control 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "audit 页面有清晰标题",
+          "ok": true,
+          "detail": "审计日志"
+        },
+        {
+          "name": "audit 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "audit 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "audit 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "new-task 页面有清晰标题",
+          "ok": true,
+          "detail": "新建诊断"
+        },
+        {
+          "name": "new-task 桌面布局",
+          "ok": true,
+          "detail": {
+            "width": 1440,
+            "root": 1440,
+            "main": 1189,
+            "content": 1189
+          }
+        },
+        {
+          "name": "new-task 平板布局",
+          "ok": true,
+          "detail": {
+            "width": 1024,
+            "root": 1024,
+            "main": 773,
+            "content": 773
+          }
+        },
+        {
+          "name": "new-task 手机布局",
+          "ok": true,
+          "detail": {
+            "width": 390,
+            "root": 390,
+            "main": 375,
+            "content": 375
+          }
+        },
+        {
+          "name": "全程无未捕获前端异常",
+          "ok": true,
+          "detail": []
+        }
+      ]
+    },
+    "axe_page_states": "14/14 passed; automated rules only"
+  },
+  "normalized_sha256": {
+    "frontend/src/App.vue": "2d1a7daec03ff9b58b865ff411443e5b0349b9a53e0ff29bfdd828a71da10e4f",
+    "frontend/src/views/QaView.vue": "ed42b81481699909935a4719b383fdc2a1dc9cd398ca78781a283e53f5ccad04",
+    "frontend/src/lib/runtime.ts": "03e6232486fb68e2df48e9a5a8bd26c8b1f9dcf1f384a6f2af05da228ee891b7",
+    "frontend/e2e/ui-redesign.mjs": "04a35dafd4fad92ff934c91f6163dc2e32dd7c7a903cbcb906a707f577b44756",
+    "frontend/e2e/smoke.mjs": "fa9aefc669f6bef56f57239db30168bd8e367a42e2b2c8c2bb3e9f3369e5cdef",
+    "frontend/README.md": "9d1591cc572a18dded5072a2a7f4b2057ce1d002c673898dcdf006920a072877"
+  },
+  "remaining_work": [
+    "Backend retrieval must recall the indexed classification table for the original query",
+    "Backend word-coverage gate must handle paraphrases and avoid fragment-driven false refusal",
+    "No real-model answer quality acceptance performed"
+  ]
+}

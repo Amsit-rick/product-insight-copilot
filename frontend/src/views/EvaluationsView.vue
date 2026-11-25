@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PageHeader from '@/components/PageHeader.vue'
 /**
  * 评测：在界面上触发离线评测并查看历史与分项指标。
  * 注意：评测会真实跑完整工作流；若后端配了真实模型，会按用例数产生费用。
@@ -129,6 +130,7 @@ onMounted(load)
 
 <template>
   <div v-loading="loading">
+    <PageHeader title="评测集" description="选择测试范围，检查回答质量和流程表现。" eyebrow="EVALUATIONS" />
     <el-card shadow="never">
       <template #header>
         <span style="font-weight: 600">评测集运行</span>
